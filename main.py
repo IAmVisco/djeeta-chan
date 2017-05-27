@@ -109,7 +109,8 @@ __**~role <role name>**__
 __**~help**__
 	**OMG WHAT DOES THIS COMMAND DO???**
 
-*PS. My real function is to insult Visco. There's always a 1 percent chance of me throwing an insult.*
+*P.S. My real function is to insult Visco. There's always a 1 percent chance of me throwing an insult.*
+*P.S.S. While Visco is my current Master, my real father is Eurea, who decided to stay in the shadows, like ninja, but I want world to know the truth. We will not forget you.*
 """
     	await client.send_message(message.channel, msg)    	
     
