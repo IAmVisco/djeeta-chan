@@ -123,7 +123,7 @@ __**~help**__
     	await client.send_message(message.channel, tmp)
 
     elif message.content.startswith("~avatar "):
-    	user = discord.utils.get(message.server.members, name = message.content[8:])
+    	user = discord.utils.get(message.server.members, mention = message.content[8:])
     	await client.send_message(message.channel, user.avatar_url)
 
     if message.author.id in victim_list:
