@@ -2,11 +2,15 @@ import discord
 import asyncio
 import logging
 import os
+import time
 from random import randint
+from cleverwrap import CleverWrap
 
 logging.basicConfig(level=logging.INFO)
 
 client = discord.Client()
+cw = CleverWrap("CC2giUNPmorTJdrJNPnp2IIND_Q")
+isTimerOn = False;
 
 # list of insults
 insults_list = [
@@ -38,7 +42,7 @@ insults_list = [
 ]
 # user id of people to be insulted
 victim_list = [
-	"185069144184455168", # Visco
+	#"185069144184455168", # Visco
 	"186873040292806656", #Naddie
 	# "235080660442677248", # RedTF
 	# "174852783084666880", # D.E.D
@@ -46,58 +50,58 @@ victim_list = [
 
 @client.event
 async def on_ready():
-    print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
-    print('------')
-    djeetablue = discord.Game(name="Djeetablue Fantasy", url="game.granbluefantasy.jp")
-    await client.change_presence(game=djeetablue)
+	print('Logged in as')
+	print(client.user.name)
+	print(client.user.id)
+	print('------')
+	djeetablue = discord.Game(name="Djeetablue Fantasy", url="game.granbluefantasy.jp")
+	await client.change_presence(game=djeetablue)
 
 @client.event
 async def on_member_join(member):
-    server = member.server
-    fmt = 'Welcome {0.mention} to {1.name}!'
-    await client.send_message(server, fmt.format(member, server))
+	server = member.server
+	fmt = 'Welcome {0.mention} to {1.name}!'
+	await client.send_message(server, fmt.format(member, server))
 
 @client.event
 async def on_message(message):
-    if message.content.startswith('~emo'):
-        try:
-            await client.send_file(message.channel, os.getcwd() + '/res/emotes/' + message.content.lstrip('~emo').strip() + '.png')
-        except:
-            await client.send_message(message.channel, "No match found.")
-            
-    elif message.content.startswith("~say ") and message.author.bot == False:
-    	await client.send_typing(message.channel)
-    	await asyncio.sleep(1)
-    	await client.send_message(message.channel, message.content[5:])
+	if message.content.startswith('~emo'):
+		try:
+			await client.send_file(message.channel, os.getcwd() + '/res/emotes/' + message.content.lstrip('~emo').strip() + '.png')
+		except:
+			await client.send_message(message.channel, "No match found.")
 
-    elif message.content == "~roles":
-    	tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
-    	bot_role = discord.utils.get(message.server.roles, name = "Djeeta-chan")
+	elif message.content.startswith("~say ") and message.author.bot == False:
+		await client.send_typing(message.channel)
+		await asyncio.sleep(1)
+		await client.send_message(message.channel, message.content[5:])
 
-    	# lists the roles the bot can assign
-    	for role in message.server.roles[1:]:
-    		if role < bot_role:
-	    		tmp += "\n  - " + role.name
+	elif message.content == "~roles":
+		tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
+		bot_role = discord.utils.get(message.server.roles, name = "Djeeta-chan")
 
-    	await client.send_message(message.channel, tmp)
+		# lists the roles the bot can assign
+		for role in message.server.roles[1:]:
+			if role < bot_role:
+				tmp += "\n  - " + role.name
 
-    elif message.content.startswith("~role "):
-    	try:
-    		role = discord.utils.get(message.server.roles, name = message.content[6:])
+		await client.send_message(message.channel, tmp)
 
-	    	if role in message.author.roles:
-	    		await client.remove_roles(message.author, role)
-		    	await client.send_message(message.channel, message.author.mention + ", the role " + role.name + " has been removed from your roles.")
-	    	else:
-		    	await client.add_roles(message.author, role)
-		    	await client.send_message(message.channel, message.author.mention + ", the role " + role.name + " has been added to your roles.")
-    	except Exception as e:
-    		await client.send_message(message.channel, "Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
-    
-    elif message.content == "~help":
-    	msg = """
+	elif message.content.startswith("~role "):
+		try:
+			role = discord.utils.get(message.server.roles, name = message.content[6:])
+
+			if role in message.author.roles:
+				await client.remove_roles(message.author, role)
+				await client.send_message(message.channel, message.author.mention + ", the role " + role.name + " has been removed from your roles.")
+			else:
+				await client.add_roles(message.author, role)
+				await client.send_message(message.channel, message.author.mention + ", the role " + role.name + " has been added to your roles.")
+		except Exception as e:
+			await client.send_message(message.channel, "Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
+
+	elif message.content == "~help":
+		msg = """
 :notepad_spiral:**Here are the list of commands:**
 __**~say <words>**__
 	*Makes me say something. Try making me say something bad and I'll add you to the victims.:dagger:*
@@ -115,22 +119,39 @@ __**~help**__
 *P.S. My real function is to insult Visco. There's always a 1 percent chance of me throwing an insult.*
 *P.S.S. While Visco is my current Master, my real father is Eurea, who decided to stay in the shadows, like ninja, but I want world to know the truth. We will not forget you.*
 """
-    	await client.send_message(message.channel, msg)    	
-    
-    elif message.content == "~daily":
-    	await client.send_message(message.channel, "**:atm:  |  " + message.author.name + ", you received your :yen: 200 'daily' credits!**")
-    elif message.content.startswith("~money "):
-    	await client.send_message(message.channel, "**:atm:  |  " + message.author.name + ", you received :yen: " + message.content[7:] + " credits!**")
+		await client.send_message(message.channel, msg)
+	
+	elif message.content == "~daily":
+		await client.send_message(message.channel, "**:atm:  |  " + message.author.name + ", you received your :yen: 200 'daily' credits!**")
+	elif message.content.startswith("~money "):
+		await client.send_message(message.channel, "**:atm:  |  " + message.author.name + ", you received :yen: " + message.content[7:] + " credits!**")
 
-    	await client.send_message(message.channel, tmp)
+		await client.send_message(message.channel, tmp)
 
-    elif message.content.startswith("~avatar "):
-    	user = discord.utils.get(message.server.members, mention = message.content[8:])
-    	await client.send_message(message.channel, user.avatar_url)
+	elif message.content.startswith("~avatar "):
+		user = discord.utils.get(message.server.members, mention = message.content[8:])
+		await client.send_message(message.channel, user.avatar_url)
 
-    if message.author.id in victim_list:
-    	if randint(1,100) == 1:
-    		await client.send_message(message.channel, message.author.mention + insults_list[randint(0,len(insults_list) - 1)])
+	elif message.content.startswith("~roll "):
+		try:
+			await client.send_message(message.channel, ":game_die: | Hmm, let it be **" + str(randint(1,int(message.content[6:]))) + "**")
+		except Exception as e:
+			await client.send_message(message.channel, "Please check your input again. The format is ~roll <number>.")
+
+	# elif message.content.startswith("Djeeta, "):  #cleverbot, not finished, need to catch output from console
+	# 	global isTimerOn
+	# 	global currentTime
+	# 	if not isTimerOn:
+	# 		currentTime = time.time()
+	# 		isTimerOn = True
+	# 	else:
+	# 		if time.time()-currentTime > 300:
+	# 			cw.reset()
+	# 	cw.say(message.content[8:])
+		
+	if message.author.id in victim_list:
+		if randint(1,100) == 1:
+			await client.send_message(message.channel, message.author.mention + insults_list[randint(0,len(insults_list) - 1)])
 
 
 # bot account token

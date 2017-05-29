@@ -4,3 +4,4 @@ chardet==3.0.3
 discord.py==0.16.7
 multidict==2.1.5
 websockets==3.3
+cleverwrap==0.2.3.2
