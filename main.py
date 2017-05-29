@@ -39,6 +39,7 @@ insults_list = [
 # user id of people to be insulted
 victim_list = [
 	"185069144184455168", # Visco
+	"186873040292806656", #Naddie
 	# "235080660442677248", # RedTF
 	# "174852783084666880", # D.E.D
 ]
@@ -121,9 +122,14 @@ __**~help**__
 
     	await client.send_message(message.channel, tmp)
 
+    elif message.content.startswith("~avatar "):
+    	user = discord.utils.get(message.server.members, name = message.content[8:])
+    	await client.send_message(message.channel, user.avatar_url)
+
     if message.author.id in victim_list:
     	if randint(1,100) == 1:
     		await client.send_message(message.channel, message.author.mention + insults_list[randint(0,len(insults_list) - 1)])
+
 
 # bot account token
 client.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
