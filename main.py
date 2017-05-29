@@ -113,6 +113,8 @@ __**~role <role name>**__
 	*Add or remove role from yourself. It'll add if you don't have it and it'll remove if you already have it.*
 __**~avatar <@user>**__
 	*I will show you user's avatar in full resolution.*
+__**~roll <number>**__
+	*I will ask RNGesus for random number in range from 1 to number that you should type.*
 __**~help**__
 	**OMG WHAT DOES THIS COMMAND DO???**
 
