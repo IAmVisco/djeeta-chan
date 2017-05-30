@@ -43,7 +43,7 @@ insults_list = [
 ]
 # user id of people to be insulted
 victim_list = [
-	#"185069144184455168", # Visco
+	"185069144184455168", # Visco
 	"186873040292806656", #Naddie
 	# "235080660442677248", # RedTF
 	# "174852783084666880", # D.E.D
@@ -66,6 +66,7 @@ async def on_member_join(member):
 
 @client.event
 async def on_message(message):
+	djeeta = client.user
 	if message.content.startswith('~emo'):
 		try:
 			await client.send_file(message.channel, os.getcwd() + '/res/emotes/' + message.content.lstrip('~emo').strip() + '.png')
