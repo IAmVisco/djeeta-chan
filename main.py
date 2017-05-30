@@ -10,7 +10,8 @@ logging.basicConfig(level=logging.INFO)
 
 client = discord.Client()
 cw = CleverWrap("CC2giUNPmorTJdrJNPnp2IIND_Q")
-isTimerOn = False;
+start = 0
+end = 0
 
 # list of insults
 insults_list = [
@@ -115,6 +116,8 @@ __**~avatar <@user>**__
 	*I will show you user's avatar in full resolution.*
 __**~roll <number>**__
 	*I will ask RNGesus for random number in range from 1 to number that you should type.*
+__**@Djeeta**__
+	*Talk to me!*
 __**~help**__
 	**OMG WHAT DOES THIS COMMAND DO???**
 
@@ -140,16 +143,18 @@ __**~help**__
 		except Exception as e:
 			await client.send_message(message.channel, "Please check your input again. The format is ~roll <number>.")
 
-	# elif message.content.startswith("Djeeta, "):  #cleverbot, not finished, need to catch output from console
-	# 	global isTimerOn
-	# 	global currentTime
-	# 	if not isTimerOn:
-	# 		currentTime = time.time()
-	# 		isTimerOn = True
-	# 	else:
-	# 		if time.time()-currentTime > 300:
-	# 			cw.reset()
-	# 	cw.say(message.content[8:])
+	elif message.content.startswith(djeeta.mention):
+		global start
+		global end
+		if start:
+			if end - start > 180:
+				cw.reset()
+		else:
+			start = time.time()
+		await client.send_typing(message.channel)
+		await asyncio.sleep(1)
+		await client.send_message(message.channel, cw.say(message.content[len(djeeta.name)+1:]))
+		end = time.time()
 		
 	if message.author.id in victim_list:
 		if randint(1,100) == 1:
