@@ -119,6 +119,8 @@ __**~roll <number>**__
 	*I will ask RNGesus for random number in range from 1 to number that you should type.*
 __**@Djeeta**__
 	*Talk to me!*
+__**~ping**__
+	*Check if I'm alive.*
 __**~help**__
 	**OMG WHAT DOES THIS COMMAND DO???**
 
@@ -156,6 +158,9 @@ __**~help**__
 		await asyncio.sleep(1)
 		await client.send_message(message.channel, cw.say(message.content[len(djeeta.name)+1:]))
 		end = time.time()
+
+	elif message.content = "~ping":
+		await client.send_message(message.channel, "Pong!")
 		
 	if message.author.id in victim_list:
 		if randint(1,100) == 1:
