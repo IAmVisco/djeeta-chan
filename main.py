@@ -159,7 +159,7 @@ __**~help**__
 		await client.send_message(message.channel, cw.say(message.content[len(djeeta.name)+1:]))
 		end = time.time()
 
-	elif message.content = "~ping":
+	elif message.content == "~ping":
 		await client.send_message(message.channel, "Pong!")
 		
 	if message.author.id in victim_list:
