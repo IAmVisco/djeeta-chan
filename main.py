@@ -160,7 +160,8 @@ __**~help**__
 		end = time.time()
 
 	elif message.content == "~ping":
-		await client.send_message(message.channel, "Pong!")
+		#global start
+		await client.send_message(message.channel, "Pong!")# Time taken - " + str((time.time() - start)) + "ms")
 		
 	if message.author.id in victim_list:
 		if randint(1,100) == 1:
