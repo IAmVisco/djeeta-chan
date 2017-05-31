@@ -141,11 +141,35 @@ __**~help**__
 		await client.send_message(message.channel, user.avatar_url)
 
 	elif message.content.startswith("~roll "):
-		try:
-			await client.send_message(message.channel, ":game_die: | Hmm, let it be **" + str(randint(1,int(message.content[6:]))) + "**")
-		except Exception as e:
-			await client.send_message(message.channel, "Please check your input again. The format is ~roll <number>.")
-
+		msg = message.content[6:]
+		if msg[0] == 'd':
+			try:
+				await client.send_message(message.channel, ":game_die: | Hmm, let it be **" + str(randint(1,int(msg[1:]))) + "**")
+			except Exception as e:
+				await client.send_message(message.channel, "Please check your input again. The format is ~roll <number> or ~roll <NdN>.")
+		elif msg[1] == 'd':
+			i = 0
+			outmsg = ":game_die: | Hmm, let it be **"
+			for i in range(0, int(msg[0])):	
+				try:
+					if i == 0:
+						outmsg += str(randint(1,int(msg[2:])))
+					else:
+						outmsg += "," + str(randint(1,int(msg[2:])))
+				except Exception as e:
+					await client.send_message(message.channel, "Please check your input again. The format is ~roll <number> or ~roll <NdN>.")
+				else:
+					if i == int(msg[0])-1:
+						await client.send_message(message.channel, outmsg + "**")
+		else:
+			try:
+				await client.send_message(message.channel, ":game_die: | Hmm, let it be **" + str(randint(1,int(message.content[6:]))) + "**")
+			except Exception as e:
+				await client.send_message(message.channel, "Please check your input again. The format is ~roll <number> or ~roll <NdN>.")
+			# try:
+			# 	await client.send_message(message.channel, ":game_die: | Hmm, let it be **" + str(randint(1,int(message.content[6:]))) + "**")
+			# except Exception as e:
+			# 	await client.send_message(message.channel, "Please check your input again. The format is ~roll <number>.")
 	elif message.content.startswith(djeeta.mention):
 		global start
 		global end
@@ -162,7 +186,9 @@ __**~help**__
 	elif message.content == "~ping":
 		#global start
 		await client.send_message(message.channel, "Pong!")# Time taken - " + str((time.time() - start)) + "ms")
-		
+	
+	#elif message.content == "~honors":
+
 	if message.author.id in victim_list:
 		if randint(1,100) == 1:
 			await client.send_message(message.channel, message.author.mention + insults_list[randint(0,len(insults_list) - 1)])
