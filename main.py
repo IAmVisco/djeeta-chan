@@ -141,35 +141,21 @@ __**~help**__
 		await client.send_message(message.channel, user.avatar_url)
 
 	elif message.content.startswith("~roll "):
-		msg = message.content[6:]
-		if msg[0] == 'd':
-			try:
-				await client.send_message(message.channel, ":game_die: | Hmm, let it be **" + str(randint(1,int(msg[1:]))) + "**")
-			except Exception as e:
-				await client.send_message(message.channel, "Please check your input again. The format is ~roll <number> or ~roll <NdN>.")
-		elif msg[1] == 'd':
-			i = 0
-			outmsg = ":game_die: | Hmm, let it be **"
-			for i in range(0, int(msg[0])):	
-				try:
-					if i == 0:
-						outmsg += str(randint(1,int(msg[2:])))
-					else:
-						outmsg += "," + str(randint(1,int(msg[2:])))
-				except Exception as e:
-					await client.send_message(message.channel, "Please check your input again. The format is ~roll <number> or ~roll <NdN>.")
-				else:
-					if i == int(msg[0])-1:
-						await client.send_message(message.channel, outmsg + "**")
-		else:
-			try:
-				await client.send_message(message.channel, ":game_die: | Hmm, let it be **" + str(randint(1,int(message.content[6:]))) + "**")
-			except Exception as e:
-				await client.send_message(message.channel, "Please check your input again. The format is ~roll <number> or ~roll <NdN>.")
-			# try:
-			# 	await client.send_message(message.channel, ":game_die: | Hmm, let it be **" + str(randint(1,int(message.content[6:]))) + "**")
-			# except Exception as e:
-			# 	await client.send_message(message.channel, "Please check your input again. The format is ~roll <number>.")
+		roll = message.content[6:]
+		out = ":game_die: | Hmm, let it be **"
+		try:
+			if "d" not in roll:
+				out += str(randint(1, int(roll)))
+			elif roll[0] == "d":
+				out += str(randint(1, int(roll[1:])))
+			else:
+				for i in range(int(roll.split("d")[0])):
+					out += str(randint(1,int(roll.split("d")[1]))) + " "
+			out += "**"
+		except:
+			out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
+		await client.send_message(message.channel, out)
+		
 	elif message.content.startswith(djeeta.mention):
 		global start
 		global end
