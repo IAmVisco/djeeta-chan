@@ -9,7 +9,7 @@ from cleverwrap import CleverWrap
 logging.basicConfig(level=logging.INFO)
 
 client = discord.Client()
-cw = CleverWrap("CC2giUNPmorTJdrJNPnp2IIND_Q")
+cw = CleverWrap("pxZtcQY8LIX3WqMHV9Ebxt2i450WMiPz")
 start = 0
 end = 0
 
@@ -166,7 +166,7 @@ __**~help**__
 			start = time.time()
 		await client.send_typing(message.channel)
 		await asyncio.sleep(1)
-		await client.send_message(message.channel, cw.say(message.content[len(djeeta.name)+1:]))
+		await client.send_message(message.channel, cw.say(message.content[len(djeeta.name)+1:]), tts=True)
 		end = time.time()
 
 	elif message.content == "~ping":
