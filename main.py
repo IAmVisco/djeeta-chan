@@ -166,7 +166,7 @@ __**~help**__
 			start = time.time()
 		await client.send_typing(message.channel)
 		await asyncio.sleep(1)
-		await client.send_message(message.channel, cw.say(message.content[len(djeeta.name)+1:]), tts=True)
+		await client.send_message(message.channel, cw.say(message.content[len(djeeta.name)+1:]))
 		end = time.time()
 
 	elif message.content == "~ping":
