@@ -44,7 +44,8 @@ insults_list = [
 # user id of people to be insulted
 victim_list = [
 	"185069144184455168", # Visco
-	"186873040292806656", #Naddie
+	"186873040292806656", # Naddie
+	"155763234899492864", # Sleepy
 	# "235080660442677248", # RedTF
 	# "174852783084666880", # D.E.D
 ]
