@@ -3,7 +3,7 @@ import asyncio
 import logging
 import os
 import time
-from random import randint
+import random
 from cleverwrap import CleverWrap
 
 logging.basicConfig(level=logging.INFO)
@@ -118,6 +118,8 @@ __**~avatar <@user>**__
 	*I will show you user's avatar in full resolution.*
 __**~roll <number>**__
 	*I will ask RNGesus for random number in range from 1 to number that you should type.*
+__**~choose <Option 1>, <Option 2>, etc**__
+	*I will help you make a tough decision.*
 __**@Djeeta**__
 	*Talk to me!*
 __**~ping**__
@@ -176,8 +178,17 @@ __**~help**__
 	
 	#elif message.content == "~honors":
 
+	elif message.content.startswith("~choose "):
+		variants = message.content[8:]
+		if ',' in variants:
+			variants = variants.split(',')
+			await client.send_message(message.channel, ":thinking:| I choose **" + random.choice(variants) + "!**")
+		else:
+			await client.send_message(message.channel, "Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
+
+
 	if message.author.id in victim_list:
-		if randint(1,100) == 1:
+		if random.randint(1,100) == 1:
 			await client.send_message(message.channel, message.author.mention + insults_list[randint(0,len(insults_list) - 1)])
 
 
