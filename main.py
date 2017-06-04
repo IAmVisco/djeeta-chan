@@ -75,6 +75,7 @@ async def on_message(message):
 			await client.send_message(message.channel, "No match found.")
 
 	elif message.content.startswith("~say ") and message.author.bot == False:
+		await client.delete_message(message)
 		await client.send_typing(message.channel)
 		await asyncio.sleep(1)
 		await client.send_message(message.channel, message.content[5:])
