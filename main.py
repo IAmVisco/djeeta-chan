@@ -6,7 +6,6 @@ import time
 import random
 from cleverwrap import CleverWrap
 import datetime
-import time
 
 logging.basicConfig(level=logging.INFO)
 
@@ -76,7 +75,7 @@ async def on_message(message):
 		except:
 			await client.send_message(message.channel, "No match found.")
 
-	elif message.content.startswith("~say ") and message.author.bot == False:
+	elif message.content.startswith("~say ") and not message.author.bot :
 		await client.delete_message(message)
 		await client.send_typing(message.channel)
 		await asyncio.sleep(1)
