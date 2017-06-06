@@ -5,6 +5,8 @@ import os
 import time
 import random
 from cleverwrap import CleverWrap
+import datetime
+import time
 
 logging.basicConfig(level=logging.INFO)
 
@@ -170,13 +172,13 @@ __**~help**__
 			start = time.time()
 		await client.send_typing(message.channel)
 		await asyncio.sleep(1)
-		await client.send_message(message.channel, cw.say(message.content[len(djeeta.name)+1:]))
+		print(message.content[len(djeeta.mention)+1:])
+		# await client.send_message(message.channel, cw.say(message.content[len(djeeta.mention)+1:]))
 		end = time.time()
 
 	elif message.content == "~ping":
-		#global start
-		await client.send_message(message.channel, "Pong!")# Time taken - " + str((time.time() - start)) + "ms")
-	
+		await client.send_message(message.channel, "Pong! Time taken: " + str(int((datetime.datetime.now()	 - message.timestamp).seconds/1000)) + "ms")
+
 	#elif message.content == "~honors":
 
 	elif message.content.startswith("~choose "):
