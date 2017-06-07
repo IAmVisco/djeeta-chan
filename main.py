@@ -177,10 +177,8 @@ __**~help**__
 
 	elif message.content == "~ping":
 		pong = "Pong!"
-		await client.send_message(message.channel, "Pong!")#" Time taken: " + str(int((datetime.datetime.now() - message.timestamp).seconds/1000)) + "ms")
+		await client.send_message(message.channel, "Pong!")
 		msg = await client.wait_for_message(channel = message.channel, content = pong)
-		# print(msg.content)
-		# print(str(int((msg.timestamp - message.timestamp).microseconds)/1000))
 		await client.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - message.timestamp).microseconds//1000)) + "ms")
 
 	#elif message.content == "~honors":
