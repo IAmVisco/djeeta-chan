@@ -150,30 +150,30 @@ __**~help**__
 		out = ":game_die: | Hmm, let it be **"
 		try:
 			if "d" not in roll:
-				out += str(randint(1, int(roll)))
+				out += str(random.randint(1, int(roll)))
 			elif roll[0] == "d":
-				out += str(randint(1, int(roll[1:])))
+				out += str(random.randint(1, int(roll[1:])))
 			else:
 				for i in range(int(roll.split("d")[0])):
-					out += "\nDice " + str(i+1) + ": " + str(randint(1,int(roll.split("d")[1])))
+					out += "\nDice " + str(i+1) + ": " + str(random.randint(1,int(roll.split("d")[1])))
 			out += "**"
 		except:
 			out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
 		await client.send_message(message.channel, out)
 
-	elif message.content.startswith(djeeta.mention):
-		global start
-		global end
-		if start:
-			if end - start > 180:
-				cw.reset()
-		else:
-			start = time.time()
-		await client.send_typing(message.channel)
-		await asyncio.sleep(1)
-		print(message.content[len(djeeta.mention)+1:])
-		# await client.send_message(message.channel, cw.say(message.content[len(djeeta.mention)+1:]))
-		end = time.time()
+	# elif message.content.startswith(djeeta.mention):
+	# 	global start
+	# 	global end
+	# 	if start:
+	# 		if end - start > 180:
+	# 			cw.reset()
+	# 	else:
+	# 		start = time.time()
+	# 	await client.send_typing(message.channel)
+	# 	await asyncio.sleep(1)
+	# 	print(message.content[len(djeeta.mention)+1:])
+	# 	await client.send_message(message.channel, cw.say(message.content[len(djeeta.mention)+1:]))
+	# 	end = time.time()
 
 	elif message.content == "~ping":
 		pong = "Pong!"
