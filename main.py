@@ -39,9 +39,15 @@ insults_list = [
 	", I would love to insult you...but that would be beyond the level of your intelligence.",
 	", calling you an idiot would be an insult to all stupid people.",
 	", I would ask you how old you are but I know you can't count that high.",
-
-
 ]
+
+events=discord.Embed(title="Event schedule", description="Schedule for June", color=0x0bbbae)
+events.add_field(name="Little Skyfarer", value="01/06 - 08/06", inline=False)
+events.add_field(name="Pina Hazard", value="09/06 - 21/06", inline=False)
+events.add_field(name="Dark GW", value="22/06 - 29/06", inline=False)
+events.add_field(name="New scenario event", value="30/06 - ???", inline=False)
+
+
 # user id of people to be insulted
 victim_list = [
 	"185069144184455168", # Visco
@@ -124,6 +130,8 @@ __**~choose <Option 1>, <Option 2>, etc**__
 	*I will help you make a tough decision.*
 __**~ping**__
 	*Check if I'm alive.*
+__**~events**__
+	*I will provide info on upcoming events.*
 __**~help**__
 	**OMG WHAT DOES THIS COMMAND DO???**
 
@@ -189,6 +197,8 @@ __**~help**__
 		else:
 			await client.send_message(message.channel, "Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
 
+	elif message.content == "~events":
+		await client.send_message(message.channel, embed = events)
 
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
