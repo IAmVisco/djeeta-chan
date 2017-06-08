@@ -122,8 +122,6 @@ __**~roll <number>**__
 	*I will ask RNGesus for random number in range from 1 to number that you should type.*
 __**~choose <Option 1>, <Option 2>, etc**__
 	*I will help you make a tough decision.*
-__**@Djeeta**__
-	*Talk to me!*
 __**~ping**__
 	*Check if I'm alive.*
 __**~help**__
@@ -194,7 +192,7 @@ __**~help**__
 
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
-			await client.send_message(message.channel, message.author.mention + insults_list[randint(0,len(insults_list) - 1)])
+			await client.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
 
 # bot account token
