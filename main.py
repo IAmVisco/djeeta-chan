@@ -19,7 +19,6 @@ insults_list = [
 	" is a filthy weeb.",
 	", you're like Rapunzel but instead of letting down your hair you let everyone down.",
 	", you got rejected by Aniki.",
-	", two wrongs don't make a right. Take your parents for example.",
 	", is your ass jealous of the amount of shit that just came out of your mouth?",
 	", if I wanted to kill myself I'd climb your ego and jump to your IQ.",
 	", your family tree must be a cactus because everybody on it is a prick",
