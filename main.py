@@ -131,7 +131,7 @@ __**~ping**__
 	*Check if I'm alive.*
 __**~events**__
 	*I will provide info on upcoming events.*
-__**~blowcovers @person**__
+__**~reveal @person**__
 	*I will reveal true identity of choosen person!*
 __**~help**__
 	**OMG WHAT DOES THIS COMMAND DO???**
@@ -201,9 +201,9 @@ __**~help**__
 	elif message.content == "~events":
 		await client.send_message(message.channel, embed = events)
 
-	elif message.content.startswith("~blowcovers "):
-		user = discord.utils.get(message.server.members, mention = message.content[12:])
-		await client.send_message(message.channel, "I'm sure, it's **" + user.name + "**!")
+	elif message.content.startswith("~reveal "):
+		user = discord.utils.get(message.server.members, mention = message.content[8:])
+		await client.send_message(message.channel, "I'm sure it's **" + user.name + "**!")
 
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
