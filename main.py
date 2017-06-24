@@ -4,13 +4,13 @@ import logging
 import os
 import time
 import random
-from cleverwrap import CleverWrap
+#from cleverwrap import CleverWrap
 import datetime
 
 logging.basicConfig(level=logging.INFO)
 
 client = discord.Client()
-cw = CleverWrap("pxZtcQY8LIX3WqMHV9Ebxt2i450WMiPz")
+#cw = CleverWrap("pxZtcQY8LIX3WqMHV9Ebxt2i450WMiPz")
 start = 0
 end = 0
 
@@ -131,6 +131,8 @@ __**~ping**__
 	*Check if I'm alive.*
 __**~events**__
 	*I will provide info on upcoming events.*
+__**~blowcovers @person**__
+	*I will reveal true identity of choosen person!*
 __**~help**__
 	**OMG WHAT DOES THIS COMMAND DO???**
 
@@ -198,6 +200,10 @@ __**~help**__
 
 	elif message.content == "~events":
 		await client.send_message(message.channel, embed = events)
+
+	elif message.content.startswith("~blowcovers "):
+		user = discord.utils.get(message.server.members, mention = message.content[12:])
+		await client.send_message(message.channel, "I'm sure, it's **" + user.name + "**!")
 
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
