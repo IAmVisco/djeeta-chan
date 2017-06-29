@@ -38,6 +38,27 @@ insults_list = [
 	", I would love to insult you...but that would be beyond the level of your intelligence.",
 	", calling you an idiot would be an insult to all stupid people.",
 	", I would ask you how old you are but I know you can't count that high.",
+	", Roses are red violets are blue, God made me pretty, what happened to you?",
+	", You are so ugly when you looked in the mirror your reflection walked away.",
+	", Don't you love nature, despite what it did to you?",
+	", Hell is wallpapered with all your deleted selfies.",
+	", Shock me, say something intelligent.",
+	", Keep talking, someday you'll say something intelligent!",
+	", Brains aren't everything. In your case they're nothing.",
+	", Karma takes too long, I'd rather beat the shit out of you just now.",
+	", Ever since I saw you in your family tree I've wanted to cut it down.",
+	", Normal people live and learn. You just live.",
+	", You are not as bad as people say, you are much, much worse.",
+	", If I had a dollar for every time you said something smart, I'd be broke.",
+	", You want an insult? Right, look at the mirror.",
+	", Just because you have one doesn't mean you have to act like one.",
+	", Aww, it's so cute when you try to talk about things you don't understand.",
+	", Did your parents keep the placenta and throw away the baby?",
+	", You should need a license to be that ugly.",
+	", Are you always this stupid or is today a special occasion?",
+	", If what you don't know can't hurt you, you're invulnerable.",
+
+
 ]
 
 events=discord.Embed(title="Event schedule", description="Schedule for June", color=0x0bbbae)
