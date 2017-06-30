@@ -61,11 +61,12 @@ insults_list = [
 
 ]
 
-events=discord.Embed(title="Event schedule", description="Schedule for June", color=0x0bbbae)
-events.add_field(name="Little Skyfarer", value="01/06 - 08/06", inline=False)
-events.add_field(name="Pina Hazard", value="09/06 - 21/06", inline=False)
-events.add_field(name="Dark GW", value="22/06 - 29/06", inline=False)
-events.add_field(name="New scenario event", value="30/06 - ???", inline=False)
+events=discord.Embed(title="Event schedule", description="Schedule for July", color=0x0bbbae)
+events.add_field(name="Ranger Sign Bravo!", value="30/06 - 08/07", inline=False)
+events.add_field(name="Cerberus/Fenrir Showdowns", value="09/07 - 14/07", inline=False)
+events.add_field(name="Xeno Vohu Rerun", value="18/07 - 24/07", inline=False)
+events.add_field(name="Rise of the Beasts", value="25/07 - 30/07", inline=False)
+events.add_field(name="New scenario event", value="31/07 - ???", inline=False)
 
 
 # user id of people to be insulted
