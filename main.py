@@ -227,6 +227,12 @@ __**~help**__
 		user = discord.utils.get(message.server.members, mention = message.content[8:])
 		await client.send_message(message.channel, "I'm sure it's **" + user.name + "**!")
 
+	elif message.content == "~baka":
+		member_list = []
+		for member in message.server.members:
+			member_list.append(member.name)
+		await client.send_message(message.channel, random.choice(member_list) + " is a hentai baka!")
+
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
 			await client.send_message(message.channel, message.author.mention + random.choice(insults_list))
