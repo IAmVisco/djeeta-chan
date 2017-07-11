@@ -233,6 +233,9 @@ __**~help**__
 			member_list.append(member.name)
 		await client.send_message(message.channel, random.choice(member_list) + " is a hentai baka!")
 
+	elif message.content == "~trials":
+		await client.send_message(message.channel, "http://gran-matome.com/wp-content/uploads/2017/06/201707_zentai.png")
+
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
 			await client.send_message(message.channel, message.author.mention + random.choice(insults_list))
