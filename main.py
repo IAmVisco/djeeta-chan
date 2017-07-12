@@ -214,8 +214,6 @@ __**~help**__
 		msg = await client.wait_for_message(channel = message.channel, content = pong)
 		await client.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - message.timestamp).microseconds//1000)) + "ms")
 
-	#elif message.content == "~honors":
-
 	elif message.content.startswith("~choose "):
 		variants = message.content[8:]
 		if ',' in variants:
@@ -237,8 +235,18 @@ __**~help**__
 			member_list.append(member.name)
 		await client.send_message(message.channel, random.choice(member_list) + " is a hentai baka!")
 
-	elif message.content == "~trials":
-		await client.send_message(message.channel, str(datetime.now(timezone('Africa/Cairo')).strftime("%d of %b - ")) + str(sheet.row[datetime.now(timezone('Africa/Cairo')).day-1][0]))
+	elif message.content.startswith("~trials"):
+		if message.content[8:].isdigit():
+			await client.send_message(message.channel, message.content[8:] + str(datetime.now(timezone('Africa/Cairo')).strftime(" of %b - ")) + str(sheet.row[int(message.content[8:])-1][0]) + " Trial")
+		elif message.content[8:].isalpha():	
+			for record in range(datetime.now(timezone('Africa/Cairo')).day, len(sheet.column[1])):
+				print(sheet.row[int(record)][0])
+				if message.content[8:].lower() == sheet.row[int(record)][0].lower():
+					print("+")
+					await client.send_message(message.channel, str(record+1) + str(datetime.now(timezone('Africa/Cairo')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
+					break
+		else:
+			await client.send_message(message.channel, str(datetime.now(timezone('Africa/Cairo')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Africa/Cairo')).day-1][0]) + " Trial")
 
 	elif message.content == "~showdowns":
 		await client.send_message(message.channel, str(datetime.now(timezone('Africa/Cairo')).strftime("%d of %b - ")) + str(sheet.row[datetime.now(timezone('Africa/Cairo')).day-1][1]))
