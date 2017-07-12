@@ -5,8 +5,10 @@ import os
 import time
 import random
 #from cleverwrap import CleverWrap
-import datetime
+from datetime import datetime
+#from datetime import strftime
 import pyexcel as pe
+from pytz import timezone
 
 logging.basicConfig(level=logging.INFO)
 
@@ -236,13 +238,10 @@ __**~help**__
 		await client.send_message(message.channel, random.choice(member_list) + " is a hentai baka!")
 
 	elif message.content == "~trials":
-		await client.send_message(message.channel, "http://gran-matome.com/wp-content/uploads/2017/06/201707_zentai.png")
+		await client.send_message(message.channel, str(datetime.now(timezone('Africa/Cairo')).strftime("%d of %b - ")) + str(sheet.row[datetime.now(timezone('Africa/Cairo')).day-1][0]))
 
-	elif message.content == "~ttest":
-		await client.send_message(message.channel, sheet)
-
-	elif message.content == "~time":
-		await client.send_message(message.channel, datetime.datetime.now().hour)
+	elif message.content == "~showdowns":
+		await client.send_message(message.channel, str(datetime.now(timezone('Africa/Cairo')).strftime("%d of %b - ")) + str(sheet.row[datetime.now(timezone('Africa/Cairo')).day-1][1]))
 
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
