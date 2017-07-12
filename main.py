@@ -6,6 +6,7 @@ import time
 import random
 #from cleverwrap import CleverWrap
 import datetime
+import pyexcel as pe
 
 logging.basicConfig(level=logging.INFO)
 
@@ -13,6 +14,7 @@ client = discord.Client()
 #cw = CleverWrap("pxZtcQY8LIX3WqMHV9Ebxt2i450WMiPz")
 start = 0
 end = 0
+sheet = pe.get_sheet(file_name = "trials.xlsx")
 
 # list of insults
 insults_list = [
@@ -235,6 +237,12 @@ __**~help**__
 
 	elif message.content == "~trials":
 		await client.send_message(message.channel, "http://gran-matome.com/wp-content/uploads/2017/06/201707_zentai.png")
+
+	elif message.content == "~ttest":
+		await client.send_message(message.channel, sheet)
+
+	elif message.content == "~time":
+		await client.send_message(message.channel, datetime.datetime.now().hour)
 
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
