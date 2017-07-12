@@ -237,19 +237,22 @@ __**~help**__
 
 	elif message.content.startswith("~trials"):
 		if message.content[8:].isdigit():
-			await client.send_message(message.channel, message.content[8:] + str(datetime.now(timezone('Africa/Cairo')).strftime(" of %b - ")) + str(sheet.row[int(message.content[8:])-1][0]) + " Trial")
+			await client.send_message(message.channel, message.content[8:] + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(message.content[8:])-1][0]) + " Trial")
 		elif message.content[8:].isalpha():	
-			for record in range(datetime.now(timezone('Africa/Cairo')).day, len(sheet.column[1])):
+			for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
 				print(sheet.row[int(record)][0])
 				if message.content[8:].lower() == sheet.row[int(record)][0].lower():
 					print("+")
-					await client.send_message(message.channel, str(record+1) + str(datetime.now(timezone('Africa/Cairo')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
+					await client.send_message(message.channel, str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
 					break
 		else:
-			await client.send_message(message.channel, str(datetime.now(timezone('Africa/Cairo')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Africa/Cairo')).day-1][0]) + " Trial")
+			await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
+
+	elif message.content.startswith("~time"):
+		await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara'))))
 
 	elif message.content == "~showdowns":
-		await client.send_message(message.channel, str(datetime.now(timezone('Africa/Cairo')).strftime("%d of %b - ")) + str(sheet.row[datetime.now(timezone('Africa/Cairo')).day-1][1]))
+		await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]))
 
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
