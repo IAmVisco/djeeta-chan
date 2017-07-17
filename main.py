@@ -6,7 +6,6 @@ import time
 import random
 #from cleverwrap import CleverWrap
 from datetime import datetime
-#from datetime import strftime
 import pyexcel as pe
 from pytz import timezone
 
@@ -159,10 +158,12 @@ __**~events**__
 	*I will provide info on upcoming events.*
 __**~reveal @person**__
 	*I will reveal true identity of choosen person!*
+__**~trials/~showdowns**__
+	*I will show you current trial/showdown, on specified day (~trials <day>) or specified trial/showdown (~trials <name>). Avaible names - fire, water, earth, wind, dark, ifrit, cocytus, sagi, vohu, corrow, diablo.*
 __**~help**__
 	**OMG WHAT DOES THIS COMMAND DO???**
 
-*P.S. My real function is to insult Visco. There's always a 1 percent chance of me throwing an insult.*
+*P.S. My real function is to insult Visco (Nad and Sleepy too). There's always a 1 percent chance of me throwing an insult.*
 *P.S.S. While Visco is my current Master, my real father is Eurea, who decided to stay in the shadows, like ninja, but I want world to know the truth. We will not forget you.*
 """
 		await client.send_message(message.channel, msg)
@@ -236,23 +237,30 @@ __**~help**__
 		await client.send_message(message.channel, random.choice(member_list) + " is a hentai baka!")
 
 	elif message.content.startswith("~trials"):
-		if message.content[8:].isdigit():
+		if message.content.lower().strip() == "~trials":
+			await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
+		elif message.content[8:].isdigit():
 			await client.send_message(message.channel, message.content[8:] + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(message.content[8:])-1][0]) + " Trial")
-		elif message.content[8:].isalpha():	
+		elif message.content[8:].isalpha():    
 			for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-				print(sheet.row[int(record)][0])
 				if message.content[8:].lower() == sheet.row[int(record)][0].lower():
-					print("+")
 					await client.send_message(message.channel, str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
 					break
 		else:
-			await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
+			await client.send_message(message.channel, "Please check your input and try again. Use ~help for more info.")
 
-	elif message.content.startswith("~time"):
-		await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara'))))
-
-	elif message.content == "~showdowns":
-		await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]))
+	elif message.content.startswith("~showdowns"):
+		if message.content.lower().strip() == "~showdowns":
+			await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
+		elif message.content[11:].isdigit():
+			await client.send_message(message.channel, message.content[11:] + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(message.content[11:])-1][1]) + " Showdown")
+		elif message.content[11:].isalpha():    
+			for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
+				if message.content[11:].lower() == sheet.row[int(record)][1].lower():
+					await client.send_message(message.channel, str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][1]) + " showdown")
+					break
+		else:
+			await client.send_message(message.channel, "Please check your input and try again. Use ~help for more info.")
 
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
@@ -273,3 +281,7 @@ client.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
 	# tmp_roles = tmp_roles[::-1]
 	# for msg in tmp_roles:
 	# 	tmp += "\n" + msg.name
+
+# was used for time check
+# elif message.content.startswith("~time"):
+# 		await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara'))))
