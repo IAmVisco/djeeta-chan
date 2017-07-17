@@ -227,7 +227,7 @@ __**~help**__
 		await client.send_message(message.channel, embed = events)
 
 	elif message.content.startswith("~reveal "):
-		user = discord.utils.get(message.server.members, mention = message.content[8:])
+		user = discord.utils.get(message.server.members, mention = message.content[8:].replace("@","@!").replace("!!","!"))
 		await client.send_message(message.channel, "I'm sure it's **" + user.name + "**!")
 
 	elif message.content == "~baka":
