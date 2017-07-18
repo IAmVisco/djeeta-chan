@@ -160,6 +160,8 @@ __**~reveal @person**__
 	*I will reveal true identity of choosen person!*
 __**~trials/~showdowns**__
 	*I will show you current trial/showdown, on specified day (~trials <day>) or specified trial/showdown (~trials <name>). Avaible names - fire, water, earth, wind, dark, ifrit, cocytus, sagi, vohu, corrow, diablo.*
+__**~f [message]**__
+	*Press F to pay respects*
 __**~help**__
 	**OMG WHAT DOES THIS COMMAND DO???**
 
@@ -261,6 +263,19 @@ __**~help**__
 					break
 		else:
 			await client.send_message(message.channel, "Please check your input and try again. Use ~help for more info.")
+
+	elif message.content.startswith("~f"):
+		f = open("respects.txt", "r")
+		respects = int(f.read()) + 1
+		f2 = open("respects.txt", "w")
+		f2.write(str(respects))
+		f2.close()
+		f.close()
+		if message.content.strip() == "~f":
+			respectsMessage = discord.Embed(title = "**" + message.author.name + "** has paid their respects.", description = str(respects) + " total.", color=0x8b75a5)
+		else:
+			respectsMessage = discord.Embed(title = "**" + message.author.name + "** has paid their respects for **" + message.content[3:] + ".**", description = str(respects) + " total.", color=0x8b75a5)
+		await client.send_message(message.channel, embed = respectsMessage)
 
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
