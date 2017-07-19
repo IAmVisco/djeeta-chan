@@ -212,9 +212,7 @@ __**~help**__
 	# 	end = time.time()
 
 	elif message.content == "~ping":
-		pong = "Pong!"
-		await client.send_message(message.channel, pong)
-		msg = await client.wait_for_message(channel = message.channel, content = pong)
+		msg = await client.send_message(message.channel, "Pong!")
 		await client.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - message.timestamp).microseconds//1000)) + "ms")
 
 	elif message.content.startswith("~choose "):
@@ -238,7 +236,7 @@ __**~help**__
 			member_list.append(member.name)
 		await client.send_message(message.channel, random.choice(member_list) + " is a hentai baka!")
 
-	elif message.content.startswith("~trials"):
+	elif message.content.startswith("~trials "):
 		if message.content.lower().strip() == "~trials":
 			await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
 		elif message.content[8:].isdigit():
@@ -251,7 +249,7 @@ __**~help**__
 		else:
 			await client.send_message(message.channel, "Please check your input and try again. Use ~help for more info.")
 
-	elif message.content.startswith("~showdowns"):
+	elif message.content.startswith("~showdowns "):
 		if message.content.lower().strip() == "~showdowns":
 			await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
 		elif message.content[11:].isdigit():
