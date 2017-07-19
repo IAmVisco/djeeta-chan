@@ -264,17 +264,16 @@ __**~help**__
 		else:
 			await client.send_message(message.channel, "Please check your input and try again. Use ~help for more info.")
 
-	elif message.content.startswith("~f"):
-		f = open("respects.txt", "r")
-		respects = int(f.read()) + 1
-		f2 = open("respects.txt", "w")
-		f2.write(str(respects))
-		f2.close()
-		f.close()
+	elif message.content.startswith("~f "):
+		with open('respects.txt','r+') as f:
+			count = int(f.read()) + 1
+			f.seek(0)
+			f.truncate()
+			f.write(str(count))
 		if message.content.strip() == "~f":
-			respectsMessage = discord.Embed(title = "**" + message.author.name + "** has paid their respects.", description = str(respects) + " total.", color=0x8b75a5)
+			respectsMessage = discord.Embed(description = "**" + message.author.name + "** has paid their respects.\n" + str(respects) + " total.", color=0x8b75a5)
 		else:
-			respectsMessage = discord.Embed(title = "**" + message.author.name + "** has paid their respects for **" + message.content[3:] + ".**", description = str(respects) + " total.", color=0x8b75a5)
+			respectsMessage = discord.Embed(description = "**" + message.author.name + "** has paid their respects for **" + message.content[3:] + ".**\n" + str(respects) + " total.", color=0x8b75a5)
 		await client.send_message(message.channel, embed = respectsMessage)
 
 	if message.author.id in victim_list:
