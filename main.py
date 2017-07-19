@@ -13,8 +13,8 @@ logging.basicConfig(level=logging.INFO)
 
 client = discord.Client()
 #cw = CleverWrap("pxZtcQY8LIX3WqMHV9Ebxt2i450WMiPz")
-start = 0
-end = 0
+#start = 0
+#end = 0
 sheet = pe.get_sheet(file_name = "trials.xlsx")
 
 # list of insults
