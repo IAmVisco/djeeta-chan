@@ -234,9 +234,11 @@ async def f(ctx):
 #insults
 @bot.event
 async def on_message(message):
+	print("+")
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
-
+	await bot.process_commands(message)
+	
 #run token
 bot.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
