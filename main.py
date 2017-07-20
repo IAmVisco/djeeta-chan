@@ -1,20 +1,19 @@
+#djeeta 2.0 (working title)
+#importing libraries
 import discord
-import asyncio
-import logging
-import os
-import time
+from discord.ext import commands
 import random
-#from cleverwrap import CleverWrap
+import logging
+import asyncio
+import os
 from datetime import datetime
 import pyexcel as pe
 from pytz import timezone
 
-logging.basicConfig(level=logging.INFO)
+#enabling logging
+logging.basicConfig(level = logging.INFO)
 
-client = discord.Client()
-#cw = CleverWrap("pxZtcQY8LIX3WqMHV9Ebxt2i450WMiPz")
-#start = 0
-#end = 0
+#assigning excel sheet
 sheet = pe.get_sheet(file_name = "trials.xlsx")
 
 # list of insults
@@ -64,14 +63,6 @@ insults_list = [
 
 ]
 
-events=discord.Embed(title="Event schedule", description="Schedule for July", color=0x0bbbae)
-events.add_field(name="Ranger Sign Bravo!", value="30/06 - 08/07", inline=False)
-events.add_field(name="Cerberus/Fenrir Showdowns", value="09/07 - 14/07", inline=False)
-events.add_field(name="Xeno Vohu Rerun", value="18/07 - 24/07", inline=False)
-events.add_field(name="Rise of the Beasts", value="25/07 - 30/07", inline=False)
-events.add_field(name="New scenario event", value="31/07 - ???", inline=False)
-
-
 # user id of people to be insulted
 victim_list = [
 	"185069144184455168", # Visco
@@ -81,219 +72,171 @@ victim_list = [
 	# "174852783084666880", # D.E.D
 ]
 
-@client.event
+#creating events embed
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for July", color=0x0bbbae)
+eventsEmbed.add_field(name="Ranger Sign Bravo!", value="30/06 - 08/07", inline=False)
+eventsEmbed.add_field(name="Cerberus/Fenrir Showdowns", value="09/07 - 14/07", inline=False)
+eventsEmbed.add_field(name="Xeno Vohu Rerun", value="18/07 - 24/07", inline=False)
+eventsEmbed.add_field(name="Rise of the Beasts", value="25/07 - 30/07", inline=False)
+eventsEmbed.add_field(name="New scenario event", value="31/07 - ???", inline=False)
+
+#assigning prefix and description
+description = '''Bot description goes there but idk where it will be shown, 
+so I just put some text there. Eu is a hentai baka!'''
+bot = commands.Bot(command_prefix = '~', description = description)
+
+#starting up
+@bot.event
 async def on_ready():
 	print('Logged in as')
-	print(client.user.name)
-	print(client.user.id)
+	print(bot.user.name)
+	print(bot.user.id)
 	print('------')
-	djeetablue = discord.Game(name="Djeetablue Fantasy", url="game.granbluefantasy.jp")
-	await client.change_presence(game=djeetablue)
+	await bot.change_presence(game = discord.Game(name="Djeetablue Fantasy", url="game.granbluefantasy.jp", type = 1))
 
-@client.event
+#anti-lurking message
+@bot.event
 async def on_member_join(member):
-	server = member.server
-	fmt = 'Welcome {0.mention} to {1.name}!'
-	await client.send_message(server, fmt.format(member, server))
+	await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
 
-@client.event
+#insults
+@bot.event
 async def on_message(message):
-	djeeta = client.user
-	if message.content.startswith('~emo'):
-		try:
-			await client.send_file(message.channel, os.getcwd() + '/res/emotes/' + message.content.lstrip('~emo').strip() + '.png')
-		except:
-			await client.send_message(message.channel, "No match found.")
-
-	elif message.content.startswith("~say ") and not message.author.bot :
-		await client.delete_message(message)
-		await client.send_typing(message.channel)
-		await asyncio.sleep(1)
-		await client.send_message(message.channel, message.content[5:])
-
-	elif message.content == "~roles":
-		tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
-		bot_role = discord.utils.get(message.server.roles, name = "Djeeta-chan")
-
-		# lists the roles the bot can assign
-		for role in message.server.roles[1:]:
-			if role < bot_role:
-				tmp += "\n  - " + role.name
-
-		await client.send_message(message.channel, tmp)
-
-	elif message.content.startswith("~role "):
-		try:
-			role = discord.utils.get(message.server.roles, name = message.content[6:])
-
-			if role in message.author.roles:
-				await client.remove_roles(message.author, role)
-				await client.send_message(message.channel, message.author.mention + ", the role " + role.name + " has been removed from your roles.")
-			else:
-				await client.add_roles(message.author, role)
-				await client.send_message(message.channel, message.author.mention + ", the role " + role.name + " has been added to your roles.")
-		except Exception as e:
-			await client.send_message(message.channel, "Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
-
-	elif message.content == "~help":
-		msg = """
-:notepad_spiral:**Here are the list of commands:**
-__**~say <words>**__
-	*Makes me say something. Try making me say something bad and I'll add you to the victims.:dagger:*
-__**~emo <keyword>**__
-	*Basically Vampy rip-off. I'm even using the same words and pics. Cheatsheet: https://risend.github.io/vampy/*
-__**~roles**__
-	*Lists the available roles that can be (un)assigned.*
-__**~role <role name>**__
-	*Add or remove role from yourself. It'll add if you don't have it and it'll remove if you already have it.*
-__**~avatar <@user>**__
-	*I will show you user's avatar in full resolution.*
-__**~roll <number>**__
-	*I will ask RNGesus for random number in range from 1 to number that you should type.*
-__**~choose <Option 1>, <Option 2>, etc**__
-	*I will help you make a tough decision.*
-__**~ping**__
-	*Check if I'm alive.*
-__**~events**__
-	*I will provide info on upcoming events.*
-__**~reveal @person**__
-	*I will reveal true identity of choosen person!*
-__**~trials/~showdowns**__
-	*I will show you current trial/showdown, on specified day (~trials <day>) or specified trial/showdown (~trials <name>). Avaible names - fire, water, earth, wind, dark, ifrit, cocytus, sagi, vohu, corrow, diablo.*
-__**~f [message]**__
-	*Press F to pay respects*
-__**~help**__
-	**OMG WHAT DOES THIS COMMAND DO???**
-
-*P.S. My real function is to insult Visco (Nad and Sleepy too). There's always a 1 percent chance of me throwing an insult.*
-*P.S.S. While Visco is my current Master, my real father is Eurea, who decided to stay in the shadows, like ninja, but I want world to know the truth. We will not forget you.*
-"""
-		await client.send_message(message.channel, msg)
-	
-	elif message.content == "~daily":
-		await client.send_message(message.channel, "**:atm:  |  " + message.author.name + ", you received your :yen: 200 'daily' credits!**")
-	elif message.content.startswith("~money "):
-		await client.send_message(message.channel, "**:atm:  |  " + message.author.name + ", you received :yen: " + message.content[7:] + " credits!**")
-
-		await client.send_message(message.channel, tmp)
-
-	elif message.content.startswith("~avatar "):
-		user = discord.utils.get(message.server.members, mention = message.content[8:])
-		await client.send_message(message.channel, user.avatar_url)
-
-	elif message.content.startswith("~roll "):
-		roll = message.content[6:]
-		out = ":game_die: | Hmm, let it be **"
-		try:
-			if "d" not in roll:
-				out += str(random.randint(1, int(roll)))
-			elif roll[0] == "d":
-				out += str(random.randint(1, int(roll[1:])))
-			else:
-				for i in range(int(roll.split("d")[0])):
-					out += "\nDice " + str(i+1) + ": " + str(random.randint(1,int(roll.split("d")[1])))
-			out += "**"
-		except:
-			out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
-		await client.send_message(message.channel, out)
-
-	# elif message.content.startswith(djeeta.mention):
-	# 	global start
-	# 	global end
-	# 	if start:
-	# 		if end - start > 180:
-	# 			cw.reset()
-	# 	else:
-	# 		start = time.time()
-	# 	await client.send_typing(message.channel)
-	# 	await asyncio.sleep(1)
-	# 	print(message.content[len(djeeta.mention)+1:])
-	# 	await client.send_message(message.channel, cw.say(message.content[len(djeeta.mention)+1:]))
-	# 	end = time.time()
-
-	elif message.content == "~ping":
-		msg = await client.send_message(message.channel, "Pong!")
-		await client.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - message.timestamp).microseconds//1000)) + "ms")
-
-	elif message.content.startswith("~choose "):
-		variants = message.content[8:]
-		if ',' in variants:
-			variants = variants.split(',')
-			await client.send_message(message.channel, ":thinking:| I choose **" + random.choice(variants) + "!**")
-		else:
-			await client.send_message(message.channel, "Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
-
-	elif message.content == "~events":
-		await client.send_message(message.channel, embed = events)
-
-	elif message.content.startswith("~reveal "):
-		user = discord.utils.get(message.server.members, mention = message.content[8:].replace("@","@!").replace("!!","!"))
-		await client.send_message(message.channel, "I'm sure it's **" + user.name + "**!")
-
-	elif message.content == "~baka":
-		member_list = []
-		for member in message.server.members:
-			member_list.append(member.name)
-		await client.send_message(message.channel, random.choice(member_list) + " is a hentai baka!")
-
-	elif message.content.startswith("~trials "):
-		if message.content.lower().strip() == "~trials":
-			await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
-		elif message.content[8:].isdigit():
-			await client.send_message(message.channel, message.content[8:] + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(message.content[8:])-1][0]) + " Trial")
-		elif message.content[8:].isalpha():    
-			for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-				if message.content[8:].lower() == sheet.row[int(record)][0].lower():
-					await client.send_message(message.channel, str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
-					break
-		else:
-			await client.send_message(message.channel, "Please check your input and try again. Use ~help for more info.")
-
-	elif message.content.startswith("~showdowns "):
-		if message.content.lower().strip() == "~showdowns":
-			await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
-		elif message.content[11:].isdigit():
-			await client.send_message(message.channel, message.content[11:] + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(message.content[11:])-1][1]) + " Showdown")
-		elif message.content[11:].isalpha():    
-			for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-				if message.content[11:].lower() == sheet.row[int(record)][1].lower():
-					await client.send_message(message.channel, str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][1]) + " showdown")
-					break
-		else:
-			await client.send_message(message.channel, "Please check your input and try again. Use ~help for more info.")
-
-	elif message.content.startswith("~f"):
-		with open('respects.txt','r+') as f:
-			count = int(f.read()) + 1
-			f.seek(0)
-			f.truncate()
-			f.write(str(count))
-		if message.content.strip() == "~f":
-			respectsMessage = discord.Embed(description = "**" + message.author.name + "** has paid their respects.\n" + str(count) + " total.", color=0x8b75a5)
-		else:
-			respectsMessage = discord.Embed(description = "**" + message.author.name + "** has paid their respects for **" + message.content[3:] + ".**\n" + str(count) + " total.", color=0x8b75a5)
-		await client.send_message(message.channel, embed = respectsMessage)
-
 	if message.author.id in victim_list:
-		if random.randint(1,100) == 1:
-			await client.send_message(message.channel, message.author.mention + random.choice(insults_list))
+		if random.randint(1,2) == 1:
+			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
+#our beloved emotes
+@bot.command()
+async def emo(emoName:str):	
+	try:
+		await bot.upload(os.getcwd() + '/res/emotes/' + emoName + '.png')
+	except:
+		await bot.say("No match found.")
 
-# bot account token
-client.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
+#ninja echo
+@bot.command(pass_context = True)
+async def say(ctx, msg:str):
+	await bot.delete_message(ctx.message)
+	await bot.type()
+	await asyncio.sleep(1)
+	await bot.say(msg)
 
-# for inviting to server
-# https://discordapp.com/api/oauth2/authorize?client_id=314798635424677888&scope=bot&permissions=0
+#context test
+@bot.command(pass_context = True)
+async def test(ctx):
+	await bot.say("Message by " + ctx.message.author.name)
 
-# didn't implement because not really useful
-# elif message.content == "~hierarchy":
-	# tmp = ""
-	# tmp_roles = message.server.roles[1:]
-	# tmp_roles.sort()
-	# tmp_roles = tmp_roles[::-1]
-	# for msg in tmp_roles:
-	# 	tmp += "\n" + msg.name
+#roles list
+@bot.command(pass_context = True)
+async def roles(ctx):
+	tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
+	bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta-chan")
 
-# was used for time check
-# elif message.content.startswith("~time"):
-# 		await client.send_message(message.channel, str(datetime.now(timezone('Europe/Samara'))))
+	# lists the roles the bot can assign
+	for role in ctx.message.server.roles[1:]:
+		if role < bot_role:
+			tmp += "\n  - " + role.name
+
+	await bot.say(tmp)	
+#assigning and unassigning roles
+@bot.command(pass_context = True)
+async def role(ctx, *, role: discord.Role):
+	try:
+		if role in ctx.message.author.roles:
+			await bot.remove_roles(ctx.message.author, role)
+			await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been removed from your roles.")
+		else:
+			await bot.add_roles(ctx.message.author, role)
+			await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been added to your roles.")
+	except Exception as e:
+		await bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
+
+#rollin' rollin'
+@bot.command()
+async def roll(roll:str):
+	out = ":game_die: | Hmm, let it be **"
+	try:
+		if "d" not in roll:
+			out += str(random.randint(1, int(roll)))
+		elif roll[0] == "d":
+			out += str(random.randint(1, int(roll[1:])))
+		else:
+			for i in range(int(roll.split("d")[0])):
+				out += "\nDice " + str(i+1) + ": " + str(random.randint(1,int(roll.split("d")[1])))
+		out += "**"
+	except:
+		out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
+	await bot.say(out)
+
+#ping-pong
+@bot.command(pass_context = True)
+async def ping(ctx):
+	msg = await bot.say("Pong!")
+	await bot.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - ctx.message.timestamp).microseconds//1000)) + "ms")
+
+#choose smth
+@bot.command()
+async def choose(*choices:str):
+    await bot.say(":thinking:| I choose **" + random.choice(choices) + "!**")
+
+#events
+@bot.command()
+async def events():
+	await bot.say(embed = eventsEmbed)
+
+#revealing true self
+@bot.command(pass_context = True)
+async def reveal(ctx, *, userName):
+	if userName[1] == "@":
+		user = discord.utils.get(ctx.message.server.members, mention = userName)
+	else:
+		user = discord.utils.get(ctx.message.server.members, display_name = userName)
+	await bot.say("I'm sure it's **" + user.name + "**!")
+
+#trials based on excel table
+@bot.command()
+async def trials(arg:str):
+	if arg == "today":
+		await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
+	elif arg.isdigit():
+		await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][0]) + " Trial")
+	elif arg.isalpha():    
+		for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
+			if arg.lower() == sheet.row[int(record)][0].lower():
+				await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
+				break
+	else:
+		await bot.say("Please check your input and try again. Use ~help for more info.")
+
+#showdowns too
+@bot.command()
+async def showdowns(arg:str):
+	if arg == "today":
+		await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
+	elif arg.isdigit():
+		await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][1]) + " Showdown")
+	elif arg.isalpha():    
+		for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
+			if arg.lower() == sheet.row[int(record)][1].lower():
+				await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][1]) + " showdown")
+				break
+	else:
+		await bot.say("Please check your input and try again. Use ~help for more info.")
+
+#F
+@bot.command(pass_context = True)
+async def f(ctx):
+	with open('respects.txt','r+') as f:
+		count = int(f.read()) + 1
+		f.seek(0)
+		f.truncate()
+		f.write(str(count))
+	if ctx.message.content.strip() == "~f":
+		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects.\n" + str(count) + " total.", color=0x8b75a5)
+	else:
+		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects for **" + ctx.message.content[3:] + ".**\n" + str(count) + " total.", color=0x8b75a5)
+	await bot.say(embed = respectsMessage)
+
+#run token
+bot.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
