@@ -103,7 +103,7 @@ async def on_member_join(member):
 @bot.event
 async def on_message(message):
 	if message.author.id in victim_list:
-		if random.randint(1,2) == 1:
+		if random.randint(1,100) == 1:
 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
 #our beloved emotes
