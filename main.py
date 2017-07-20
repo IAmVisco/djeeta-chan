@@ -99,13 +99,6 @@ async def on_ready():
 async def on_member_join(member):
 	await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
 
-#insults
-@bot.event
-async def on_message(message):
-	if message.author.id in victim_list:
-		if random.randint(1,100) == 1:
-			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
-
 #our beloved emotes
 @bot.command()
 async def emo(emoName:str):	
@@ -237,6 +230,13 @@ async def f(ctx):
 	else:
 		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects for **" + ctx.message.content[3:] + ".**\n" + str(count) + " total.", color=0x8b75a5)
 	await bot.say(embed = respectsMessage)
+
+#insults
+@bot.event
+async def on_message(message):
+	if message.author.id in victim_list:
+		if random.randint(1,100) == 1:
+			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
 #run token
 bot.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
