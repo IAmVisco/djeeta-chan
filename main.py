@@ -6,6 +6,8 @@ import random
 import logging
 import asyncio
 import os
+import requests
+import ast
 from datetime import datetime
 import pyexcel as pe
 from pytz import timezone
@@ -70,6 +72,7 @@ victim_list = [
 	"155763234899492864", # Sleepy
 	# "235080660442677248", # RedTF
 	# "174852783084666880", # D.E.D
+	"195463465861644288" # Eu
 ]
 
 #creating events embed
@@ -231,10 +234,14 @@ async def f(ctx):
 		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects for **" + ctx.message.content[3:] + ".**\n" + str(count) + " total.", color=0x8b75a5)
 	await bot.say(embed = respectsMessage)
 
+#yesno
+@bot.command()
+async def yesno():
+	await bot.say(ast.literal_eval(requests.get("http://yesno.wtf/api").text.replace("false", "\"false\"")).get('image'))
+
 #insults
 @bot.event
 async def on_message(message):
-	print("+")
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
