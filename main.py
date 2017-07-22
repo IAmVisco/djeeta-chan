@@ -245,6 +245,12 @@ async def on_message(message):
 	if message.author.id in victim_list:
 		if random.randint(1,100) == 1:
 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
+
+	pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
+	if message.author.id == "185069144184455168" and random.randint(1,100) == 1:
+		for letter in pool:
+			await bot.add_reaction(message, letter)
+
 	await bot.process_commands(message)
 	
 #run token
