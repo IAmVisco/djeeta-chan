@@ -76,12 +76,12 @@ victim_list = [
 ]
 
 #creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for July", color=0x0bbbae)
-eventsEmbed.add_field(name="Ranger Sign Bravo!", value="30/06 - 08/07", inline=False)
-eventsEmbed.add_field(name="Cerberus/Fenrir Showdowns", value="09/07 - 14/07", inline=False)
-eventsEmbed.add_field(name="Xeno Vohu Rerun", value="18/07 - 24/07", inline=False)
-eventsEmbed.add_field(name="Rise of the Beasts", value="25/07 - 30/07", inline=False)
-eventsEmbed.add_field(name="New scenario event", value="31/07 - ???", inline=False)
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for August", color=0x0bbbae)
+eventsEmbed.add_field(name="Poacher's Day", value="31/06 - 08/08", inline=False)
+eventsEmbed.add_field(name="Five Flowers of Fate", value="09/08 - 15/08", inline=False)
+eventsEmbed.add_field(name="Guild Wars (Water Enemies)", value="16/08 - 23/08", inline=False)
+eventsEmbed.add_field(name="Xeno Sagittarius Clash", value="24/08 - 30/08", inline=False)
+eventsEmbed.add_field(name="New scenario event", value="31/08 - ???", inline=False)
 
 #assigning prefix and description
 description = '''Bot description goes there but idk where it will be shown, 
@@ -103,7 +103,7 @@ async def on_member_join(member):
 	await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
 
 #our beloved emotes
-@bot.command()
+@bot.command(description = 'I will show you desired emote!')
 async def emo(emoName:str):	
 	try:
 		await bot.upload(os.getcwd() + '/res/emotes/' + emoName + '.png')
@@ -111,20 +111,15 @@ async def emo(emoName:str):
 		await bot.say("No match found.")
 
 #ninja echo
-@bot.command(pass_context = True)
+@bot.command(pass_context = True, description = 'I will say smth. Make me say smth bad and I will ~~stab you~~ add you to visctoms :dagger:')
 async def say(ctx, msg:str):
 	await bot.delete_message(ctx.message)
 	await bot.type()
 	await asyncio.sleep(1)
 	await bot.say(msg)
 
-#context test
-@bot.command(pass_context = True)
-async def test(ctx):
-	await bot.say("Message by " + ctx.message.author.name)
-
 #roles list
-@bot.command(pass_context = True)
+@bot.command(pass_context = True, description = 'I will show you a list of roles that can be (un)assigned.')
 async def roles(ctx):
 	tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
 	bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta-chan")
@@ -135,8 +130,9 @@ async def roles(ctx):
 			tmp += "\n  - " + role.name
 
 	await bot.say(tmp)	
+
 #assigning and unassigning roles
-@bot.command(pass_context = True)
+@bot.command(pass_context = True, description = 'I will (un)assign you desired role!')
 async def role(ctx, *, role: discord.Role):
 	try:
 		if role in ctx.message.author.roles:
@@ -149,7 +145,7 @@ async def role(ctx, *, role: discord.Role):
 		await bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
 
 #rollin' rollin'
-@bot.command()
+@bot.command(description = 'I will roll a dice for you!')
 async def roll(roll:str):
 	out = ":game_die: | Hmm, let it be **"
 	try:
@@ -166,23 +162,23 @@ async def roll(roll:str):
 	await bot.say(out)
 
 #ping-pong
-@bot.command(pass_context = True)
+@bot.command(pass_context = True, description = 'Check if I\'m alive!')
 async def ping(ctx):
 	msg = await bot.say("Pong!")
 	await bot.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - ctx.message.timestamp).microseconds//1000)) + "ms")
 
 #choose smth
-@bot.command()
+@bot.command(description = 'I will make a choice for you!')
 async def choose(*choices:str):
     await bot.say(":thinking:| I choose **" + random.choice(choices) + "!**")
 
 #events
-@bot.command()
+@bot.command(description = 'I will show schedule of events from this month!')
 async def events():
 	await bot.say(embed = eventsEmbed)
 
 #revealing true self
-@bot.command(pass_context = True)
+@bot.command(pass_context = True, description = 'I will use my powers to reveal true self of the chosen one!')
 async def reveal(ctx, *, userName):
 	if userName[1] == "@":
 		user = discord.utils.get(ctx.message.server.members, mention = userName)
@@ -191,7 +187,7 @@ async def reveal(ctx, *, userName):
 	await bot.say("I'm sure it's **" + user.name + "**!")
 
 #trials based on excel table
-@bot.command()
+@bot.command(description = 'I will show you current or future trial!')
 async def trials(arg:str):
 	if arg == "today":
 		await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
@@ -206,7 +202,7 @@ async def trials(arg:str):
 		await bot.say("Please check your input and try again. Use ~help for more info.")
 
 #showdowns too
-@bot.command()
+@bot.command(description = 'I will show you current or future showdown!')
 async def showdowns(arg:str):
 	if arg == "today":
 		await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
@@ -221,7 +217,7 @@ async def showdowns(arg:str):
 		await bot.say("Please check your input and try again. Use ~help for more info.")
 
 #F
-@bot.command(pass_context = True)
+@bot.command(pass_context = True, description = 'Press F to pay respects.')
 async def f(ctx):
 	with open('respects.txt','r+') as f:
 		count = int(f.read()) + 1
@@ -235,7 +231,7 @@ async def f(ctx):
 	await bot.say(embed = respectsMessage)
 
 #yesno
-@bot.command()
+@bot.command(description = 'I will make a decesion for you!')
 async def yesno():
 	await bot.say(ast.literal_eval(requests.get("http://yesno.wtf/api").text.replace("false", "\"false\"")).get('image'))
 
