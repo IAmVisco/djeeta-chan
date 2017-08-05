@@ -112,7 +112,7 @@ async def emo(emoName:str):
 
 #ninja echo
 @bot.command(pass_context = True, description = 'I will say smth. Make me say smth bad and I will ~~stab you~~ add you to visctoms :dagger:')
-async def say(ctx, msg:str):
+async def say(ctx, *, msg:str):
 	await bot.delete_message(ctx.message)
 	await bot.type()
 	await asyncio.sleep(1)
