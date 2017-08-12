@@ -235,6 +235,10 @@ async def f(ctx):
 async def yesno():
 	await bot.say(ast.literal_eval(requests.get("http://yesno.wtf/api").text.replace("false", "\"false\"")).get('image'))
 
+#git api test 'n stuffs
+@bot.command()
+async def git():
+	await bot.say(requests.get("https://api.github.com/zen").text)
 #insults
 @bot.event
 async def on_message(message):
