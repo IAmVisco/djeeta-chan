@@ -84,8 +84,7 @@ eventsEmbed.add_field(name="Xeno Sagittarius Clash", value="24/08 - 30/08", inli
 eventsEmbed.add_field(name="New scenario event", value="31/08 - ???", inline=False)
 
 #assigning prefix and description
-description = '''Bot description goes there but idk where it will be shown, 
-so I just put some text there. Eu is a hentai baka!'''
+description = '''Multipurpose GBF oriented bot with useful (sometimes) commands!'''
 bot = commands.Bot(command_prefix = '~', description = description)
 
 #starting up
@@ -100,7 +99,8 @@ async def on_ready():
 #anti-lurking message
 @bot.event
 async def on_member_join(member):
-	await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
+	if member.server.id == '267994151436550146':
+		await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
 
 #our beloved emotes
 @bot.command(description = 'I will show you desired emote!')
@@ -237,21 +237,26 @@ async def yesno():
 
 #git api test 'n stuffs
 @bot.command()
-async def git():
+async def zen():
 	await bot.say(requests.get("https://api.github.com/zen").text)
-#insults
-@bot.event
-async def on_message(message):
-	if message.author.id in victim_list:
-		if random.randint(1,100) == 1:
-			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
-	pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
-	if message.author.id == "185069144184455168" and random.randint(1,100) == 1:
-		for letter in pool:
-			await bot.add_reaction(message, letter)
+@bot.command(pass_context = True)
+async def test(ctx):
+	await bot.say(ctx.message.server.id)
 
-	await bot.process_commands(message)
+# #insults
+# @bot.event
+# async def on_message(message):
+# 	if message.author.id in victim_list:
+# 		if random.randint(1,100) == 1:
+# 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
+
+# 	pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
+# 	if message.author.id == "185069144184455168" and random.randint(1,100) == 1:
+# 		for letter in pool:
+# 			await bot.add_reaction(message, letter)
+
+# 	await bot.process_commands(message)
 	
 #run token
 bot.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
