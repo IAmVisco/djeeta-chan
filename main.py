@@ -170,9 +170,12 @@ async def ping(ctx):
 	await bot.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - ctx.message.timestamp).microseconds//1000)) + "ms")
 
 #choose smth
-@bot.command(description = 'I will make a choice for you!')
-async def choose(*choices:str):
-    await bot.say(":thinking:| I choose **" + random.choice(choices) + "!**")
+@bot.command(description = 'I will make a choice for you! The format is ~choose <Option 1>, <Option 2>, etc.')
+async def choose(choices:str):
+	if ',' in choices:
+		await bot.say(":thinking:| I choose **" + random.choice(choices.split(',')) + "!**")
+	else:
+		await bott.say("Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
 
 #events
 @bot.command(description = 'I will show schedule of events from this month!')
