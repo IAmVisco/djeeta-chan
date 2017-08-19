@@ -95,7 +95,9 @@ async def on_ready():
 	print(bot.user.name)
 	print(bot.user.id)
 	print('------')
-	await bot.change_presence(game = discord.Game(name="Djeetablue Fantasy", url="game.granbluefantasy.jp", type = 1))
+	gbf = discord.Game(name = "Djeetablue Fantasy")
+	print(gbf.name)
+	await bot.change_presence(game = gbf)
 
 #anti-lurking message
 @bot.event
@@ -109,6 +111,10 @@ async def emo(emoName:str):
 		await bot.upload(os.getcwd() + '/res/emotes/' + emoName + '.png')
 	except:
 		await bot.say("No match found.")
+
+@bot.command()
+async def status():
+	await bot.change_presence(game = discord.Game(name = "Djeetablue Fantasy"))
 
 #ninja echo
 @bot.command(pass_context = True)
