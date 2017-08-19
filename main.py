@@ -75,6 +75,8 @@ victim_list = [
 	"195463465861644288" # Eu
 ]
 
+gw_mode = True
+
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for August", color=0x0bbbae)
 eventsEmbed.add_field(name="Poacher's Day", value="31/06 - 08/08", inline=False)
@@ -219,15 +221,15 @@ async def showdowns(arg:str):
 #F
 @bot.command(pass_context = True, description = 'Press F to pay respects.')
 async def f(ctx):
-	with open('respects.txt','r+') as f:
-		count = int(f.read()) + 1
-		f.seek(0)
-		f.truncate()
-		f.write(str(count))
+	# with open('respects.txt','r+') as f:
+	# 	count = int(f.read()) + 1
+	# 	f.seek(0)
+	# 	f.truncate()
+	# 	f.write(str(count))
 	if ctx.message.content.strip() == "~f":
-		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects.\n" + str(count) + " total.", color=0x8b75a5)
+		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects.\n", color=0x8b75a5) # + str(count) + " total."
 	else:
-		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects for **" + ctx.message.content[3:] + ".**\n" + str(count) + " total.", color=0x8b75a5)
+		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects for **" + ctx.message.content[3:] + ".**\n", color=0x8b75a5)# + str(count) + " total."
 	await bot.say(embed = respectsMessage)
 
 #yesno
@@ -240,9 +242,17 @@ async def yesno():
 async def zen():
 	await bot.say(requests.get("https://api.github.com/zen").text)
 
-@bot.command(pass_context = True)
-async def test(ctx):
-	await bot.say(ctx.message.server.id)
+@bot.command()
+async def gw():
+	if gw_mode:
+		if (datetime.now(timezone('Asia/Tokyo')).hour > 7): #and (datetime.now(timezone('Asia/Tokyo')).hour < 24):
+			await bot.say('Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 18) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		elif datetime.now(timezone('Asia/Tokyo')).day - 18 <= 5:
+			await bot.say('Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 18) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		else:
+			await bot.say('Guild Wars 32 is over, thanks for your hard work.')
+	else:
+		await bot.say('Why the heck you are using this outside of GW.')
 
 # #insults
 # @bot.event
