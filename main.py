@@ -96,9 +96,7 @@ async def on_ready():
 	print(bot.user.name)
 	print(bot.user.id)
 	print('------')
-	gbf = discord.Game(name = "Djeetablue Fantasy")
-	print(gbf.name)
-	await bot.change_presence(game = gbf)
+	await bot.change_presence(game = discord.Game(name="Djeetablue Fantasy", url="game.granbluefantasy.jp", type = 1))
 
 #anti-lurking message
 @bot.event
@@ -113,10 +111,6 @@ async def emo(emoName:str):
 		await bot.upload(os.getcwd() + '/res/emotes/' + emoName + '.png')
 	except:
 		await bot.say("No match found.")
-
-@bot.command()
-async def status():
-	await bot.change_presence(game = discord.Game(name = "Djeetablue Fantasy"))
 
 #ninja echo
 @bot.command(pass_context = True, description = 'I will say smth. Make me say smth bad and I will ~~stab you~~ add you to visctoms :dagger:')
@@ -176,12 +170,14 @@ async def ping(ctx):
 	await bot.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - ctx.message.timestamp).microseconds//1000)) + "ms")
 
 #choose smth
-@bot.command(description = 'I will make a choice for you! The format is ~choose <Option 1>, <Option 2>, etc.')
-async def choose(choices:str):
-	if ',' in choices:
-		await bot.say(":thinking:| I choose **" + random.choice(choices.split(',')) + "!**")
-	else:
-		await bott.say("Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
+@bot.command(pass_context = True, description = 'I will make a choice for you! The format is ~choose <Option 1>, <Option 2>, etc.')
+async def choose(ctx):
+	print(str(ctx))
+	# if ',' in choices:
+	# 	choices = choices.strip().split(',')
+	# 	await bot.say(":thinking:| I choose **" + random.choice(choices) + "!**")
+	# else:
+	# 	await bot.say("Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
 
 #events
 @bot.command(description = 'I will show schedule of events from this month!')
