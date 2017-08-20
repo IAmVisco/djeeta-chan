@@ -75,6 +75,15 @@ victim_list = [
 	"195463465861644288" # Eu
 ]
 
+fancy_answer_list = [
+	"Without a doubt it's ",
+	"It's certanly ",
+	"I would go for ",
+	"Signs point to ",
+	"I choose ",
+	"Lady luck told me it's "
+]
+
 gw_mode = True
 
 #creating events embed
@@ -172,7 +181,15 @@ async def ping(ctx):
 #choose smth
 @bot.command(pass_context = True, description = 'I will make a choice for you! The format is ~choose <Option 1>, <Option 2>, etc.')
 async def choose(ctx):
-	print(str(ctx))
+	variants = ctx.message.content[8:]
+	if ',' in variants:
+		variants = variants.strip().split(',')
+		await bot.say(":thinking:| " + random.choice(fancy_answer_list) + "**" + random.choice(variants).strip() + "!**")
+	else:
+		await bot.say("Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
+
+
+	# old code that i need to remake to avaoid crashes with spaces overload
 	# if ',' in choices:
 	# 	choices = choices.strip().split(',')
 	# 	await bot.say(":thinking:| I choose **" + random.choice(choices) + "!**")
