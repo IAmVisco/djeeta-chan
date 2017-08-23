@@ -84,7 +84,7 @@ fancy_answer_list = [
 	"Lady luck told me it's "
 ]
 
-gw_mode = True
+gw_mode = False
 
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for August", color=0x0bbbae)
@@ -267,12 +267,12 @@ async def zen():
 @bot.command()
 async def gw():
 	if gw_mode:
-		if (datetime.now(timezone('Asia/Tokyo')).hour > 7): #and (datetime.now(timezone('Asia/Tokyo')).hour < 24):
+		if (datetime.now(timezone('Asia/Tokyo')).hour > 7) and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
 			if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
 				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 18) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
 				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 18) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-		elif datetime.now(timezone('Asia/Tokyo')).day - 18 <= 5:
+		elif datetime.now(timezone('Asia/Tokyo')).day - 18 <= 5: # change this according to date
 			if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
 				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 18) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
