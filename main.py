@@ -114,7 +114,7 @@ async def on_member_join(member):
 		await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
 
 #our beloved emotes
-@bot.command(description = 'I will show you desired emote!')
+@bot.command(description = 'I will show your desired emote!')
 async def emo(emoName:str):	
 	try:
 		await bot.upload(os.getcwd() + '/res/emotes/' + emoName + '.png')
