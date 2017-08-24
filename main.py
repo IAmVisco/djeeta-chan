@@ -280,7 +280,7 @@ async def gw():
 		else:
 			await bot.say('Guild Wars 32 is over, thanks for your hard work.')
 	else:
-		await bot.say('Why the heck you are using this outside of GW.')
+		await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in late September')
 
 # #insults
 # @bot.event
