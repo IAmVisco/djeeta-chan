@@ -295,6 +295,10 @@ async def gw():
 	else:
 		await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in late September')
 
+@bot.command()
+async def disgusting():
+	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,26)) + '.png')
+
 @bot.event
 async def on_message(message):
 	pepeGun = discord.utils.get(message.server.emojis, name = 'pepeGun')
@@ -303,7 +307,8 @@ async def on_message(message):
 			if wrong_name.lower() in message.content.lower():
 				await bot.send_message(message.channel, "It's time to stop " + str(pepeGun) +"\nhttps://thumbs.gfycat.com/AdmirableShadyCur-size_restricted.gif")
 
-	await bot.process_commands(message)		
+	await bot.process_commands(message)	
+
 # #insults
 # @bot.event
 # async def on_message(message):
