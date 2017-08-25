@@ -67,12 +67,25 @@ insults_list = [
 
 # user id of people to be insulted
 victim_list = [
-	"185069144184455168", # Visco
-	"186873040292806656", # Naddie
-	"155763234899492864", # Sleepy
+	# "185069144184455168", # Visco
+	# "186873040292806656", # Naddie
+	# "155763234899492864", # Sleepy
 	# "235080660442677248", # RedTF
 	# "174852783084666880", # D.E.D
 	"195463465861644288" # Eu
+]
+
+wrong_names = [
+	"Anre",
+	"Tweyen",
+	"Threo",
+	"Feower",
+	"Fif",
+	"Seox",
+	"Seofon",
+	"Eahta",
+	"Niyon",
+	"Tien"
 ]
 
 fancy_answer_list = [
@@ -282,6 +295,15 @@ async def gw():
 	else:
 		await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in late September')
 
+@bot.event
+async def on_message(message):
+	pepeGun = discord.utils.get(message.server.emojis, name = 'pepeGun')
+	if not pepeGun == None:
+		for wrong_name in wrong_names:
+			if wrong_name.lower() in message.content.lower():
+				await bot.send_message(message.channel, "It's time to stop " + str(pepeGun) +"\nhttps://thumbs.gfycat.com/AdmirableShadyCur-size_restricted.gif")
+
+	await bot.process_commands(message)		
 # #insults
 # @bot.event
 # async def on_message(message):
