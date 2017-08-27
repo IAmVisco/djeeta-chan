@@ -80,7 +80,6 @@ wrong_names = [
 	"Tweyen",
 	"Threo",
 	"Feower",
-	"Fif",
 	"Seox",
 	"Seofon",
 	"Eahta",
@@ -133,6 +132,11 @@ async def emo(emoName:str):
 		await bot.upload(os.getcwd() + '/res/emotes/' + emoName + '.png')
 	except:
 		await bot.say("No match found.")
+
+@bot.command(description = 'I will show you a list with all emotes!')
+async def emolist():
+	await bot.say('<http://imgur.com/a/ZJF77>\n6mb pic behind the link ')
+
 
 #ninja echo
 @bot.command(pass_context = True, description = 'I will say smth. Make me say smth bad and I will ~~stab you~~ add you to visctoms :dagger:')
