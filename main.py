@@ -99,12 +99,16 @@ fancy_answer_list = [
 gw_mode = False
 
 #creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for August", color=0x0bbbae)
-eventsEmbed.add_field(name="Poacher's Day", value="31/06 - 08/08", inline=False)
-eventsEmbed.add_field(name="Five Flowers of Fate", value="09/08 - 15/08", inline=False)
-eventsEmbed.add_field(name="Guild Wars (Water Enemies)", value="16/08 - 23/08", inline=False)
-eventsEmbed.add_field(name="Xeno Sagittarius Clash", value="24/08 - 30/08", inline=False)
-eventsEmbed.add_field(name="New scenario event", value="31/08 - ???", inline=False)
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for September", color=0x0bbbae)
+events = [
+	["Lonesome Dragoness", "8/31 - 9/8"],
+	["Touken Ranbu Collaboration", "9/9 - 9/21"],
+	["Unite and Fight (Earth Bosses)", "9/22 - 9/29"],
+	["New Scenario Event", "9/30 - ???"],
+]
+
+for event in events:
+	eventsEmbed.add_field(name=event[0], value=event[1], inline=False)
 
 #assigning prefix and description
 description = '''Multipurpose GBF oriented bot with useful (sometimes) commands!'''
