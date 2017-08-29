@@ -1,4 +1,12 @@
 #djeeta 2.0 (working title)
+
+#To-do list
+#Remake trials/showdowns
+#Make ~slam
+#-And replace its time to stop gif with slam
+#Music? Maybe?
+#Make DB for multi server settings
+
 #importing libraries
 import discord
 from discord.ext import commands
