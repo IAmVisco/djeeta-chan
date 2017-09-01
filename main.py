@@ -111,7 +111,7 @@ gw_mode = False
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for September", color=0x0bbbae)
 events = [
 	["Lonesome Dragoness", "8/31 - 9/8"],
-	["Touken Ranbu Collaboration", "9/9 - 9/21"],
+	["Touken Ranbu Collaboration", "9/10 - 9/21"],
 	["Unite and Fight (Earth Bosses)", "9/22 - 9/29"],
 	["New Scenario Event", "9/30 - ???"],
 ]
