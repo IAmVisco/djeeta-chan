@@ -5,7 +5,7 @@
 #Make ~slam
 #-And replace its time to stop gif with slam
 #Music? Maybe?
-#Make DB for multi server settings
+#Make DB for multi server ~~drifting~~ settings
 #make proper ~help/wait for docu on existing one
 
 #importing libraries
@@ -323,6 +323,7 @@ async def on_message(message):
 		for wrong_name in wrong_names:
 			if wrong_name.lower() in message.content.lower():
 				await bot.send_message(message.channel, "It's time to stop " + str(pepeGun) +"\nhttps://thumbs.gfycat.com/AdmirableShadyCur-size_restricted.gif")
+				break
 
 	await bot.process_commands(message)	
 
