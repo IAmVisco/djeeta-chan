@@ -314,7 +314,7 @@ async def gw():
 
 @bot.command()
 async def disgusting():
-	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,31)) + '.png')
+	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,32)) + '.png')
 
 @bot.event
 async def on_message(message):
