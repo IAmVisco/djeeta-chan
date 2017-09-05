@@ -316,6 +316,10 @@ async def gw():
 async def disgusting():
 	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,32)) + '.png')
 
+@bot.command()
+async def mai():
+	await bot.upload(os.getcwd() + '/res/etc/mai.png')
+
 @bot.event
 async def on_message(message):
 	pepeGun = discord.utils.get(message.server.emojis, name = 'pepeGun')
