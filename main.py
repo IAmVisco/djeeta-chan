@@ -316,9 +316,12 @@ async def gw():
 async def disgusting():
 	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,32)) + '.png')
 
-@bot.command()
-async def mai():
-	await bot.upload(os.getcwd() + '/res/etc/mai.png')
+@bot.command(pass_context = True)
+async def mai(ctx):
+	mai = ctx.message
+	mai.content = '~emo mai'
+	await bot.process_commands(mai)
+	#await bot.upload(os.getcwd() + '/res/emo/mai.png')
 
 @bot.event
 async def on_message(message):
