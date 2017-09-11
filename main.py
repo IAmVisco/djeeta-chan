@@ -148,7 +148,7 @@ async def emo(emoName:str):
 
 @bot.command(description = 'I will show you a list with all emotes!')
 async def emolist():
-	await bot.say('<http://imgur.com/a/ZJF77>\n6mb pic behind the link ')
+	await bot.say('<https://imgur.com/GXTkNaF>\n6mb pic behind the link ')
 
 
 #ninja echo
