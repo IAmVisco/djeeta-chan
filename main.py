@@ -310,7 +310,7 @@ async def gw():
 		else:
 			await bot.say('Guild Wars 32 is over, thanks for your hard work.')
 	else:
-		await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in late September')
+		await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in ' + str(22 - datetime.now(timezone('Asia/Tokyo')).day) + ' days, on 22nd of September.')
 
 @bot.command()
 async def disgusting():
