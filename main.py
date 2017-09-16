@@ -314,7 +314,7 @@ async def gw():
 
 @bot.command()
 async def disgusting():
-	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,32)) + '.png')
+	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,33)) + '.png')
 
 @bot.command(pass_context = True)
 async def mai(ctx):
