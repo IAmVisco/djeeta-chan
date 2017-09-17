@@ -148,7 +148,7 @@ async def emo(emoName:str):
 
 @bot.command(description = 'I will show you a list with all emotes!')
 async def emolist():
-	await bot.say('<https://imgur.com/GXTkNaF>\n6mb pic behind the link ')
+	await bot.say('<https://imgur.com/a/0Js7z>\n6mb pic behind the link ')
 
 
 #ninja echo
@@ -318,10 +318,7 @@ async def disgusting():
 
 @bot.command(pass_context = True)
 async def mai(ctx):
-	mai = ctx.message
-	mai.content = '~emo mai'
-	await bot.process_commands(mai)
-	#await bot.upload(os.getcwd() + '/res/emo/mai.png')
+	await bot.upload(os.getcwd() + '/res/emo/mai.png')
 
 @bot.event
 async def on_message(message):
