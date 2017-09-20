@@ -105,7 +105,8 @@ fancy_answer_list = [
 	"Lady luck told me it's "
 ]
 
-gw_mode = False
+gw_mode = True
+gwstart = datetime(2017, 9, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for September", color=0x0bbbae)
@@ -297,28 +298,36 @@ async def zen():
 @bot.command()
 async def gw():
 	if gw_mode:
-		if (datetime.now(timezone('Asia/Tokyo')).hour > 7) and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
-			if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 18) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-			else:
-				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 18) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-		elif datetime.now(timezone('Asia/Tokyo')).day - 18 <= 5: # change this according to date
-			if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 18) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-			else:
-				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 18) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		if (datetime.now(timezone('Asia/Tokyo')).day >= 22) and (datetime.now(timezone('Asia/Tokyo')).hour >= 19):
+			if (datetime.now(timezone('Asia/Tokyo')).day >= 25):
+				if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
+					if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+						await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+					else:
+						await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+				elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(22) - 2
+					if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+						await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+					else:
+						await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+				else:
+					await bot.say('Guild Wars 33 is over, thanks for your hard work.')
+			else:				
+				dt = datetime(2017, 9, 24, 0, 0, 0, 0, timezone('Asia/Tokyo')) - datetime.now(timezone('Asia/Tokyo'))
+				await bot.say("Prelims ends in " + str(dt.days) + " days " + str(dt.seconds // 3600) + " hours " + str((dt.seconds // 60) % 60) + " minutes.")
 		else:
-			await bot.say('Guild Wars 32 is over, thanks for your hard work.')
+			dt = gwstart - datetime.now(timezone('Asia/Tokyo'))
+			await bot.say("Guild Wars 33 starts in " +  str(dt.days) + " days " + str(dt.seconds // 3600) + " hours " + str((dt.seconds // 60) % 60) + " minutes.")
 	else:
 		await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in ' + str(22 - datetime.now(timezone('Asia/Tokyo')).day) + ' days, on 22nd of September.')
 
 @bot.command()
 async def disgusting():
-	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,33)) + '.png')
+	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,34)) + '.png')
 
 @bot.command(pass_context = True)
 async def mai(ctx):
-	await bot.upload(os.getcwd() + '/res/emo/mai.png')
+	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
 
 @bot.event
 async def on_message(message):
