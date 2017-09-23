@@ -108,6 +108,7 @@ fancy_answer_list = [
 gw_mode = True
 gwstart = datetime(2017, 9, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 
+
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for September", color=0x0bbbae)
 events = [
@@ -298,45 +299,47 @@ async def zen():
 @bot.command()
 async def gw():
 	if gw_mode:
-		if (datetime.now(timezone('Asia/Tokyo')).day >= 22):# and (datetime.now(timezone('Asia/Tokyo')).hour >= 19):
-			if (datetime.now(timezone('Asia/Tokyo')).day >= 25):
-				if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
-					if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-						await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-					else:
-						await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-				elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(22) - 2
-					if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-						await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-					else:
-						await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-				else:
-					await bot.say('Guild Wars 33 is over, thanks for your hard work.')
-			else:				
-				#dt = datetime(2017, 9, 24, 0, 0, 0, 0, timezone('Asia/Tokyo')) - datetime.now(timezone('Asia/Tokyo'))
-				await bot.say("Prelims ends 1900 JST, dev has butthurt cuz timezone are shit, jys whoever invented them.")
+		print('gw is underway')
+		if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
+			if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+			else:
+				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(22) - 2
+			if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+			else:
+				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 		else:
-			dt = gwstart - datetime.now(timezone('Asia/Tokyo'))
-			await bot.say("Guild Wars 33 starts in " +  str(dt.days) + " days " + str(dt.seconds // 3600) + " hours " + str((dt.seconds // 60) % 60) + " minutes.")
+			await bot.say('Guild Wars 33 is over, thanks for your hard work.')				
 	else:
-		await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in ' + str(22 - datetime.now(timezone('Asia/Tokyo')).day) + ' days, on 22nd of September.')
-
+		await bot.say('Guild Wars 34 will have **Ass of your mom as** enemies. It is scheduled to arrive someday.')
 
 	# if gw_mode:
-	# 	if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
-	# 		if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-	# 			await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-	# 		else:
-	# 			await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-	# 	elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(22) - 2
-	# 		if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-	# 			await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-	# 		else:
-	# 			await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+	# 	if (datetime.now(timezone('Asia/Tokyo')).day >= 22):# and (datetime.now(timezone('Asia/Tokyo')).hour >= 19):
+	# 		if (datetime.now(timezone('Asia/Tokyo')).day >= 25):
+	# 			if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
+	# 				if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+	# 					await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+	# 				else:
+	# 					await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+	# 			elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(22) - 2
+	# 				if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+	# 					await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+	# 				else:
+	# 					await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+	# 			else:
+	# 				await bot.say('Guild Wars 33 is over, thanks for your hard work.')
+	# 		else:				
+	# 			#dt = datetime(2017, 9, 24, 0, 0, 0, 0, timezone('Asia/Tokyo')) - datetime.now(timezone('Asia/Tokyo'))
+	# 			await bot.say("Prelims ends 1900 JST, dev has butthurt cuz timezone are shit, jys whoever invented them.")
 	# 	else:
-	# 		await bot.say('Guild Wars 33 is over, thanks for your hard work.')				
+	# 		dt = gwstart - datetime.now(timezone('Asia/Tokyo'))
+	# 		await bot.say("Guild Wars 33 starts in " +  str(dt.days) + " days " + str(dt.seconds // 3600) + " hours " + str((dt.seconds // 60) % 60) + " minutes.")
 	# else:
-	# 	await bot.say('Guild Wars 34 will have **Ass of your mom as** enemies. It is scheduled to arrive someday.')
+	# 	await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in ' + str(22 - datetime.now(timezone('Asia/Tokyo')).day) + ' days, on 22nd of September.')
+
+
 
 @bot.command()
 async def disgusting():
@@ -348,14 +351,22 @@ async def mai(ctx):
 
 @bot.event
 async def on_message(message):
-	pepeGun = discord.utils.get(message.server.emojis, name = 'pepeGun')
-	if not pepeGun == None:
-		for wrong_name in wrong_names:
-			if wrong_name.lower() in message.content.lower():
-				await bot.send_message(message.channel, "It's time to stop " + str(pepeGun) +"\nhttps://thumbs.gfycat.com/AdmirableShadyCur-size_restricted.gif")
-				break
+	visco = discord.utils.get(message.server.members, name = "IAmVisco")
+	li = ['fuck', 'you', visco.mention]
+	if all(word in message.content.lower() for word in li) and message.author.id != bot.user.id:
+		await bot.send_message(message.channel, "No, fuck you, leatherman! https://i.ytimg.com/vi/qPJvGMYxDPs/maxresdefault.jpg")
+
 
 	await bot.process_commands(message)	
+
+# (message.author.id == 185069144184455168) and 
+# pepeGun = discord.utils.get(message.server.emojis, name = 'pepeGun')
+# if not pepeGun == None:
+# 	for wrong_name in wrong_names:
+# 		if wrong_name.lower() in message.content.lower():
+# 			await bot.send_message(message.channel, "It's time to stop " + str(pepeGun) +"\nhttps://thumbs.gfycat.com/AdmirableShadyCur-size_restricted.gif")
+# 			break
+
 
 # #insults
 # @bot.event
