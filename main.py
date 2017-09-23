@@ -314,7 +314,7 @@ async def gw():
 					await bot.say('Guild Wars 33 is over, thanks for your hard work.')
 			else:				
 				dt = datetime(2017, 9, 24, 1, 0, 0, 0, timezone('Asia/Tokyo')) - datetime.now(timezone('Asia/Tokyo'))
-				await bot.say("Prelims ends in " + str(dt.seconds // 3600) + " hours " + str((dt.seconds // 60) % 60 + 20) + " minutes.")
+				await bot.say("Prelims ends in " + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + " hours " + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + " minutes.")
 		else:
 			dt = gwstart - datetime.now(timezone('Asia/Tokyo'))
 			await bot.say("Guild Wars 33 starts in " +  str(dt.days) + " days " + str(dt.seconds // 3600) + " hours " + str((dt.seconds // 60) % 60) + " minutes.")
