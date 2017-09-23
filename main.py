@@ -313,13 +313,30 @@ async def gw():
 				else:
 					await bot.say('Guild Wars 33 is over, thanks for your hard work.')
 			else:				
-				dt = datetime(2017, 9, 24, 1, 0, 0, 0, timezone('Asia/Tokyo')) - datetime.now(timezone('Asia/Tokyo'))
-				await bot.say("Prelims ends in " + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + " hours " + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + " minutes.")
+				#dt = datetime(2017, 9, 24, 0, 0, 0, 0, timezone('Asia/Tokyo')) - datetime.now(timezone('Asia/Tokyo'))
+				await bot.say("Prelims ends 1900 JST, dev has butthurt cuz timezone are shit, jys whoever invented them.")
 		else:
 			dt = gwstart - datetime.now(timezone('Asia/Tokyo'))
 			await bot.say("Guild Wars 33 starts in " +  str(dt.days) + " days " + str(dt.seconds // 3600) + " hours " + str((dt.seconds // 60) % 60) + " minutes.")
 	else:
 		await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in ' + str(22 - datetime.now(timezone('Asia/Tokyo')).day) + ' days, on 22nd of September.')
+
+
+	# if gw_mode:
+	# 	if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
+	# 		if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+	# 			await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+	# 		else:
+	# 			await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+	# 	elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(22) - 2
+	# 		if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+	# 			await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+	# 		else:
+	# 			await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+	# 	else:
+	# 		await bot.say('Guild Wars 33 is over, thanks for your hard work.')				
+	# else:
+	# 	await bot.say('Guild Wars 34 will have **Ass of your mom as** enemies. It is scheduled to arrive someday.')
 
 @bot.command()
 async def disgusting():
