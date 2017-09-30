@@ -105,17 +105,17 @@ fancy_answer_list = [
 	"Lady luck told me it's "
 ]
 
-gw_mode = True
+gw_mode = False
 gwstart = datetime(2017, 9, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 
 
 #creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for September", color=0x0bbbae)
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for October", color=0x0bbbae)
 events = [
-	["Lonesome Dragoness", "8/31 - 9/8"],
-	["Touken Ranbu Collaboration", "9/10 - 9/21"],
-	["Unite and Fight (Earth Bosses)", "9/22 - 9/29"],
-	["New Scenario Event", "9/30 - ???"],
+	["Violet Violence" , "30/9 - 9/10"],
+	["Cardcaptor Sakura Collab" , "10/10 - 24/10"],
+	["Rise of the Beasts", "25/10 - 30/10"],
+	["New Scenario Event", "31/10 - 8/11"],
 ]
 
 for event in events:
@@ -314,7 +314,7 @@ async def gw():
 		else:
 			await bot.say('Guild Wars 33 is over, thanks for your hard work.')				
 	else:
-		await bot.say('Guild Wars 34 will have **Ass of your mom as** enemies. It is scheduled to arrive someday.')
+		await bot.say('Guild Wars 34 will have **Fire** enemies. It is scheduled to arrive in early November.')
 
 	# if gw_mode:
 	# 	if (datetime.now(timezone('Asia/Tokyo')).day >= 22):# and (datetime.now(timezone('Asia/Tokyo')).hour >= 19):
