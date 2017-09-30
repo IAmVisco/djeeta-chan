@@ -350,6 +350,19 @@ async def disgusting():
 async def mai(ctx):
 	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
 
+@bot.command()
+async def shrug():
+	await bot.say("¯\_(ツ)_/¯")
+
+@bot.command()
+async def lenny():
+	await bot.say("( ͡° ͜ʖ ͡°)")
+
+@bot.command()
+async def tableflip():
+	await bot.say("(╯°□°）╯︵ ┻━┻")
+
+
 @bot.event
 async def on_message(message):
 	visco = discord.utils.get(message.server.members, name = "IAmVisco")
