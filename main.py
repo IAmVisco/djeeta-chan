@@ -316,32 +316,6 @@ async def gw():
 	else:
 		await bot.say('Guild Wars 34 will have **Fire** enemies. It is scheduled to arrive in early November.')
 
-	# if gw_mode:
-	# 	if (datetime.now(timezone('Asia/Tokyo')).day >= 22):# and (datetime.now(timezone('Asia/Tokyo')).hour >= 19):
-	# 		if (datetime.now(timezone('Asia/Tokyo')).day >= 25):
-	# 			if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
-	# 				if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-	# 					await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-	# 				else:
-	# 					await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-	# 			elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(22) - 2
-	# 				if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-	# 					await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-	# 				else:
-	# 					await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-	# 			else:
-	# 				await bot.say('Guild Wars 33 is over, thanks for your hard work.')
-	# 		else:				
-	# 			#dt = datetime(2017, 9, 24, 0, 0, 0, 0, timezone('Asia/Tokyo')) - datetime.now(timezone('Asia/Tokyo'))
-	# 			await bot.say("Prelims ends 1900 JST, dev has butthurt cuz timezone are shit, jys whoever invented them.")
-	# 	else:
-	# 		dt = gwstart - datetime.now(timezone('Asia/Tokyo'))
-	# 		await bot.say("Guild Wars 33 starts in " +  str(dt.days) + " days " + str(dt.seconds // 3600) + " hours " + str((dt.seconds // 60) % 60) + " minutes.")
-	# else:
-	# 	await bot.say('Guild Wars 33 will have **Earth** enemies. It is scheduled to arrive in ' + str(22 - datetime.now(timezone('Asia/Tokyo')).day) + ' days, on 22nd of September.')
-
-
-
 @bot.command()
 async def disgusting():
 	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,34)) + '.png')
@@ -363,15 +337,9 @@ async def tableflip():
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
 
-@bot.event
-async def on_message(message):
-	visco = discord.utils.get(message.server.members, name = "IAmVisco")
-	li = ['fuck', 'you', visco.mention]
-	if all(word in message.content.lower() for word in li) and message.author.id != bot.user.id:
-		await bot.send_message(message.channel, "No, fuck you, leatherman! https://i.ytimg.com/vi/qPJvGMYxDPs/maxresdefault.jpg")
-
-
-	await bot.process_commands(message)	
+# @bot.event
+# async def on_message(message):
+# 	await bot.process_commands(message)	
 
 # (message.author.id == 185069144184455168) and 
 # pepeGun = discord.utils.get(message.server.emojis, name = 'pepeGun')
