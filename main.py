@@ -81,7 +81,8 @@ victim_list = [
 	# "155763234899492864", # Sleepy
 	# "235080660442677248", # RedTF
 	# "174852783084666880", # D.E.D
-	"195463465861644288" # Eu
+	# "195463465861644288", # Eu
+	"229273041954144257" # Sun
 ]
 
 wrong_names = [
@@ -110,12 +111,13 @@ gwstart = datetime(2017, 9, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 
 
 #creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for October", color=0x0bbbae)
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for November", color=0x0bbbae)
 events = [
-	["Violet Violence" , "30/9 - 9/10"],
-	["Cardcaptor Sakura Collab" , "10/10 - 24/10"],
-	["Rise of the Beasts", "25/10 - 30/10"],
-	["New Scenario Event", "31/10 - 8/11"],
+	["Forgiveness and Gratitude" , "31/10 - 8/11"],
+	["Guild Wars (Fire Enemies" , "9/11 - 16/11"],
+	["Platinum Sky", "17/11 - 22/11"],
+	["Xeno Cocy", "22/11 - 29/11"],
+	["New Story Event", "30/11 - ???"]
 ]
 
 for event in events:
@@ -300,21 +302,21 @@ async def zen():
 async def gw():
 	if gw_mode:
 		if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
-			if datetime.now(timezone('Asia/Tokyo')).day - 24 == 0:
+			if datetime.now(timezone('Asia/Tokyo')).day - 11 == 0:
 				await bot.say(':point_right: :clock12: | Interlude ends and Round 1 starts in ' + str(30 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			elif 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
 				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
 				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-		elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(22) - 2
+		elif datetime.now(timezone('Asia/Tokyo')).day - 11 <= 5: # day of start(22) - 2
 			if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
 				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
 				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 		else:
-			await bot.say('Guild Wars 33 is over, thanks for your hard work.')				
+			await bot.say('Guild Wars 34 is over, thanks for your hard work.')				
 	else:
-		await bot.say('Guild Wars 34 will have **Fire** enemies. It is scheduled to arrive in early November.')
+		await bot.say('Guild Wars 34 will have **Fire** enemies. It is scheduled to arrive on 9/11.')
 
 @bot.command()
 async def disgusting():
@@ -337,6 +339,20 @@ async def tableflip():
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
 
+#insults
+@bot.event
+async def on_message(message):
+	if message.author.id in victim_list:
+		if random.randint(1,100) == 1:
+			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
+
+	# pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
+	# if message.author.id == "185069144184455168" and random.randint(1,100) == 1:
+	# 	for letter in pool:
+	# 		await bot.add_reaction(message, letter)
+
+	await bot.process_commands(message)
+	
 # @bot.event
 # async def on_message(message):
 # 	await bot.process_commands(message)	
@@ -349,20 +365,5 @@ async def tableflip():
 # 			await bot.send_message(message.channel, "It's time to stop " + str(pepeGun) +"\nhttps://thumbs.gfycat.com/AdmirableShadyCur-size_restricted.gif")
 # 			break
 
-
-# #insults
-# @bot.event
-# async def on_message(message):
-# 	if message.author.id in victim_list:
-# 		if random.randint(1,100) == 1:
-# 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
-
-# 	pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
-# 	if message.author.id == "185069144184455168" and random.randint(1,100) == 1:
-# 		for letter in pool:
-# 			await bot.add_reaction(message, letter)
-
-# 	await bot.process_commands(message)
-	
 #run token
 bot.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
