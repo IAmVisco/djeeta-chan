@@ -347,9 +347,10 @@ async def on_message(message):
 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
 	# pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
-	# if message.author.id == "185069144184455168" and random.randint(1,100) == 1:
-	# 	for letter in pool:
-	# 		await bot.add_reaction(message, letter)
+	pool = ["🇱", "🇪", "🇼", "🇩", "🍆"]
+	if message.author.id in victim_list and random.randint(1,100) == 1:
+		for letter in pool:
+			await bot.add_reaction(message, letter)
 
 	await bot.process_commands(message)
 	
