@@ -325,12 +325,16 @@ async def gw():
 		h, m = divmod(m, 60)
 		await bot.say('Guild Wars 34 will have **Fire** enemies. It will start in ' + str(diff.days) + ' days ' + str(h) + ' hours.') #It is scheduled to arrive on 9/11.')
 
-@bot.command()
-async def disgusting():
-	await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,34)) + '.png')
-
 @bot.command(pass_context = True)
-async def mai(ctx):
+async def disgusting(ctx):
+	msg = ctx.message.content
+	if msg.strip() == "~disgusting":
+		await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,35)) + '.png')
+	elif int(msg[12:]) > 0 and int(msg[12:]) < 36 :
+		await bot.upload(os.getcwd() + '/res/disgusting/' + msg[12:] + '.png')
+
+@bot.command()
+async def mai():
 	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
 
 @bot.command()
