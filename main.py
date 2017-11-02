@@ -17,7 +17,7 @@ import asyncio
 import os
 import requests
 import ast
-from datetime import datetime
+from datetime import datetime, timedelta
 import pyexcel as pe
 from pytz import timezone
 
@@ -107,7 +107,7 @@ fancy_answer_list = [
 ]
 
 gw_mode = False
-gwstart = datetime(2017, 9, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
+gwstart = datetime(2017, 11, 9, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 
 
 #creating events embed
@@ -316,7 +316,14 @@ async def gw():
 		else:
 			await bot.say('Guild Wars 34 is over, thanks for your hard work.')				
 	else:
-		await bot.say('Guild Wars 34 will have **Fire** enemies. It is scheduled to arrive on 9/11.')
+		# print(datetime.now(timezone('Asia/Tokyo')))
+		# print(gwstart)
+		diff = gwstart - datetime.now(timezone('Asia/Tokyo'))
+		# print(diff)
+		# print(timedelta(seconds = diff.seconds))
+		m, s = divmod(diff.seconds, 60)
+		h, m = divmod(m, 60)
+		await bot.say('Guild Wars 34 will have **Fire** enemies. It will start in ' + str(diff.days) + ' days ' + str(h) + ' hours.') #It is scheduled to arrive on 9/11.')
 
 @bot.command()
 async def disgusting():
