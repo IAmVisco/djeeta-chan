@@ -106,7 +106,7 @@ fancy_answer_list = [
 	"Lady luck told me it's "
 ]
 
-gw_mode = True
+gw_mode = False
 gwstart = datetime(2017, 11, 9, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 
 
@@ -323,14 +323,14 @@ async def gw():
 		# print(timedelta(seconds = diff.seconds))
 		m, s = divmod(diff.seconds, 60)
 		h, m = divmod(m, 60)
-		await bot.say('Guild Wars 34 will have **Fire** enemies. It will start in ' + str(diff.days) + ' days ' + str(h) + ' hours.') #It is scheduled to arrive on 9/11.')
+		await bot.say('Guild Wars 35 will have **Wind** enemies. It is scheduled to arrive in January.')
 
 @bot.command(pass_context = True)
 async def disgusting(ctx):
 	msg = ctx.message.content
 	if msg.strip() == "~disgusting":
-		await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,35)) + '.png')
-	elif int(msg[12:]) > 0 and int(msg[12:]) < 36 :
+		await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,37)) + '.png')
+	elif int(msg[12:]) > 0 and int(msg[12:]) < 38 :
 		await bot.upload(os.getcwd() + '/res/disgusting/' + msg[12:] + '.png')
 
 @bot.command()
@@ -354,7 +354,7 @@ async def tableflip():
 @bot.event
 async def on_message(message):
 	if message.author.id in victim_list:
-		if random.randint(1,100) == 1:
+		if random.randint(1,100) == 1 and message.server.id != 301829994567434241:
 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
 	# pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
