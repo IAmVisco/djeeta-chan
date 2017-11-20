@@ -349,12 +349,16 @@ async def lenny():
 async def tableflip():
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
+@bot.command(pass_context = True)
+async def test(ctx):
+	print(ctx.message.server.id)
+
 
 #insults
 @bot.event
 async def on_message(message):
 	if message.author.id in victim_list:
-		if random.randint(1,100) == 1 and message.server.id != 301829994567434241:
+		if (message.server.id != "301829994567434241") and (random.randint(1,100) == 1):
 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
 	# pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
