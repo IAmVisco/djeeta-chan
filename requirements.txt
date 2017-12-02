@@ -1,0 +1,16 @@
+aiohttp==1.0.5
+
+async-timeout==1.2.1
+
+chardet==3.0.3
+
+discord.py==0.16.7
+
+multidict==2.1.5
+
+websockets==3.3
+
+pyexcel==0.5.0
+pyexcel-xlsx==0.4.0
+pytz==2017.2
+requests==2.18.1
