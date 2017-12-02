@@ -382,4 +382,4 @@ async def on_message(message):
 # 			break
 
 #run token
-bot.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
+bot.run('Mzg2NDQ5MDkzMzg1Mzg4MDUz.DQQErQ.3SJ8ftYbFWIfQc2lIDVga2cU0cg')
