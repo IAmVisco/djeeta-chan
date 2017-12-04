@@ -146,7 +146,7 @@ async def on_member_join(member):
 @bot.command(description = 'I will show your desired emote!')
 async def emo(emoName:str):	
 	try:
-		await bot.upload(os.getcwd() + '/res/emotes/' + emoName + '.png')
+		await bot.upload(os.getcwd() + '/res/emotes/' + emoName.lower() + '.png')
 	except:
 		await bot.say("No match found.")
 
