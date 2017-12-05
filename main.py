@@ -111,13 +111,13 @@ gwstart = datetime(2017, 11, 9, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 
 
 #creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for November", color=0x0bbbae)
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for December", color=0x0bbbae)
 events = [
-	["Forgiveness and Gratitude" , "31/10 - 8/11"],
-	["Guild Wars (Fire Enemies" , "9/11 - 16/11"],
-	["Platinum Sky", "17/11 - 22/11"],
-	["Xeno Cocy", "22/11 - 29/11"],
-	["New Story Event", "30/11 - ???"]
+	["Divergent Knighthoods" , "30/11 - 8/12"],
+	["Christmas Event" , "15/12 - 25/12"],
+	["Xeno Diablo", "21/12 - 28/12"],
+	["Zodiac Event 2017", "28/12 - 31/12"],
+	["New Story Event", "31/12 - 9/01"]
 ]
 
 for event in events:
