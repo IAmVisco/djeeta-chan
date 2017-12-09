@@ -115,6 +115,7 @@ eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for Dece
 events = [
 	["Divergent Knighthoods" , "30/11 - 8/12"],
 	["Christmas Event" , "15/12 - 25/12"],
+	["Attack on Titan Collab","8/12 - 20/12"],
 	["Xeno Diablo", "21/12 - 28/12"],
 	["Zodiac Event 2017", "28/12 - 31/12"],
 	["New Story Event", "31/12 - 9/01"]
@@ -134,7 +135,7 @@ async def on_ready():
 	print(bot.user.name)
 	print(bot.user.id)
 	print('------')
-	await bot.change_presence(game = discord.Game(name="Djeetablue Fantasy", url="game.granbluefantasy.jp", type = 1))
+	await bot.change_presence(game = discord.Game(name="Djeetablue Fantasy"))
 
 #anti-lurking message
 @bot.event
@@ -349,9 +350,9 @@ async def lenny():
 async def tableflip():
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
-@bot.command(pass_context = True)
-async def test(ctx):
-	print(ctx.message.server.id)
+@bot.command()
+async def changename(name: str):
+	edit_profile(username = "Djeeta Kai Ni")
 
 
 #insults
