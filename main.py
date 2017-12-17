@@ -3,7 +3,6 @@
 #===To-do list===
 #Remake trials/showdowns
 #Make ~slam
-#-And replace its time to stop gif with slam
 #Music? Maybe?
 #Make DB for multi server ~~drifting~~ settings
 #make proper ~help/wait for docu on existing one
@@ -108,7 +107,9 @@ fancy_answer_list = [
 
 gw_mode = False
 gwstart = datetime(2017, 11, 9, 19, 0, 0, 0, timezone('Asia/Tokyo'))
-
+beaver = 0
+gm = 0
+wow = 0
 
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for December", color=0x0bbbae)
@@ -350,17 +351,40 @@ async def lenny():
 async def tableflip():
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
-@bot.command()
-async def changename(name: str):
-	edit_profile(username = "Djeeta Kai Ni")
-
-
 #insults
 @bot.event
 async def on_message(message):
 	if message.author.id in victim_list:
 		if (message.server.id != "301829994567434241") and (random.randint(1,100) == 1):
 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
+
+	global beaver
+	global gm
+	global wow
+	print(wow)
+
+	if beaver > 0:
+		beaver -= 1
+	if gm > 0:
+		gm -= 1
+	if wow > 0:
+		wow -= 1
+
+	if beaver <= 0 and "beaver" in message.content.lower() and ("dead" in message.content.lower() or "ded" in message.content.lower()):
+		await bot.send_message(message.channel, "MingLow")
+		beaver = 5
+	elif gm <= 0 and "GoodMorning" in message.content:
+		await bot.send_message(message.channel, "GoodMorning")
+		gm = 5
+	elif "/o/" in message.content.lower() and message.author.bot == False:
+		await bot.send_message(message.channel, "\\o\\")
+	elif "\\o\\" in message.content.lower() and message.author.bot == False:
+		await bot.send_message(message.channel, "/o/")
+	elif wow <= 0 and "\\o/" in message.content.lower() and message.author.bot == False:
+		await bot.send_message(message.channel, "\\o/")
+		wow = 5
+
+
 
 	# pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
 	pool = ["🇱", "🇪", "🇼", "🇩", "🍆"]
