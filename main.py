@@ -109,6 +109,7 @@ gw_mode = False
 gwstart = datetime(2017, 11, 9, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 beaver = 0
 gm = 0
+gn = 0
 wow = 0
 
 #creating events embed
@@ -361,12 +362,14 @@ async def on_message(message):
 	global beaver
 	global gm
 	global wow
-	print(wow)
+	global gn
 
 	if beaver > 0:
 		beaver -= 1
 	if gm > 0:
 		gm -= 1
+	if gn > 0:
+		gn -= 1
 	if wow > 0:
 		wow -= 1
 
@@ -376,6 +379,9 @@ async def on_message(message):
 	elif gm <= 0 and "GoodMorning" in message.content:
 		await bot.send_message(message.channel, "GoodMorning")
 		gm = 5
+	elif gn <= 0 and "GoodNight" in message.content:
+		await bot.send_message(message.channel, "GoodNight")
+		gn = 5
 	elif "/o/" in message.content.lower() and message.author.bot == False:
 		await bot.send_message(message.channel, "\\o\\")
 	elif "\\o\\" in message.content.lower() and message.author.bot == False:
