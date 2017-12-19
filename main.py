@@ -356,8 +356,13 @@ async def tableflip():
 @bot.event
 async def on_message(message):
 	if message.author.id in victim_list:
-		if (message.server.id != "301829994567434241") and (random.randint(1,100) == 1):
-			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
+		if (message.server.id != "301829994567434241"):
+			pool = ["🇱", "🇪", "🇼", "🇩", "🍆"]
+			if message.author.id in victim_list and random.randint(1,100) == 1:
+				for letter in pool:
+					await bot.add_reaction(message, letter)
+			if (random.randint(1,100) == 1):
+				await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
 	global beaver
 	global gm
@@ -390,13 +395,7 @@ async def on_message(message):
 		await bot.send_message(message.channel, "\\o/")
 		wow = 5
 
-
-
 	# pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
-	pool = ["🇱", "🇪", "🇼", "🇩", "🍆"]
-	if message.author.id in victim_list and random.randint(1,100) == 1:
-		for letter in pool:
-			await bot.add_reaction(message, letter)
 
 	await bot.process_commands(message)
 	
