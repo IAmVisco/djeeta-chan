@@ -376,10 +376,10 @@ async def on_message(message):
 	if beaver <= 0 and "beaver" in message.content.lower() and ("dead" in message.content.lower() or "ded" in message.content.lower()):
 		await bot.send_message(message.channel, "MingLow")
 		beaver = 5
-	elif gm <= 0 and "GoodMorning" in message.content and message.author.bot == False and say not in message.content:
+	elif gm <= 0 and "GoodMorning" in message.content and message.author.bot == False and "say" not in message.content:
 		await bot.send_message(message.channel, "GoodMorning")
 		gm = 5
-	elif gn <= 0 and "GoodNight" in message.content and message.author.bot == False and say not in message.content:
+	elif gn <= 0 and "GoodNight" in message.content and message.author.bot == False and "say" not in message.content:
 		await bot.send_message(message.channel, "GoodNight")
 		gn = 5
 	elif "/o/" in message.content.lower() and message.author.bot == False:
