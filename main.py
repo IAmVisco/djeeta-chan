@@ -113,14 +113,13 @@ gn = 0
 wow = 0
 
 #creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for December", color=0x0bbbae)
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for January", color=0x0bbbae)
 events = [
-	["Divergent Knighthoods" , "30/11 - 8/12"],
-	["Christmas Event" , "15/12 - 25/12"],
-	["Attack on Titan Collab","8/12 - 20/12"],
-	["Xeno Diablo", "21/12 - 28/12"],
-	["Zodiac Event 2017", "28/12 - 31/12"],
-	["New Story Event", "31/12 - 9/01"]
+	["Right From Behind" , "31/12 - 09/01"],
+	["Rise of the Beasts" , "10/01 - 16/01"],
+	["Unite and Fight (Wind Bosses)","17/01 - 24/01"],
+	["Miscolored Memories re-run", "25/01 - 30/01"],
+	["New Story Event", "31/01 - 08/02"]
 ]
 
 for event in events:
