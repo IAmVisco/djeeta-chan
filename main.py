@@ -169,7 +169,10 @@ async def say(ctx, *, msg:str):
 @bot.command(pass_context = True, description = 'I will show you a list of roles that can be (un)assigned.')
 async def roles(ctx):
 	tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
-	bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta-chan")
+	if ctx.message.server.id == '267994151436550146':
+		bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta-chan")
+	else:
+		bot_role = discord.utils.get(ctx.message.server.roles, name = "Bot")
 
 	# lists the roles the bot can assign
 	for role in ctx.message.server.roles[1:]:
@@ -189,6 +192,7 @@ async def role(ctx, *, role: discord.Role):
 			await bot.add_roles(ctx.message.author, role)
 			await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been added to your roles.")
 	except Exception as e:
+		print(e)
 		await bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
 
 #rollin' rollin'
