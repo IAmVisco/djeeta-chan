@@ -105,8 +105,9 @@ fancy_answer_list = [
 	"Lady luck told me it's "
 ]
 
-gw_mode = False
-gwstart = datetime(2017, 11, 9, 19, 0, 0, 0, timezone('Asia/Tokyo'))
+gw_mode = True
+gwstart    = datetime(2018, 1, 17, 19, 0, 0, 0, timezone('Asia/Tokyo'))
+prelimsend = datetime(2018, 1, 18, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 beaver = 0
 gm = 0
 gn = 0
@@ -307,20 +308,23 @@ async def zen():
 @bot.command()
 async def gw():
 	if gw_mode:
-		if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
-			if datetime.now(timezone('Asia/Tokyo')).day - 11 == 0:
-				await bot.say(':point_right: :clock12: | Interlude ends and Round 1 starts in ' + str(30 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-			elif 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 11) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		if (datetime.now(timezone('Asia/Tokyo')).day == gwstart.day and (datetime.now(timezone('Asia/Tokyo')).hour >= 19)) or datetime.now(timezone('Asia/Tokyo')).day == gwstart.day + 1:	
+			print('Prelims!')
+			await bot.say(':point_right: :clock12: | Prelims end in '+ str(prelimsend.day - datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(prelimsend.hour - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(prelimsend.minute - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')				
+		elif (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
+			# if datetime.now(timezone('Asia/Tokyo')).day - 19 == 0:
+			# 	await bot.say(':point_right: :clock12: | Interlude ends and Round 1 starts in ' + str(30 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+			if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 19) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
-				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 11) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-		elif datetime.now(timezone('Asia/Tokyo')).day - 11 <= 5: # day of start(22) - 2
+				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 19) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		elif datetime.now(timezone('Asia/Tokyo')).day - 19 <= 5: # day of start(17) + 2
 			if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 11) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 19) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
-				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 11) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 19) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 		else:
-			await bot.say('Guild Wars 34 is over, thanks for your hard work.')				
+			await bot.say('Guild Wars 35 is over, thanks for your hard work.')				
 	else:
 		# print(datetime.now(timezone('Asia/Tokyo')))
 		# print(gwstart)

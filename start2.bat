@@ -1,1 +1,1 @@
-python dj2.py
+python old_main.py
