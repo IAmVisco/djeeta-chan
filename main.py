@@ -105,7 +105,7 @@ fancy_answer_list = [
 	"Lady luck told me it's "
 ]
 
-gw_mode = True
+gw_mode = False
 gwstart    = datetime(2018, 1, 17, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 1, 18, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 beaver = 0
@@ -333,7 +333,7 @@ async def gw():
 		# print(timedelta(seconds = diff.seconds))
 		m, s = divmod(diff.seconds, 60)
 		h, m = divmod(m, 60)
-		await bot.say('Guild Wars 35 will have **Wind** enemies. It is scheduled to arrive in January.')
+		await bot.say('Guild Wars 36 will have **Light** enemies. It is scheduled to arrive on Feb 14th.')
 
 @bot.command(pass_context = True)
 async def disgusting(ctx):
