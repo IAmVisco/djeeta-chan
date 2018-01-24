@@ -301,11 +301,11 @@ async def yesno():
 	await bot.say(ast.literal_eval(requests.get("http://yesno.wtf/api").text.replace("false", "\"false\"")).get('image'))
 
 #git api test 'n stuffs
-@bot.command()
+@bot.command(description = 'Random zen quote from GitHub.')
 async def zen():
 	await bot.say(requests.get("https://api.github.com/zen").text)
 
-@bot.command()
+@bot.command(description = 'I will show when GW round will start/end!')
 async def gw():
 	if gw_mode:
 		if (datetime.now(timezone('Asia/Tokyo')).day == gwstart.day and (datetime.now(timezone('Asia/Tokyo')).hour >= 19)) or datetime.now(timezone('Asia/Tokyo')).day == gwstart.day + 1:	
@@ -335,7 +335,7 @@ async def gw():
 		h, m = divmod(m, 60)
 		await bot.say('Guild Wars 36 will have **Light** enemies. It is scheduled to arrive on Feb 14th.')
 
-@bot.command(pass_context = True)
+@bot.command(pass_context = True, disgusting = 'Final is a perv')
 async def disgusting(ctx):
 	msg = ctx.message.content
 	if msg.strip() == "~disgusting":
