@@ -309,7 +309,7 @@ async def zen():
 async def gw():
 	if gw_mode:
 		if (datetime.now(timezone('Asia/Tokyo')).day == gwstart.day and (datetime.now(timezone('Asia/Tokyo')).hour >= 19)) or datetime.now(timezone('Asia/Tokyo')).day == gwstart.day + 1:	
-			print('Prelims!')
+			#print('Prelims!')
 			await bot.say(':point_right: :clock12: | Prelims end in '+ str(prelimsend.day - datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(prelimsend.hour - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(prelimsend.minute - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')				
 		elif (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
 			# if datetime.now(timezone('Asia/Tokyo')).day - 19 == 0:
