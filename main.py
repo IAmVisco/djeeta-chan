@@ -347,6 +347,7 @@ async def disgusting(ctx):
 async def mai():
 	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
 
+# emotes for phone mode
 @bot.command()
 async def shrug():
 	await bot.say("¯\_(ツ)_/¯")
