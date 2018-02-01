@@ -17,14 +17,14 @@ import os
 import requests
 import ast
 from datetime import datetime, timedelta
-import pyexcel as pe
+# import pyexcel as pe
 from pytz import timezone
 
 #enabling logging
 logging.basicConfig(level = logging.INFO)
 
-#assigning excel sheet
-sheet = pe.get_sheet(file_name = "trials.xlsx")
+# #assigning excel sheet
+# sheet = pe.get_sheet(file_name = "trials.xlsx")
 
 # list of insults
 insults_list = [
@@ -116,11 +116,12 @@ wow = 0
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for January", color=0x0bbbae)
 events = [
-	["Right From Behind" , "31/12 - 09/01"],
-	["Rise of the Beasts" , "10/01 - 16/01"],
-	["Unite and Fight (Wind Bosses)","17/01 - 24/01"],
-	["Miscolored Memories re-run", "25/01 - 30/01"],
-	["New Story Event", "31/01 - 08/02"]
+	["Auld Lanxiety" , "31/01 - 08/02"],
+	["Fenrir and Cerberus Showdowns" , "09/02 - 14/02"],
+	["Valentine Event Re-Run","11/02 - 21/02"],
+	["Unite and Fight (Light Bosses)","14/02 - 21/02"],
+	["What Make the Sky Blue pt.1 Re-Run", "22/02 - 27/02"],
+	["What Make the Sky Blue pt.2", "28/02 - 11/03"]
 ]
 
 for event in events:
@@ -193,7 +194,6 @@ async def role(ctx, *, role: discord.Role):
 			await bot.add_roles(ctx.message.author, role)
 			await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been added to your roles.")
 	except Exception as e:
-		print(e)
 		await bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
 
 #rollin' rollin'
@@ -253,34 +253,34 @@ async def reveal(ctx, *, userName):
 
 #trials based on excel table
 @bot.command(description = 'I will show you current or future trial!')
-async def trials(arg:str):
-	if arg == "today":
-		await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
-	elif arg.isdigit():
-		await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][0]) + " Trial")
-	elif arg.isalpha():    
-		for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-			if arg.lower() == sheet.row[int(record)][0].lower():
-				await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
-				break
-	else:
-		await bot.say("Please check your input and try again. Use ~help for more info.")
-
+async def trials():#arg:str):
+	# if arg == "today":
+	# 	await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
+	# elif arg.isdigit():
+	# 	await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][0]) + " Trial")
+	# elif arg.isalpha():    
+	# 	for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
+	# 		if arg.lower() == sheet.row[int(record)][0].lower():
+	# 			await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
+	# 			break
+	# else:
+	# 	await bot.say("Please check your input and try again. Use ~help for more info.")
+	await bot.say("I'm too lazy to write good code for this one.")
 #showdowns too
 @bot.command(description = 'I will show you current or future showdown!')
-async def showdowns(arg:str):
-	if arg == "today":
-		await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
-	elif arg.isdigit():
-		await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][1]) + " Showdown")
-	elif arg.isalpha():    
-		for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-			if arg.lower() == sheet.row[int(record)][1].lower():
-				await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][1]) + " showdown")
-				break
-	else:
-		await bot.say("Please check your input and try again. Use ~help for more info.")
-
+async def showdowns():#arg:str):
+	# if arg == "today":
+	# 	await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
+	# elif arg.isdigit():
+	# 	await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][1]) + " Showdown")
+	# elif arg.isalpha():    
+	# 	for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
+	# 		if arg.lower() == sheet.row[int(record)][1].lower():
+	# 			await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][1]) + " showdown")
+	# 			break
+	# else:
+	# 	await bot.say("Please check your input and try again. Use ~help for more info.")
+	await bot.say("I'm too lazy to write good code for this one.")
 #F
 @bot.command(pass_context = True, description = 'Press F to pay respects.')
 async def f(ctx):
