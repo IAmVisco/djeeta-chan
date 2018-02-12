@@ -105,9 +105,9 @@ fancy_answer_list = [
 	"Lady luck told me it's "
 ]
 
-gw_mode = False
-gwstart    = datetime(2018, 1, 17, 19, 0, 0, 0, timezone('Asia/Tokyo'))
-prelimsend = datetime(2018, 1, 18, 23, 59, 0, 0, timezone('Asia/Tokyo'))
+gw_mode = True
+gwstart    = datetime(2018, 12, 14, 19, 0, 0, 0, timezone('Asia/Tokyo'))
+prelimsend = datetime(2018, 1, 16, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 beaver = 0
 gm = 0
 gn = 0
@@ -308,34 +308,36 @@ async def zen():
 @bot.command(description = 'I will show when GW round will start/end!')
 async def gw():
 	if gw_mode:
-		if (datetime.now(timezone('Asia/Tokyo')).day == gwstart.day and (datetime.now(timezone('Asia/Tokyo')).hour >= 19)) or datetime.now(timezone('Asia/Tokyo')).day == gwstart.day + 1:	
-			#print('Prelims!')
-			await bot.say(':point_right: :clock12: | Prelims end in '+ str(prelimsend.day - datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(prelimsend.hour - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(prelimsend.minute - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')				
-		elif (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
+		if (datetime.now(timezone('Asia/Tokyo')).day == gwstart.day and 
+			(datetime.now(timezone('Asia/Tokyo')).hour >= 19)) or \
+			datetime.now(timezone('Asia/Tokyo')).day == gwstart.day + 1:	
+			await bot.say(':point_right: :clock12: | Prelims end in '+ str(prelimsend.day - 
+				datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(prelimsend.hour - 
+				datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(prelimsend.minute - 
+				datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')	
+		elif (datetime.now(timezone('Asia/Tokyo')).day <= gwstart.day):
+			await bot.say(':point_right: :clock1: | Prelims start in '+ str(gwstart.day - 
+				datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(gwstart.hour - 
+				datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - 
+				datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		elif (datetime.now(timezone('Asia/Tokyo')).hour >= 7):
 			# if datetime.now(timezone('Asia/Tokyo')).day - 19 == 0:
 			# 	await bot.say(':point_right: :clock12: | Interlude ends and Round 1 starts in ' + str(30 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
 				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 19) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
 				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 19) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-		elif datetime.now(timezone('Asia/Tokyo')).day - 19 <= 5: # day of start(17) + 2
+		elif datetime.now(timezone('Asia/Tokyo')).day - 16 <= 5: # day of start(14) + 2
 			if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
 				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 19) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
 				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 19) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 		else:
-			await bot.say('Guild Wars 35 is over, thanks for your hard work.')				
+			await bot.say('Guild Wars 36 is over, thanks for your hard work.')				
 	else:
-		# print(datetime.now(timezone('Asia/Tokyo')))
-		# print(gwstart)
-		diff = gwstart - datetime.now(timezone('Asia/Tokyo'))
-		# print(diff)
-		# print(timedelta(seconds = diff.seconds))
-		m, s = divmod(diff.seconds, 60)
-		h, m = divmod(m, 60)
 		await bot.say('Guild Wars 36 will have **Light** enemies. It is scheduled to arrive on Feb 14th.')
 
-@bot.command(pass_context = True, disgusting = 'Final is a perv')
+@bot.command(pass_context = True, description = 'Final is a perv')
 async def disgusting(ctx):
 	msg = ctx.message.content
 	if msg.strip() == "~disgusting":
