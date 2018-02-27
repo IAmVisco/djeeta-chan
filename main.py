@@ -69,8 +69,6 @@ insults_list = [
 	", You should need a license to be that ugly.",
 	", Are you always this stupid or is today a special occasion?",
 	", If what you don't know can't hurt you, you're invulnerable.",
-
-
 ]
 
 # user id of people to be insulted
@@ -81,20 +79,20 @@ victim_list = [
 	# "235080660442677248", # RedTF
 	# "174852783084666880", # D.E.D
 	# "195463465861644288", # Eu
-	"229273041954144257" # Sun
+	# "229273041954144257" # Sun
 ]
 
-wrong_names = [
-	"Anre",
-	"Tweyen",
-	"Threo",
-	"Feower",
-	"Seox",
-	"Seofon",
-	"Eahta",
-	"Niyon",
-	"Tien"
-]
+# wrong_names = [
+# 	"Anre",
+# 	"Tweyen",
+# 	"Threo",
+# 	"Feower",
+# 	"Seox",
+# 	"Seofon",
+# 	"Eahta",
+# 	"Niyon",
+# 	"Tien"
+# ]
 
 fancy_answer_list = [
 	"Without a doubt it's ",
@@ -108,7 +106,7 @@ fancy_answer_list = [
 gw_mode = True
 gwstart    = datetime(2018, 12, 14, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 1, 16, 23, 59, 0, 0, timezone('Asia/Tokyo'))
-beaver = 0
+# beaver = 0
 gm = 0
 gn = 0
 wow = 0
@@ -128,7 +126,7 @@ for event in events:
 	eventsEmbed.add_field(name=event[0], value=event[1], inline=False)
 
 #assigning prefix and description
-description = '''Multipurpose GBF oriented bot with useful (sometimes) commands!'''
+description = '''Multipurpose GBF oriented bot with useful commands and a bunch of emotes!'''
 bot = commands.Bot(command_prefix = '~', description = description)
 
 #starting up
@@ -145,6 +143,10 @@ async def on_ready():
 async def on_member_join(member):
 	if member.server.id == '267994151436550146':
 		await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
+	elif member.server.id == '417958676482097172':
+		# await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
+		member_role = discord.utils.get(member.server.roles, name = "Member")
+		await bot.add_roles(member, member_role)
 
 #our beloved emotes
 @bot.command(description = 'I will show your desired emote!')
@@ -233,7 +235,7 @@ async def choose(ctx):
 		await bot.say("Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
 
 
-	# old code that i need to remake to avaoid crashes with spaces overload
+	# old code that i need to remake to avoid crashes with spaces overload
 	# if ',' in choices:
 	# 	choices = choices.strip().split(',')
 	# 	await bot.say(":thinking:| I choose **" + random.choice(choices) + "!**")
@@ -254,36 +256,6 @@ async def reveal(ctx, *, userName):
 		user = discord.utils.get(ctx.message.server.members, display_name = userName)
 	await bot.say("I'm sure it's **" + user.name + "**!")
 
-#trials based on excel table
-@bot.command(description = 'I will show you current or future trial!')
-async def trials():#arg:str):
-	# if arg == "today":
-	# 	await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
-	# elif arg.isdigit():
-	# 	await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][0]) + " Trial")
-	# elif arg.isalpha():    
-	# 	for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-	# 		if arg.lower() == sheet.row[int(record)][0].lower():
-	# 			await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
-	# 			break
-	# else:
-	# 	await bot.say("Please check your input and try again. Use ~help for more info.")
-	await bot.say("I'm too lazy to write good code for this one.")
-#showdowns too
-@bot.command(description = 'I will show you current or future showdown!')
-async def showdowns():#arg:str):
-	# if arg == "today":
-	# 	await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
-	# elif arg.isdigit():
-	# 	await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][1]) + " Showdown")
-	# elif arg.isalpha():    
-	# 	for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-	# 		if arg.lower() == sheet.row[int(record)][1].lower():
-	# 			await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][1]) + " showdown")
-	# 			break
-	# else:
-	# 	await bot.say("Please check your input and try again. Use ~help for more info.")
-	await bot.say("I'm too lazy to write good code for this one.")
 #F
 @bot.command(pass_context = True, description = 'Press F to pay respects.')
 async def f(ctx):
@@ -301,7 +273,7 @@ async def f(ctx):
 	await bot.say(embed = respectsMessage)
 
 #yesno
-@bot.command(description = 'I will make a decesion for you!')
+@bot.command(description = 'I will make a decision for you!')
 async def yesno():
 	await bot.say(ast.literal_eval(requests.get("http://yesno.wtf/api").text.replace("false", "\"false\"")).get('image'))
 
@@ -381,22 +353,11 @@ async def tableflip():
 #insults
 @bot.event
 async def on_message(message):
-	if message.author.id in victim_list:
-		if (message.server.id != "301829994567434241"):
-			pool = ["🇱", "🇪", "🇼", "🇩", "🍆"]
-			if message.author.id in victim_list and random.randint(1,100) == 1:
-				for letter in pool:
-					await bot.add_reaction(message, letter)
-			if (random.randint(1,100) == 1):
-				await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
 
-	global beaver
 	global gm
 	global wow
 	global gn
 
-	if beaver > 0:
-		beaver -= 1
 	if gm > 0:
 		gm -= 1
 	if gn > 0:
@@ -404,9 +365,7 @@ async def on_message(message):
 	if wow > 0:
 		wow -= 1
 
-	if beaver <= 0 and "beaver" in message.content.lower() and ("dead" in message.content.lower() or "ded" in message.content.lower()):
-		await bot.send_message(message.channel, "MingLow")
-		beaver = 10
+
 	elif gm <= 0 and "GoodMorning" in message.content and message.author.bot == False and "say" not in message.content:
 		await bot.send_message(message.channel, "GoodMorning")
 		gm = 10
@@ -421,10 +380,45 @@ async def on_message(message):
 		await bot.send_message(message.channel, "\\o/")
 		wow = 10
 
-	# pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
-
 	await bot.process_commands(message)
-	
+
+#run token
+bot.run('Mzg2NDQ5MDkzMzg1Mzg4MDUz.DQQErQ.3SJ8ftYbFWIfQc2lIDVga2cU0cg')
+
+# DEAD CODE REGION 
+###############################################
+# trials based on excel table
+# @bot.command(description = 'I will show you current or future trial!')
+# async def trials():#arg:str):
+# 	# if arg == "today":
+# 	# 	await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
+# 	# elif arg.isdigit():
+# 	# 	await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][0]) + " Trial")
+# 	# elif arg.isalpha():    
+# 	# 	for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
+# 	# 		if arg.lower() == sheet.row[int(record)][0].lower():
+# 	# 			await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
+# 	# 			break
+# 	# else:
+# 	# 	await bot.say("Please check your input and try again. Use ~help for more info.")
+# 	await bot.say("I'm too lazy to write good code for this one.")
+# #showdowns too
+# @bot.command(description = 'I will show you current or future showdown!')
+
+# async def showdowns():#arg:str):
+# 	# if arg == "today":
+# 	# 	await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
+# 	# elif arg.isdigit():
+# 	# 	await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][1]) + " Showdown")
+# 	# elif arg.isalpha():    
+# 	# 	for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
+# 	# 		if arg.lower() == sheet.row[int(record)][1].lower():
+# 	# 			await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][1]) + " showdown")
+# 	# 			break
+# 	# else:
+# 	# 	await bot.say("Please check your input and try again. Use ~help for more info.")
+# 	await bot.say("I'm too lazy to write good code for this one.") 
+
 # @bot.event
 # async def on_message(message):
 # 	await bot.process_commands(message)	
@@ -437,5 +431,18 @@ async def on_message(message):
 # 			await bot.send_message(message.channel, "It's time to stop " + str(pepeGun) +"\nhttps://thumbs.gfycat.com/AdmirableShadyCur-size_restricted.gif")
 # 			break
 
-#run token
-bot.run('Mzg2NDQ5MDkzMzg1Mzg4MDUz.DQQErQ.3SJ8ftYbFWIfQc2lIDVga2cU0cg')
+#insults
+# if message.author.id in victim_list:
+# 	if (message.server.id != "301829994567434241"):
+# 		pool = ["🇱", "🇪", "🇼", "🇩", "🍆"]
+# 		pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
+# 		if message.author.id in victim_list and random.randint(1,100) == 1:
+# 			for letter in pool:
+# 				await bot.add_reaction(message, letter)
+# 		if (random.randint(1,100) == 1):
+# 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
+
+# Beaver is ded MingLow
+# if beaver <= 0 and "beaver" in message.content.lower() and ("dead" in message.content.lower() or "ded" in message.content.lower()):
+# 	await bot.send_message(message.channel, "MingLow")
+# 	beaver = 10
