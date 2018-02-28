@@ -159,14 +159,13 @@ gn = 0
 wow = 0
 
 #creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for January", color=0x0bbbae)
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for March", color=0x0bbbae)
 events = [
-	["Auld Lanxiety" , "31/01 - 08/02"],
-	["Fenrir and Cerberus Showdowns" , "09/02 - 14/02"],
-	["Valentine Event Re-Run","11/02 - 21/02"],
-	["Unite and Fight (Light Bosses)","14/02 - 21/02"],
-	["What Make the Sky Blue pt.1 Re-Run", "22/02 - 27/02"],
-	["What Make the Sky Blue pt.2", "28/02 - 11/03"]
+	["What Make the Sky Blue Part.II" , "08/02 - 11/03"],
+	["Rise of the Beasts" , "12/03 - 18/03"],
+	["Xeno Corrow","18/03 - 24/03"],
+	["Robomi: Generatons Re-Run", "24/03 - 30/03"],
+	["New Scenario Event", "31/03 - ???"]
 ]
 
 for event in events:
