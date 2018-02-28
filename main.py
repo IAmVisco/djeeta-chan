@@ -103,6 +103,53 @@ fancy_answer_list = [
 	"Lady luck told me it's "
 ]
 
+gifDict = {
+	'dayum': 'https://imgur.com/a/pEJEL',
+	'mmm': 'https://imgur.com/gBvDKwc',
+	'patpat': 'https://imgur.com/a/XnD3V',
+	'fu': 'https://imgur.com/a/2OQZW',
+	'salt': 'https://imgur.com/a/K3PLQ',
+	'drool': 'https://imgur.com/a/iKOMU',
+	'stop': 'https://imgur.com/a/OC7en',
+	'steel': 'https://imgur.com/a/hOBRw',
+	'welcome': 'https://imgur.com/a/u174P',
+	'snek': 'https://imgur.com/a/u174P',
+	'rolling': 'https://imgur.com/a/tIpbN',
+	'police': 'https://imgur.com/a/aIPPX',
+	'hkzoom': 'https://imgur.com/a/OLr8Y',
+	'anikiw': 'https://imgur.com/a/hydJh',
+	'despair': 'https://imgur.com/a/tIpbN',
+	'milos': 'https://imgur.com/a/LEXHN',
+	'shwing': 'https://imgur.com/a/BBr3X',
+	'chino': 'https://imgur.com/jxHLO4g',
+	'excited': 'https://imgur.com/a/dVAmT',
+	'boobs': 'https://imgur.com/a/gu5zO',
+	'bless': 'https://imgur.com/qp3hEkk',
+	'kagami': 'https://imgur.com/a/5EDPs',
+	'execution': 'https://imgur.com/a/TpCOW',
+	'joker': 'https://imgur.com/a/bNhnD',
+	'trueform': 'https://imgur.com/a/bNhnD',
+	'reeee': 'https://imgur.com/a/HnCji',
+	'umad': 'https://imgur.com/a/HnCji',
+	'spin': 'https://imgur.com/a/N6DTW',
+	'smile': 'https://imgur.com/a/s1CJN',
+	'umiface': 'https://imgur.com/a/rLURu',
+	'nice': 'https://imgur.com/a/mgw6A',
+	'laugh': 'https://imgur.com/a/ps5I5'
+}
+# on review
+# worms https://cdn.discordapp.com/attachments/348218497635188738/418486661249499136/Australien_worms.gif
+# buttblow http://1.media.dorkly.cvcdn.com/17/90/e957f68f0285658f03972f32126cbd8e.gif
+# you diedhttps://cdn.discordapp.com/attachments/348218497635188738/418484586989879296/IcNRfCv.gif
+# spoopy https://cdn.discordapp.com/attachments/348218497635188738/418483087291187200/1517614650820.gif
+# yagami https://imgur.com/gallery/PqVNv54
+# aizen https://cdn.discordapp.com/attachments/348218497635188738/418489907284017172/1307488195874.gif
+# flyer https://cdn.discordapp.com/attachments/348218497635188738/418490600950595585/giant.gif
+# swimsuit https://cdn.discordapp.com/attachments/348218497635188738/418491805349183488/1311802255647.gif
+
+# no name
+# https://78.media.tumblr.com/a0160ed8bb1b955a25f676da6d33da2f/tumblr_ntcha1rO5A1u0tkulo1_500.gif
+
 gw_mode = True
 gwstart    = datetime(2018, 12, 14, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 1, 16, 23, 59, 0, 0, timezone('Asia/Tokyo'))
@@ -160,6 +207,24 @@ async def emo(emoName:str):
 async def emolist():
 	await bot.say('<https://imgur.com/a/AlzuM>\n7mb pic behind the link ')
 
+@bot.command(description = 'I Will show you gif emoji!')
+async def gif(gifName:str):
+	try:
+		await bot.say(gifDict[gifName.lower()])
+	except:
+		await bot.say("No match found.")
+
+@bot.command(description = 'I will show you a list of animated emojis!')
+async def giflist():
+	# # await bot.say(gifDict.keys())
+	# outStr = ':pencil: __**I can show these gifs:**__\n'
+	# for key in gifDict.keys():
+	# 	outStr += (key + '\n')
+	# await bot.say(outStr)
+	gifEmbed=discord.Embed()
+	for pair in gifDict.items():
+		gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
+	await bot.say(embed=gifEmbed)
 
 #ninja echo
 @bot.command(pass_context = True, description = 'I will say smth. Make me say smth bad and I will ~~stab you~~ add you to visctoms :dagger:')
