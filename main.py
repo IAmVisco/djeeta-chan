@@ -171,6 +171,11 @@ events = [
 for event in events:
 	eventsEmbed.add_field(name=event[0], value=event[1], inline=False)
 
+gifEmbed=discord.Embed()
+for pair in gifDict.items():
+	gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
+	gifEmbed.set_footer(text = 'Help me review and add more gifs! https://pastebin.com/v3u8DG22')
+
 #assigning prefix and description
 description = '''Multipurpose GBF oriented bot with useful commands and a bunch of emotes!'''
 bot = commands.Bot(command_prefix = '~', description = description)
@@ -215,14 +220,6 @@ async def gif(gifName:str):
 
 @bot.command(description = 'I will show you a list of animated emojis!')
 async def giflist():
-	# # await bot.say(gifDict.keys())
-	# outStr = ':pencil: __**I can show these gifs:**__\n'
-	# for key in gifDict.keys():
-	# 	outStr += (key + '\n')
-	# await bot.say(outStr)
-	gifEmbed=discord.Embed()
-	for pair in gifDict.items():
-		gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
 	await bot.say(embed=gifEmbed)
 
 #ninja echo
