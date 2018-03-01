@@ -437,6 +437,8 @@ async def on_message(message):
 		await bot.send_message(message.channel, "\\o\\")
 	elif "\\o\\" in message.content.lower() and message.author.bot == False:
 		await bot.send_message(message.channel, "/o/")
+	elif "ayy" in message.content.lower() and message.author.bot == False:
+		await bot.send_message(message.channel, "lmao")
 	elif wow <= 0 and "\\o/" in message.content.lower() and message.author.bot == False:
 		await bot.send_message(message.channel, "\\o/")
 		wow = 10
