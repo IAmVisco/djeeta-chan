@@ -103,9 +103,13 @@ fancy_answer_list = [
 	"Lady luck told me it's "
 ]
 
+badWords = [
+	'faggot',
+	'nigger'
+]
 gifDict = {
 	'dayum': 'https://imgur.com/a/pEJEL',
-	'mmm': 'https://imgur.com/gBvDKwc',
+	# 'mmm': 'https://imgur.com/gBvDKwc',
 	'patpat': 'https://imgur.com/a/XnD3V',
 	'fu': 'https://imgur.com/a/2OQZW',
 	'salt': 'https://imgur.com/a/K3PLQ',
@@ -119,11 +123,11 @@ gifDict = {
 	'hkzoom': 'https://imgur.com/a/OLr8Y',
 	'anikiw': 'https://imgur.com/a/hydJh',
 	'despair': 'https://imgur.com/a/tIpbN',
-	'milos': 'https://imgur.com/a/LEXHN',
+	# 'milos': 'https://imgur.com/a/LEXHN',
 	'shwing': 'https://imgur.com/a/BBr3X',
 	'chino': 'https://imgur.com/jxHLO4g',
 	'excited': 'https://imgur.com/a/dVAmT',
-	'boobs': 'https://imgur.com/a/gu5zO',
+	# 'boobs': 'https://imgur.com/a/gu5zO',
 	'bless': 'https://imgur.com/qp3hEkk',
 	'kagami': 'https://imgur.com/a/5EDPs',
 	'execution': 'https://imgur.com/a/TpCOW',
@@ -194,10 +198,8 @@ async def on_ready():
 async def on_member_join(member):
 	if member.server.id == '267994151436550146':
 		await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
-	elif member.server.id == '417958676482097172':
-		# await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
-		member_role = discord.utils.get(member.server.roles, name = "Member")
-		await bot.add_roles(member, member_role)
+	elif member.server.id == '265292778756374529':
+		await bot.add_roles(member, discord.utils.get(member.server.roles, name = "pubs"))
 
 #our beloved emotes
 @bot.command(description = 'I will show your desired emote!')
@@ -437,16 +439,29 @@ async def on_message(message):
 		await bot.send_message(message.channel, "\\o\\")
 	elif "\\o\\" in message.content.lower() and message.author.bot == False:
 		await bot.send_message(message.channel, "/o/")
-	elif "ayy" in message.content.lower() and message.author.bot == False:
+	elif message.content.lower() == "ayy" and message.author.bot == False:
 		await bot.send_message(message.channel, "lmao")
 	elif wow <= 0 and "\\o/" in message.content.lower() and message.author.bot == False:
 		await bot.send_message(message.channel, "\\o/")
 		wow = 10
+	#profanity filter
+	if message.server.id == '265292778756374529':
+		for word in badWords:
+			if word in message.content.lower() and message.author.bot == False:
+				await bot.delete_message(message)
+				await bot.send_message(message.channel, message.author.mention + " is a baka")
+				await bot.add_roles(message.author, discord.utils.get(message.server.roles, name = 'mutedbaka'))
+				await asyncio.sleep(300)
+				await bot.remove_roles(message.author, discord.utils.get(message.server.roles, name = 'mutedbaka'))
+
+	if message.content.startswith('!') and not message.content.startswith('!emo'):
+		message.content = message.content.replace('!', '~')
 
 	await bot.process_commands(message)
 
 #run token
 bot.run('Mzg2NDQ5MDkzMzg1Mzg4MDUz.DQQErQ.3SJ8ftYbFWIfQc2lIDVga2cU0cg')
+
 
 # DEAD CODE REGION 
 ###############################################
