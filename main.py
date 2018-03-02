@@ -403,12 +403,13 @@ async def disgusting(ctx):
 async def bigmoji(emj: str):
 	try:
 		fields=str.split(':')
+		mim="png"
 		if len(fields)>2:
-			fields.pop(0)
+			mim=fields.pop(0)=="<a"? "gif" : "png"
 		#await bot.say(emj.url)#'https://discordapp.com/api/emojis/' + emj.id + '.png')
-		await bot.say(fields[0]+'\nhttps://discordapp.com/api/emojis/' + fields[1][:len(fields[1])-1] + '.png')
+		await bot.say(fields[0]+'\nhttps://discordapp.com/api/emojis/' + fields[1][:len(fields[1])-1] + mim)
 	except:
-		await bot.say('Sorry, I can\'t show global and nitro emoji yet')
+		await bot.say('Sorry, I can\'t show global and nitro emoji yet...')
 
 @bot.command()
 async def mai():
