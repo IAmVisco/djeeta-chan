@@ -210,6 +210,13 @@ async def emo(emoName:str):
 	except:
 		await bot.say("No match found.")
 
+@bot.command(description = 'I will show your desired siete emote!')
+async def siete(emoName:str):	
+	try:
+		await bot.upload(os.getcwd() + '/res/siete/' + emoName.lower() + '.jpg')
+	except:
+		await bot.say("No match found.")
+
 @bot.command(description = 'I will show you a list with all emotes!')
 async def emolist():
 	await bot.say('<https://imgur.com/a/AlzuM>\n7mb pic behind the link ')
