@@ -252,15 +252,16 @@ async def roles(ctx):
 #assigning and unassigning roles
 @bot.command(pass_context = True, description = 'I will (un)assign you desired role!')
 async def role(ctx, *, role: discord.Role):
-	try:
-		if role in ctx.message.author.roles:
-			await bot.remove_roles(ctx.message.author, role)
-			await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been removed from your roles.")
-		else:
-			await bot.add_roles(ctx.message.author, role)
-			await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been added to your roles.")
-	except Exception as e:
-		await bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
+	if ctx.message.server.id != '265292778756374529':
+		try:
+			if role in ctx.message.author.roles:
+				await bot.remove_roles(ctx.message.author, role)
+				await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been removed from your roles.")
+			else:	
+				await bot.add_roles(ctx.message.author, role)
+				await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been added to your roles.")
+		except Exception as e:
+			await bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
 
 #rollin' rollin'
 @bot.command(description = 'I will roll a dice for you!')
