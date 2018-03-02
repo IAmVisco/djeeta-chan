@@ -399,9 +399,14 @@ async def disgusting(ctx):
 		await bot.upload(os.getcwd() + '/res/disgusting/' + msg[12:] + '.png')
 
 @bot.command(description = 'I will show bigger version of your emoji!')
-async def bigmoji(emj: discord.Emoji):
+# async def bigmoji(emj: discord.Emoji):
+async def bigmoji(emj: str):
 	try:
-		await bot.say(emj.url)#'https://discordapp.com/api/emojis/' + emj.id + '.png')
+		fields=str.split(':')
+		if len(fields)>2:
+			fields.pop(0)
+		#await bot.say(emj.url)#'https://discordapp.com/api/emojis/' + emj.id + '.png')
+		await bot.say(fields[0]+'\nhttps://discordapp.com/api/emojis/' + fields[1][:len(fields[1])-1] + '.png')
 	except:
 		await bot.say('Sorry, I can\'t show global and nitro emoji yet')
 
@@ -419,7 +424,7 @@ async def lenny():
 	await bot.say("( ͡° ͜ʖ ͡°)")
 
 @bot.command()
-async def tableflip():
+async def tableflip():	
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
 #insults
