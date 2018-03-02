@@ -405,7 +405,8 @@ async def bigmoji(emj: str):
 		fields=str.split(':')
 		mim=".png"
 		if len(fields)>2:
-			mim=fields.pop(0)=="<a"? ".gif" : ".png"
+			if fields.pop(0)=="<a":
+				mim=".gif"
 		#await bot.say(emj.url)#'https://discordapp.com/api/emojis/' + emj.id + '.png')
 		await bot.say(fields[0]+'\nhttps://discordapp.com/api/emojis/' + fields[1][:len(fields[1])-1] + mim)
 	except:
