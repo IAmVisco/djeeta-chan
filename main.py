@@ -154,7 +154,7 @@ gifDict = {
 # no name
 # https://78.media.tumblr.com/a0160ed8bb1b955a25f676da6d33da2f/tumblr_ntcha1rO5A1u0tkulo1_500.gif
 
-gw_mode = True
+gw_mode = False
 gwstart    = datetime(2018, 12, 14, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 1, 16, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 # beaver = 0
@@ -199,6 +199,7 @@ async def on_member_join(member):
 	if member.server.id == '267994151436550146':
 		await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
 	elif member.server.id == '265292778756374529':
+		await asyncio.sleep(5)
 		await bot.add_roles(member, discord.utils.get(member.server.roles, name = "pubs"))
 
 #our beloved emotes
@@ -386,7 +387,7 @@ async def gw():
 		else:
 			await bot.say('Guild Wars 36 is over, thanks for your hard work.')				
 	else:
-		await bot.say('Guild Wars 36 will have **Light** enemies. It is scheduled to arrive on Feb 14th.')
+		await bot.say('Guild Wars 37 will have **Dark** enemies. It is scheduled to arrive in late April.')
 
 @bot.command(pass_context = True, description = 'Final is a perv')
 async def disgusting(ctx):
