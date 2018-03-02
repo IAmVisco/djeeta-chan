@@ -398,6 +398,13 @@ async def disgusting(ctx):
 	elif int(msg[12:]) > 0 and int(msg[12:]) < 38 :
 		await bot.upload(os.getcwd() + '/res/disgusting/' + msg[12:] + '.png')
 
+@bot.command(description = 'I will show bigger version of your emoji!')
+async def bigmoji(emj: discord.Emoji):
+	try:
+		await bot.say(emj.url)#'https://discordapp.com/api/emojis/' + emj.id + '.png')
+	except:
+		await bot.say('Sorry, I can\'t show global and nitro emoji yet')
+
 @bot.command()
 async def mai():
 	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
