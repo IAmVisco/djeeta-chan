@@ -474,7 +474,8 @@ async def on_message(message):
 				await asyncio.sleep(300)
 				await bot.remove_roles(message.author, discord.utils.get(message.server.roles, name = 'mutedbaka'))
 
-	if message.content.startswith('!') and not message.content.startswith('!emo'):
+	if message.content.startswith('!') and not (message.content.startswith('!emo') 
+		or message.content.startswith('!events')):
 		message.content = message.content.replace('!', '~')
 
 	await bot.process_commands(message)
