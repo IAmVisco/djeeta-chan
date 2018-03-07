@@ -439,26 +439,26 @@ async def on_message(message):
 
 	global gm
 	global gn
-	if message.author.bot:
-		return
-	if "GoodMorning" in message.content and "say" not in message.content.lower():
-		await bot.send_message(message.channel, "GoodMorning")
-		gm = False
-		await asyncio.sleep(60)
-		gm = True
-	elif "GoodNight" in message.content and "say" not in message.content.lower():
-		await bot.send_message(message.channel, "GoodNight")
-		gn = False
-		await asyncio.sleep(60)
-		gn = True
-	elif "/o/" in message.content.lower():
-		await bot.send_message(message.channel, "\\o\\")
-	elif "\\o\\" in message.content.lower():
-		await bot.send_message(message.channel, "/o/")
-	elif message.content.lower() == "ayy":
-		await bot.send_message(message.channel, "lmao")
-	elif "\\o/" in message.content.lower():
-		await bot.send_message(message.channel, "\\o/")
+
+	if not message.author.bot:
+		if "GoodMorning" in message.content and "say" not in message.content.lower():
+			await bot.send_message(message.channel, "GoodMorning")
+			gm = False
+			await asyncio.sleep(60)
+			gm = True
+		elif "GoodNight" in message.content and "say" not in message.content.lower():
+			await bot.send_message(message.channel, "GoodNight")
+			gn = False
+			await asyncio.sleep(60)
+			gn = True
+		elif "/o/" in message.content.lower():
+			await bot.send_message(message.channel, "\\o\\")
+		elif "\\o\\" in message.content.lower():
+			await bot.send_message(message.channel, "/o/")
+		elif message.content.lower() == "ayy":
+			await bot.send_message(message.channel, "lmao")
+		elif "\\o/" in message.content.lower():
+			await bot.send_message(message.channel, "\\o/")
 
 	#profanity filter
 	if message.server.id == '265292778756374529':
