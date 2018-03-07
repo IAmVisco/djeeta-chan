@@ -437,37 +437,33 @@ async def tableflip():
 @bot.event
 async def on_message(message):
 
-#	global gm
-#	global gn
-#
-#	if all(gm, "GoodMorning" in message.content, 
-#		not message.author.bot, "say" not in message.content):
-#		await bot.send_message(message.channel, "GoodMorning")
-#		gm = False
-#		await asyncio.sleep(60)
-#		gm = True
-#	elif all(gn, "GoodNight" in message.content, 
-#		not message.author.bot, "say" not in message.content):
-#		await bot.send_message(message.channel, "GoodNight")
-#		gn = False
-#		await asyncio.sleep(60)
-#		gn = 
-#		
-# 	el
-
-	if "/o/" in message.content.lower() and not message.author.bot:
+	global gm
+	global gn
+	if message.author.bot:
+		return
+	if "goodmorning" in message.content.lower() and "say" not in message.content.lower():
+		await bot.send_message(message.channel, "Good Morning")
+		gm = False
+		await asyncio.sleep(60)
+		gm = True
+	elif "goodnight" in message.content.lower() and "say" not in message.content.lower():
+		await bot.send_message(message.channel, "Good Night")
+		gn = False
+		await asyncio.sleep(60)
+		gn = True
+	elif "/o/" in message.content.lower():
 		await bot.send_message(message.channel, "\\o\\")
-	elif "\\o\\" in message.content.lower() and not message.author.bot:
+	elif "\\o\\" in message.content.lower():
 		await bot.send_message(message.channel, "/o/")
-	elif message.content.lower() == "ayy" and not message.author.bot:
+	elif message.content.lower() == "ayy":
 		await bot.send_message(message.channel, "lmao")
-	elif "\\o/" in message.content.lower() and not message.author.bot:
+	elif "\\o/" in message.content.lower():
 		await bot.send_message(message.channel, "\\o/")
 
 	#profanity filter
 	if message.server.id == '265292778756374529':
 		for word in badWords:
-			if word in message.content.lower() and message.author.bot == False:
+			if word in message.content.lower():
 				await bot.delete_message(message)
 				await bot.send_message(message.channel, message.author.mention + " is a baka")
 				await bot.add_roles(message.author, discord.utils.get(message.server.roles, name = 'mutedbaka'))
