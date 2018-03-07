@@ -437,22 +437,25 @@ async def tableflip():
 @bot.event
 async def on_message(message):
 
-	global gm
-	global gn
+#	global gm
+#	global gn
+#
+#	if all(gm, "GoodMorning" in message.content, 
+#		not message.author.bot, "say" not in message.content):
+#		await bot.send_message(message.channel, "GoodMorning")
+#		gm = False
+#		await asyncio.sleep(60)
+#		gm = True
+#	elif all(gn, "GoodNight" in message.content, 
+#		not message.author.bot, "say" not in message.content):
+#		await bot.send_message(message.channel, "GoodNight")
+#		gn = False
+#		await asyncio.sleep(60)
+#		gn = 
+#		
+# 	el
 
-	if all(gm, "GoodMorning" in message.content, 
-		not message.author.bot, "say" not in message.content):
-		await bot.send_message(message.channel, "GoodMorning")
-		gm = False
-		await asyncio.sleep(60)
-		gm = True
-	elif all(gn, "GoodNight" in message.content, 
-		not message.author.bot, "say" not in message.content):
-		await bot.send_message(message.channel, "GoodNight")
-		gn = False
-		await asyncio.sleep(60)
-		gn = True
-	elif "/o/" in message.content.lower() and not message.author.bot:
+	if "/o/" in message.content.lower() and not message.author.bot:
 		await bot.send_message(message.channel, "\\o\\")
 	elif "\\o\\" in message.content.lower() and not message.author.bot:
 		await bot.send_message(message.channel, "/o/")
