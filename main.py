@@ -433,10 +433,29 @@ async def lenny():
 async def tableflip():	
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
+@bot.event 
+async def on_member_update(before, after):
+	# If Casuals or GuestStar role is added, remove pub role
+
+	cas_role = [before.roles[i] for i in range(len(before.roles)) if str(before.roles[i]) == "Casuals" or before.roles[i].id == "340178120919351307"]
+	old_match = len(cas_role)
+	cas_role = [after.roles[i] for i in range(len(after.roles)) if str(after.roles[i]) == "Casuals" or after.roles[i].id == "340178120919351307"]
+	if len(cas_role) <= old_match:
+		return
+	pub_role = [before.roles[i] for i in range(len(before.roles)) if before.roles[i].id == "419124938247766026"]
+	if len(pub_role) == 0:
+		return
+	#assured that he still has the pub role since only 1 update at a time, but for ensurace
+	pub_role = [after.roles[i] for i in range(len(after.roles)) if after.roles[i].id == "419124938247766026"]
+	if len(pub_role) == 0:
+		return
+	await bot.remove_roles(after, pub_role[0])
+
+
+
 #insults
 @bot.event
 async def on_message(message):
-
 	global gm
 	global gn
 	if message.author.bot:
