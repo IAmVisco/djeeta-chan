@@ -104,9 +104,10 @@ fancy_answer_list = [
 ]
 
 badWords = [
+	'nigger',
 	'faggot',
-	'nigger'
 ]
+
 gifDict = {
 	'dayum': 'https://imgur.com/a/pEJEL',
 	# 'mmm': 'https://imgur.com/gBvDKwc',
@@ -158,9 +159,8 @@ gw_mode = False
 gwstart    = datetime(2018, 12, 14, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 1, 16, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 # beaver = 0
-gm = 0
-gn = 0
-wow = 0
+gm = True
+gn = True
 
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for March", color=0x0bbbae)
@@ -438,32 +438,29 @@ async def tableflip():
 async def on_message(message):
 
 	global gm
-	global wow
 	global gn
 
-	if gm > 0:
-		gm -= 1
-	if gn > 0:
-		gn -= 1
-	if wow > 0:
-		wow -= 1
-
-
-	elif gm <= 0 and "GoodMorning" in message.content and message.author.bot == False and "say" not in message.content:
+	if all(gm, "GoodMorning" in message.content, 
+		not message.author.bot, "say" not in message.content):
 		await bot.send_message(message.channel, "GoodMorning")
-		gm = 10
-	elif gn <= 0 and "GoodNight" in message.content and message.author.bot == False and "say" not in message.content:
+		gm = False
+		await asyncio.sleep(60)
+		gm = True
+	elif all(gn, "GoodNight" in message.content, 
+		not message.author.bot, "say" not in message.content):
 		await bot.send_message(message.channel, "GoodNight")
-		gn = 10
-	elif "/o/" in message.content.lower() and message.author.bot == False:
+		gn = False
+		await asyncio.sleep(60)
+		gn = True
+	elif "/o/" in message.content.lower() and not message.author.bot:
 		await bot.send_message(message.channel, "\\o\\")
-	elif "\\o\\" in message.content.lower() and message.author.bot == False:
+	elif "\\o\\" in message.content.lower() and not message.author.bot:
 		await bot.send_message(message.channel, "/o/")
-	elif message.content.lower() == "ayy" and message.author.bot == False:
+	elif message.content.lower() == "ayy" and not message.author.bot:
 		await bot.send_message(message.channel, "lmao")
-	elif wow <= 0 and "\\o/" in message.content.lower() and message.author.bot == False:
+	elif "\\o/" in message.content.lower() and not message.author.bot:
 		await bot.send_message(message.channel, "\\o/")
-		wow = 10
+
 	#profanity filter
 	if message.server.id == '265292778756374529':
 		for word in badWords:
