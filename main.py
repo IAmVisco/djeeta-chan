@@ -17,14 +17,12 @@ import os
 import requests
 import ast
 from datetime import datetime, timedelta
-# import pyexcel as pe
 from pytz import timezone
+from PIL import Image, ImageOps
+import urllib.request
 
 #enabling logging
 logging.basicConfig(level = logging.INFO)
-
-# #assigning excel sheet
-# sheet = pe.get_sheet(file_name = "trials.xlsx")
 
 # list of insults
 insults_list = [
@@ -420,10 +418,6 @@ async def bigmoji(ctx):
 async def mai():
 	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
 
-# @bot.command() for future use
-# async def avatar(user: discord.Member):
-# 	await bot.say(user.avatar_url)
-
 # emotes for phone mode
 @bot.command()
 async def shrug():
@@ -454,7 +448,6 @@ async def on_member_update(before, after):
 	if len(pub_role) == 0:
 		return
 	await bot.remove_roles(after, pub_role[0])
-
 
 @bot.event
 async def on_message(message):
@@ -499,6 +492,42 @@ async def on_message(message):
 
 #run token
 bot.run('Mzg2NDQ5MDkzMzg1Mzg4MDUz.DQQErQ.3SJ8ftYbFWIfQc2lIDVga2cU0cg')
+
+# FOR FUTURE USE
+###############################################
+
+# @bot.command()
+# async def avatar(user: discord.Member):
+# 	await bot.say(user.avatar_url)
+
+# @bot.command()
+# async def names(user : discord.User):
+# 	await bot.say("Name " + user.name + " Nickname " + user.display_name)
+
+# # bless
+# @bot.command()
+# async def bless(user: discord.User):
+# 	try:
+# 		url = urllib.request.Request(user.avatar_url, headers={'User-Agent': 'Mozilla/5.0'})
+# 		with urllib.request.urlopen(url) as response, open(os.getcwd() + '/res/etc/image.png', 'wb') as out_file:
+# 			data = response.read()
+# 			out_file.write(data)
+# 		size = 96, 96
+# 		mask = Image.open(os.getcwd() + '/res/etc/mask.png').convert("L")
+# 		im = Image.open(os.getcwd() + '/res/etc/image.png')
+# 		out = ImageOps.fit(im, mask.size, centering = (0.5, 0.5))
+# 		out.putalpha(mask)
+# 		out.thumbnail(size, Image.ANTIALIAS)
+# 		img_w, img_h = out.size
+# 		bg = Image.open(os.getcwd() + '/res/etc/bless.png').convert("RGBA")
+# 		offset = (160 - img_w // 2, 110 - img_h // 2)
+# 		bg.alpha_composite(out, offset)
+# 		bg.save(os.getcwd() + '/res/etc/bless_out.png')
+# 		await bot.upload(os.getcwd() + '/res/etc/bless_out.png')
+# 		os.remove(os.getcwd() + '/res/etc/bless_out.png')
+# 		os.remove(os.getcwd() + '/res/etc/image.png')
+# 	except:
+# 		await bot.say("Check your input and try again. The format is ~bless <mention>")
 
 
 # DEAD CODE REGION 
