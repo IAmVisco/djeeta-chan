@@ -219,7 +219,7 @@ async def siete(emoName:str):
 
 @bot.command(description = 'I will show you a list with all emotes!')
 async def emolist():
-	await bot.say('<https://imgur.com/a/Go4bZ>\nHidden cuz big pic')
+	await bot.say('<https://imgur.com/a/jmGm3>\nHidden cuz big pic')
 
 @bot.command(description = 'I Will show you gif emoji!')
 async def gif(gifName:str):

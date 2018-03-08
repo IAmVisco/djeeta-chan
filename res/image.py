@@ -10,7 +10,7 @@ pics = [getcwd() + "\\" + folder + "\\" + f for f in listdir(getcwd() + "\\" + f
 images = map(Image.open, pics)
 
 width = 1800
-height = (len(pics)//12 - 1) * 160
+height = (len(pics)//12 - 1) * 160 if folder == 'emotes' else (len(pics)//12 + 1) * 160
 
 new_im = Image.new('RGBA', (width, height), (0,0,0))
 draw = ImageDraw.Draw(new_im)
