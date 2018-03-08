@@ -104,9 +104,10 @@ fancy_answer_list = [
 ]
 
 badWords = [
+	'nigger',
 	'faggot',
-	'nigger'
 ]
+
 gifDict = {
 	'dayum': 'https://imgur.com/a/pEJEL',
 	# 'mmm': 'https://imgur.com/gBvDKwc',
@@ -158,9 +159,8 @@ gw_mode = False
 gwstart    = datetime(2018, 12, 14, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 1, 16, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 # beaver = 0
-gm = 0
-gn = 0
-wow = 0
+gm = True
+gn = True
 
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for March", color=0x0bbbae)
@@ -213,13 +213,13 @@ async def emo(emoName:str):
 @bot.command(description = 'I will show your desired siete emote!')
 async def siete(emoName:str):	
 	try:
-		await bot.upload(os.getcwd() + '/res/siete/' + emoName.lower() + '.jpg')
+		await bot.upload(os.getcwd() + '/res/siete/' + emoName.lower() + '.png')
 	except:
 		await bot.say("No match found.")
 
 @bot.command(description = 'I will show you a list with all emotes!')
 async def emolist():
-	await bot.say('<https://imgur.com/a/AlzuM>\n7mb pic behind the link ')
+	await bot.say('<https://imgur.com/a/Go4bZ>\nHidden cuz big pic')
 
 @bot.command(description = 'I Will show you gif emoji!')
 async def gif(gifName:str):
@@ -433,48 +433,64 @@ async def lenny():
 async def tableflip():	
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
+@bot.event 
+async def on_member_update(before, after):
+	# If Casuals or GuestStar role is added, remove pub role
+
+	cas_role = [before.roles[i] for i in range(len(before.roles)) if str(before.roles[i]) == "Casuals" or before.roles[i].id == "340178120919351307"]
+	old_match = len(cas_role)
+	cas_role = [after.roles[i] for i in range(len(after.roles)) if str(after.roles[i]) == "Casuals" or after.roles[i].id == "340178120919351307"]
+	if len(cas_role) <= old_match:
+		return
+	pub_role = [before.roles[i] for i in range(len(before.roles)) if before.roles[i].id == "419124938247766026"]
+	if len(pub_role) == 0:
+		return
+	#assured that he still has the pub role since only 1 update at a time, but for ensurace
+	pub_role = [after.roles[i] for i in range(len(after.roles)) if after.roles[i].id == "419124938247766026"]
+	if len(pub_role) == 0:
+		return
+	await bot.remove_roles(after, pub_role[0])
+
+
+
 #insults
 @bot.event
 async def on_message(message):
-
 	global gm
-	global wow
 	global gn
 
-	if gm > 0:
-		gm -= 1
-	if gn > 0:
-		gn -= 1
-	if wow > 0:
-		wow -= 1
+	if not message.author.bot:
+		if "GoodMorning" in message.content and "say" not in message.content.lower():
+			await bot.send_message(message.channel, "GoodMorning")
+			gm = False
+			await asyncio.sleep(60)
+			gm = True
+		elif "GoodNight" in message.content and "say" not in message.content.lower():
+			await bot.send_message(message.channel, "GoodNight")
+			gn = False
+			await asyncio.sleep(60)
+			gn = True
+		elif "/o/" in message.content.lower():
+			await bot.send_message(message.channel, "\\o\\")
+		elif "\\o\\" in message.content.lower():
+			await bot.send_message(message.channel, "/o/")
+		elif message.content.lower() == "ayy":
+			await bot.send_message(message.channel, "lmao")
+		elif "\\o/" in message.content.lower():
+			await bot.send_message(message.channel, "\\o/")
 
-
-	elif gm <= 0 and "GoodMorning" in message.content and message.author.bot == False and "say" not in message.content:
-		await bot.send_message(message.channel, "GoodMorning")
-		gm = 10
-	elif gn <= 0 and "GoodNight" in message.content and message.author.bot == False and "say" not in message.content:
-		await bot.send_message(message.channel, "GoodNight")
-		gn = 10
-	elif "/o/" in message.content.lower() and message.author.bot == False:
-		await bot.send_message(message.channel, "\\o\\")
-	elif "\\o\\" in message.content.lower() and message.author.bot == False:
-		await bot.send_message(message.channel, "/o/")
-	elif message.content.lower() == "ayy" and message.author.bot == False:
-		await bot.send_message(message.channel, "lmao")
-	elif wow <= 0 and "\\o/" in message.content.lower() and message.author.bot == False:
-		await bot.send_message(message.channel, "\\o/")
-		wow = 10
 	#profanity filter
 	if message.server.id == '265292778756374529':
 		for word in badWords:
-			if word in message.content.lower() and message.author.bot == False:
+			if word in message.content.lower():
 				await bot.delete_message(message)
 				await bot.send_message(message.channel, message.author.mention + " is a baka")
 				await bot.add_roles(message.author, discord.utils.get(message.server.roles, name = 'mutedbaka'))
 				await asyncio.sleep(300)
 				await bot.remove_roles(message.author, discord.utils.get(message.server.roles, name = 'mutedbaka'))
 
-	if message.content.startswith('!') and not message.content.startswith('!emo'):
+	if message.content.startswith('!') and not (message.content.startswith('!emo') 
+		or message.content.startswith('!events')):
 		message.content = message.content.replace('!', '~')
 
 	await bot.process_commands(message)
