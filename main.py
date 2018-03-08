@@ -460,12 +460,12 @@ async def on_message(message):
 	global gn
 
 	if not message.author.bot:
-		if "GoodMorning" in message.content and "say" not in message.content.lower():
+		if gm and "GoodMorning" in message.content and "say" not in message.content.lower():
 			await bot.send_message(message.channel, "GoodMorning")
 			gm = False
 			await asyncio.sleep(60)
 			gm = True
-		elif "GoodNight" in message.content and "say" not in message.content.lower():
+		elif gn and "GoodNight" in message.content and "say" not in message.content.lower():
 			await bot.send_message(message.channel, "GoodNight")
 			gn = False
 			await asyncio.sleep(60)
