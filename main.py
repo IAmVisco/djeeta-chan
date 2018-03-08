@@ -254,7 +254,7 @@ async def roles(ctx):
 		if role < bot_role:
 			tmp += "\n  - " + role.name
 
-	await bot.say(tmp)	
+	await bot.say(tmp)
 
 #assigning and unassigning roles
 @bot.command(pass_context = True, description = 'I will (un)assign you desired role!')
@@ -292,7 +292,7 @@ async def roll(roll:str):
 async def ping(ctx):
 	msg = await bot.say("Pong!")
 	await bot.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - 
-		ctx.message.timestamp).microseconds//1000)) + "ms")
+		ctx.message.timestamp).microseconds // 1000)) + "ms")
 
 #choose smth
 @bot.command(pass_context = True, description = 'I will make a choice for you! \
@@ -359,7 +359,7 @@ async def gw():
 	if gw_mode:
 		if (datetime.now(timezone('Asia/Tokyo')).day == gwstart.day and 
 			(datetime.now(timezone('Asia/Tokyo')).hour >= 19)) or \
-			datetime.now(timezone('Asia/Tokyo')).day == gwstart.day + 1:	
+			datetime.now(timezone('Asia/Tokyo')).day == gwstart.day + 1:
 			await bot.say(':point_right: :clock12: | Prelims end in '+ str(prelimsend.day -
 				datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(prelimsend.hour -
 				datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(prelimsend.minute -
@@ -393,7 +393,7 @@ async def gw():
 				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) + 
 					' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 		else:
-			await bot.say('Guild Wars 36 is over, thanks for your hard work.')				
+			await bot.say('Guild Wars 36 is over, thanks for your hard work.')
 	else:
 		await bot.say('Guild Wars 37 will have **Dark** enemies. It is scheduled to arrive in late April.')
 
