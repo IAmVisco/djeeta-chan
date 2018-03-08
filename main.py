@@ -420,6 +420,10 @@ async def bigmoji(ctx):
 async def mai():
 	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
 
+# @bot.command() for future use
+# async def avatar(user: discord.Member):
+# 	await bot.say(user.avatar_url)
+
 # emotes for phone mode
 @bot.command()
 async def shrug():
@@ -452,8 +456,6 @@ async def on_member_update(before, after):
 	await bot.remove_roles(after, pub_role[0])
 
 
-
-#insults
 @bot.event
 async def on_message(message):
 	global gm
