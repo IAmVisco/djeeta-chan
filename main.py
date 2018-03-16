@@ -399,8 +399,8 @@ async def gw():
 async def disgusting(ctx):
 	msg = ctx.message.content
 	if msg.strip() == "~disgusting":
-		await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,37)) + '.png')
-	elif int(msg[12:]) > 0 and int(msg[12:]) < 38 :
+		await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,38)) + '.png')
+	elif int(msg[12:]) > 0 and int(msg[12:]) < 39 :
 		await bot.upload(os.getcwd() + '/res/disgusting/' + msg[12:] + '.png')
 
 @bot.command(pass_context = True, description = 'I will show bigger version of your emoji!')
