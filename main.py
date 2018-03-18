@@ -418,6 +418,10 @@ async def bigmoji(ctx):
 async def mai():
 	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
 
+@bot.command(description = "I will retrieve avatar URL of user you provided!")
+async def avatar(user: discord.Member):
+	await bot.say(user.avatar_url)
+
 # emotes for phone mode
 @bot.command()
 async def shrug():
