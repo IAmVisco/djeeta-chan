@@ -22,7 +22,11 @@ from PIL import Image, ImageOps
 import urllib.request
 
 #enabling logging
-logging.basicConfig(level = logging.INFO)
+logger = logging.getLogger('discord')
+logger.setLevel(logging.INFO)
+handler = logging.FileHandler(filename = 'errors.log', encoding = 'utf-8', mode = 'w')
+handler.setFormatter(logging.Formatter('%(levelname)s:%(name)s: %(message)s'))
+logger.addHandler(handler)
 
 # list of insults
 insults_list = [
@@ -228,7 +232,7 @@ async def gif(gifName:str):
 
 @bot.command(description = 'I will show you a list of animated emojis!')
 async def giflist():
-	await bot.say(embed=gifEmbed)
+	await bot.say(embed = gifEmbed)
 
 #ninja echo
 @bot.command(pass_context = True, description = 'I will say smth. Make me say smth bad and I will ~~stab you~~ add you to visctoms :dagger:')
@@ -248,10 +252,10 @@ async def roles(ctx):
 		bot_role = discord.utils.get(ctx.message.server.roles, name = "Bot")
 
 	# lists the roles the bot can assign
-	for role in ctx.message.server.roles[1:]:
-		if role < bot_role:
+	for role in ctx.message.server.roles:
+		if role < bot_role and not role.is_everyone:
 			tmp += "\n  - " + role.name
-
+	print(tmp)
 	await bot.say(tmp)
 
 #assigning and unassigning roles
