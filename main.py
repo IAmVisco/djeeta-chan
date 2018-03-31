@@ -165,13 +165,12 @@ gm = True
 gn = True
 
 #creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for March", color=0x0bbbae)
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for April", color=0x0bbbae)
 events = [
-	["What Make the Sky Blue Part.II" , "08/02 - 11/03"],
-	["Rise of the Beasts" , "12/03 - 18/03"],
-	["Xeno Corrow","18/03 - 24/03"],
-	["Robomi: Generatons Re-Run", "24/03 - 30/03"],
-	["New Scenario Event", "31/03 - ???"]
+	["Robomi Z" , "31/03 - 08/04"],
+	["Detective Conan Collab" , "08/04 - 20/04"],
+	["Guild Wars (Dark Enemies)", "22/04 - 29/04"],
+	["New Scenario Event", "30/04 - 08/05"]
 ]
 
 for event in events:
