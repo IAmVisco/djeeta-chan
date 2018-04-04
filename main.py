@@ -408,10 +408,9 @@ async def disgusting(ctx):
 
 @bot.command(pass_context = True, description = 'I will show bigger version of your emoji!')
 async def bigmoji(ctx):
-# async def bigmoji(emj: str):
 	try:
 		str = ctx.message.content[9:]
-		fields=str.split(':')
+		fields = str.split(':')
 		mim = '.gif' if fields.pop(0) == "<a" else '.png'
 		await bot.say('https://discordapp.com/api/emojis/' + fields[1][:len(fields[1])-1] + mim)
 	except:
@@ -461,6 +460,7 @@ async def on_message(message):
 	global gm
 	global gn
 
+	# random replies
 	if not message.author.bot:
 		if gm and "GoodMorning" in message.content and "say" not in message.content.lower():
 			await bot.send_message(message.channel, "GoodMorning")
@@ -481,7 +481,7 @@ async def on_message(message):
 		elif "\\o/" in message.content.lower():
 			await bot.send_message(message.channel, "\\o/")
 
-	#profanity filter
+	# profanity filter
 	if message.server.id == '265292778756374529':
 		for word in badWords:
 			if word in message.content.lower():
@@ -491,9 +491,19 @@ async def on_message(message):
 				await asyncio.sleep(300)
 				await bot.remove_roles(message.author, discord.utils.get(message.server.roles, name = 'mutedbaka'))
 
+	# double prefix
 	if message.content.startswith('!') and not (message.content.startswith('!emo') 
 		or message.content.startswith('!events')):
 		message.content = message.content.replace('!', '~')
+
+	# echo on 3 msges
+	if message.server.id != '265292778756374529':
+		logs = []
+		async for msg in bot.logs_from(message.channel, limit = 3):
+			logs.append(msg)
+		if logs[0].content == logs[1].content == logs[2].content \
+		   and not logs[0].author.bot:
+			await bot.send_message(message.channel, logs[0].content)
 
 	await bot.process_commands(message)
 
