@@ -501,8 +501,8 @@ async def on_message(message):
 		logs = []
 		async for msg in bot.logs_from(message.channel, limit = 3):
 			logs.append(msg)
-		if logs[0].content == logs[1].content == logs[2].content \
-		   and not logs[0].author.bot:
+		if logs[0].content == logs[1].content == logs[2].content and not \
+		(logs[0].author.bot and logs[1].author.bot and logs[2].author.bot):
 			await bot.send_message(message.channel, logs[0].content)
 
 	await bot.process_commands(message)
