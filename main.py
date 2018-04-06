@@ -487,9 +487,9 @@ async def on_message(message):
 			if word in message.content.lower():
 				await bot.delete_message(message)
 				await bot.send_message(message.channel, message.author.mention + " is a baka")
-				await bot.add_roles(message.author, discord.utils.get(message.server.roles, name = 'mutedbaka'))
+				await bot.add_roles(message.author, discord.utils.get(message.server.roles, name = 'nadeko-mute'))
 				await asyncio.sleep(300)
-				await bot.remove_roles(message.author, discord.utils.get(message.server.roles, name = 'mutedbaka'))
+				await bot.remove_roles(message.author, discord.utils.get(message.server.roles, name = 'nadeko-mute'))
 
 	# double prefix
 	if message.content.startswith('!') and not (message.content.startswith('!emo') 
