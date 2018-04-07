@@ -320,15 +320,6 @@ async def choose(ctx):
 async def events():
 	await bot.say(embed = eventsEmbed)
 
-#revealing true self
-@bot.command(pass_context = True, description = 'I will use my powers to reveal true self of the chosen one!')
-async def reveal(ctx, *, userName):
-	if userName[1] == "@":
-		user = discord.utils.get(ctx.message.server.members, mention = userName)
-	else:
-		user = discord.utils.get(ctx.message.server.members, display_name = userName)
-	await bot.say("I'm sure it's **" + user.name + "**!")
-
 #F
 @bot.command(pass_context = True, description = 'Press F to pay respects.')
 async def f(ctx):
@@ -412,7 +403,8 @@ async def bigmoji(ctx):
 		str = ctx.message.content[9:]
 		fields = str.split(':')
 		mim = '.gif' if fields.pop(0) == "<a" else '.png'
-		await bot.say('https://discordapp.com/api/emojis/' + fields[1][:len(fields[1])-1] + mim)
+		await bot.say('https://discordapp.com/api/emojis/' 
+					+ fields[1][:len(fields[1])-1] + mim)
 	except:
 		await bot.say('Sorry I can\'t retrieve this emote')
 
@@ -423,6 +415,15 @@ async def mai():
 @bot.command(description = "I will retrieve avatar URL of user you provided!")
 async def avatar(user: discord.Member):
 	await bot.say(user.avatar_url)
+
+@bot.command(description = "I will search gbf.wiki for you!")
+async def wiki(query: str):
+	url = 'https://gbf.wiki/api.php?action=query&list=search&format=json&utf8=&srsearch=' + query
+	r = requests.get(url = url).json()
+	if r["query"]["searchinfo"]["totalhits"] != 0:
+		await bot.say("https://gbf.wiki/" + r['query']['search'][0]["title"])
+	else:
+		await bot.say("Nothing found, please check your input and try again.")
 
 # emotes for phone mode
 @bot.command()
@@ -566,6 +567,15 @@ bot.run('Mzg2NDQ5MDkzMzg1Mzg4MDUz.DQQErQ.3SJ8ftYbFWIfQc2lIDVga2cU0cg')
 # 	await bot.say("I'm too lazy to write good code for this one.")
 # #showdowns too
 # @bot.command(description = 'I will show you current or future showdown!')
+
+# #revealing true self
+# @bot.command(pass_context = True, description = 'I will use my powers to reveal true self of the chosen one!')
+# async def reveal(ctx, *, userName):
+# 	if userName[1] == "@":
+# 		user = discord.utils.get(ctx.message.server.members, mention = userName)
+# 	else:
+# 		user = discord.utils.get(ctx.message.server.members, display_name = userName)
+# 	await bot.say("I'm sure it's **" + user.name + "**!")
 
 # async def showdowns():#arg:str):
 # 	# if arg == "today":
