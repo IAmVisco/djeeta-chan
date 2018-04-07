@@ -417,11 +417,12 @@ async def avatar(user: discord.Member):
 	await bot.say(user.avatar_url)
 
 @bot.command(description = "I will search gbf.wiki for you!")
-async def wiki(query: str):
+async def wiki(*, query: str):
 	url = 'https://gbf.wiki/api.php?action=query&list=search&format=json&utf8=&srsearch=' + query
 	r = requests.get(url = url).json()
+	print(query)
 	if r["query"]["searchinfo"]["totalhits"] != 0:
-		await bot.say("https://gbf.wiki/" + r['query']['search'][0]["title"])
+		await bot.say("https://gbf.wiki/" + r['query']['search'][0]["title"].replace(' ', '_'))
 	else:
 		await bot.say("Nothing found, please check your input and try again.")
 
