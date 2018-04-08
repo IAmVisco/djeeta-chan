@@ -158,9 +158,8 @@ gifDict = {
 # https://78.media.tumblr.com/a0160ed8bb1b955a25f676da6d33da2f/tumblr_ntcha1rO5A1u0tkulo1_500.gif
 
 gw_mode = False
-gwstart    = datetime(2018, 12, 14, 19, 0, 0, 0, timezone('Asia/Tokyo'))
-prelimsend = datetime(2018, 1, 16, 23, 59, 0, 0, timezone('Asia/Tokyo'))
-# beaver = 0
+gwstart    = datetime(2018, 4, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
+prelimsend = datetime(2018, 4, 23, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 gm = True
 gn = True
 
@@ -323,11 +322,6 @@ async def events():
 #F
 @bot.command(pass_context = True, description = 'Press F to pay respects.')
 async def f(ctx):
-	# with open('respects.txt','r+') as f:
-	# 	count = int(f.read()) + 1
-	# 	f.seek(0)
-	# 	f.truncate()
-	# 	f.write(str(count))
 	if ctx.message.content.strip() == "~f":
 		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + 
 		"** has paid their respects.\n", color=0x8b75a5) # + str(count) + " total."
@@ -339,7 +333,7 @@ async def f(ctx):
 #yesno
 @bot.command(description = 'I will make a decision for you!')
 async def yesno():
-	await bot.say(ast.literal_eval(requests.get("http://yesno.wtf/api").text.replace("false", "\"false\"")).get('image'))
+	await bot.say(requests.get("http://yesno.wtf/api").json()['image'])
 
 #git api test 'n stuffs
 @bot.command(description = 'Random zen quote from GitHub.')
@@ -350,32 +344,32 @@ async def zen():
 async def gw():
 	if gw_mode:
 		if (datetime.now(timezone('Asia/Tokyo')).day == gwstart.day and 
-			(datetime.now(timezone('Asia/Tokyo')).hour >= 19)) or \
+			datetime.now(timezone('Asia/Tokyo')).hour >= 19) or \
 			datetime.now(timezone('Asia/Tokyo')).day == gwstart.day + 1:
 			await bot.say(':point_right: :clock12: | Prelims end in '+ str(prelimsend.day -
 				datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(prelimsend.hour -
 				datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(prelimsend.minute -
 				datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')	
-		elif (datetime.now(timezone('Asia/Tokyo')).day <= gwstart.day):
-			if (gwstart.hour - datetime.now(timezone('Asia/Tokyo')).hour >= 0):
-				await bot.say(':point_right: :clock1: | Prelims start in '+ str(gwstart.day - 
-					datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(gwstart.hour - 
-					datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - 
-					datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-			else:
-				await bot.say(':point_right: :clock1: | Prelims start in ' + str(24 - 
-					(gwstart.hour - datetime.now(timezone('Asia/Tokyo')).hour)) + ' hours ' + str(60 - 
-					datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		# elif (datetime.now(timezone('Asia/Tokyo')).day <= gwstart.day):
+		# 	if (gwstart.hour - datetime.now(timezone('Asia/Tokyo')).hour >= 0):
+		# 		await bot.say(':point_right: :clock1: | Prelims start in '+ str(gwstart.day - 
+		# 			datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(gwstart.hour - 
+		# 			datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - 
+		# 			datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		# 	else:
+		# 		await bot.say(':point_right: :clock1: | Prelims start in ' + str(24 - 
+		# 			(gwstart.hour - datetime.now(timezone('Asia/Tokyo')).hour)) + ' hours ' + str(60 - 
+		# 			datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 		elif (datetime.now(timezone('Asia/Tokyo')).hour >= 7):
-			# if datetime.now(timezone('Asia/Tokyo')).day - 19 == 0:
-			# 	await bot.say(':point_right: :clock12: | Interlude ends and Round 1 starts in ' + str(30 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) +
+				await bot.say(':point_right: :clock12: | Round ' + 
+					str(datetime.now(timezone('Asia/Tokyo')).day - 16) +
 					' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' +
 					str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
 				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) + 
 					' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+
 		elif datetime.now(timezone('Asia/Tokyo')).day - 16 <= 5: # day of start(14) + 2
 			if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
 				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) + 
