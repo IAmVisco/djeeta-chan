@@ -295,11 +295,10 @@ async def ping(ctx):
 		ctx.message.timestamp).microseconds // 1000)) + "ms")
 
 #choose smth
-@bot.command(pass_context = True, description = 'I will make a choice for you! \
-							The format is ~choose <Option 1>, <Option 2>, etc.')
+@bot.command(pass_context = True, description = 'I will make a choice for you! The format is ~choose <Option 1>, <Option 2>, etc.')
 async def choose(ctx):
 	variants = ctx.message.content[8:]
-	if ',' in variants:
+	if ',' in variants and variants[-1] != ',':
 		variants = variants.strip().split(',')
 		await bot.say(":thinking:| " + random.choice(fancy_answer_list) + 
 			"**" + random.choice(variants).strip() + "!**")
