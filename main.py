@@ -108,6 +108,8 @@ fancy_answer_list = [
 badWords = [
 	'nigger',
 	'faggot',
+	'sperm',
+	'bottle'
 ]
 
 gifDict = {
