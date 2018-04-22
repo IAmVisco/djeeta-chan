@@ -1,14 +1,16 @@
 from os import listdir, getcwd
 from os.path import isfile, join
-import sys
+import sys, math
 from PIL import Image, ImageFont, ImageDraw
 
-pics = [getcwd() + "\\emotes\\" + f for f in listdir(getcwd() + "\\emotes")]
+folder = input("Folder with emotes: ")
+
+pics = [getcwd() + "\\" + folder + "\\" + f for f in listdir(getcwd() + "\\" + folder)]
 
 images = map(Image.open, pics)
 
 width = 1800
-height = (len(pics)//12 - 1) * 160
+height = int(math.ceil(len(pics) / 12) * 160)
 
 new_im = Image.new('RGBA', (width, height), (0,0,0))
 draw = ImageDraw.Draw(new_im)
@@ -29,4 +31,4 @@ for im in images:
 	else:
 		x_offset += 150
 
-new_im.save(getcwd() + '\\emotes.png')
+new_im.save(getcwd() + '\\' + folder + '.png')
