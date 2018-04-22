@@ -1,16 +1,7 @@
-#djeeta 2.0 (working title)
+# djeeta 2.0 (working title)
 
-#===To-do list===
-#Remake trials/showdowns
-#Make ~slam
-#-And replace its time to stop gif with slam
-#Music? Maybe?
-#Make DB for multi server ~~drifting~~ settings
-#make proper ~help/wait for docu on existing one
-
-#importing libraries
-import discord
-from discord.ext import commands
+# importing libraries
+import discordbot as discord
 import random
 import logging
 import asyncio
@@ -18,17 +9,13 @@ import os
 import requests
 import ast
 from datetime import datetime, timedelta
-import pyexcel as pe
 from pytz import timezone
+import urllib.request
 
-#enabling logging
-logging.basicConfig(level = logging.INFO)
-
-#assigning excel sheet
-sheet = pe.get_sheet(file_name = "trials.xlsx")
+bot = discord.DiscordBot()
 
 # list of insults
-insults_list = [
+insults_list = (
 	" is a filthy weeb.",
 	", you're like Rapunzel but instead of letting down your hair you let everyone down.",
 	", you got rejected by Aniki.",
@@ -70,128 +57,215 @@ insults_list = [
 	", You should need a license to be that ugly.",
 	", Are you always this stupid or is today a special occasion?",
 	", If what you don't know can't hurt you, you're invulnerable.",
-
-
-]
+)
 
 # user id of people to be insulted
-victim_list = [
-	# "185069144184455168", # Visco
-	# "186873040292806656", # Naddie
-	# "155763234899492864", # Sleepy
-	# "235080660442677248", # RedTF
-	# "174852783084666880", # D.E.D
-	# "195463465861644288", # Eu
-	"229273041954144257" # Sun
-]
+victim_list = (
+	# "some_id_here",
+	# "more_id"
+)
 
-wrong_names = [
-	"Anre",
-	"Tweyen",
-	"Threo",
-	"Feower",
-	"Seox",
-	"Seofon",
-	"Eahta",
-	"Niyon",
-	"Tien"
-]
-
-fancy_answer_list = [
+# variable answers for ~choose command
+fancy_answer = (
 	"Without a doubt it's ",
 	"It's certanly ",
 	"I would go for ",
 	"Signs point to ",
 	"I choose ",
 	"Lady luck told me it's "
-]
+)
 
-gw_mode = False
-gwstart = datetime(2017, 11, 9, 19, 0, 0, 0, timezone('Asia/Tokyo'))
+# put bad words here to be filtered in chat
+badWords = (
+	
+)
 
+# dictionary with gifs for ~gif command
+gifDict = {
+	'dayum': 'https://imgur.com/a/pEJEL',
+	'patpat': 'https://imgur.com/a/XnD3V',
+	'fu': 'https://imgur.com/a/2OQZW',
+	'salt': 'https://imgur.com/a/K3PLQ',
+	'drool': 'https://imgur.com/a/iKOMU',
+	'stop': 'https://imgur.com/a/OC7en',
+	'steel': 'https://imgur.com/a/hOBRw',
+	'welcome': 'https://imgur.com/a/u174P',
+	'snek': 'https://imgur.com/a/u174P',
+	'rolling': 'https://imgur.com/a/tIpbN',
+	'police': 'https://imgur.com/a/aIPPX',
+	'hkzoom': 'https://imgur.com/a/OLr8Y',
+	'anikiw': 'https://imgur.com/a/hydJh',
+	'despair': 'https://imgur.com/a/tIpbN',
+	'shwing': 'https://imgur.com/a/BBr3X',
+	'chino': 'https://imgur.com/jxHLO4g',
+	'excited': 'https://imgur.com/a/dVAmT',
+	'bless': 'https://imgur.com/qp3hEkk',
+	'kagami': 'https://imgur.com/a/5EDPs',
+	'execution': 'https://imgur.com/a/TpCOW',
+	'joker': 'https://imgur.com/a/bNhnD',
+	'trueform': 'https://imgur.com/a/bNhnD',
+	'reeee': 'https://imgur.com/a/HnCji',
+	'umad': 'https://imgur.com/a/HnCji',
+	'spin': 'https://imgur.com/a/N6DTW',
+	'smile': 'https://imgur.com/a/s1CJN',
+	'umiface': 'https://imgur.com/a/rLURu',
+	'nice': 'https://imgur.com/a/mgw6A',
+	'laugh': 'https://imgur.com/a/ps5I5'
+}
 
-#creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for December", color=0x0bbbae)
+# defining some variables
+gw_mode    = False
+gwstart    = datetime(2018, 4, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
+prelimsend = datetime(2018, 4, 23, 23, 59, 0, 0, timezone('Asia/Tokyo'))
+gm         = True
+gn         = True
+
+# events data
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for April", color=0x0bbbae)
 events = [
-	["Divergent Knighthoods" , "30/11 - 8/12"],
-	["Christmas Event" , "15/12 - 25/12"],
-	["Xeno Diablo", "21/12 - 28/12"],
-	["Zodiac Event 2017", "28/12 - 31/12"],
-	["New Story Event", "31/12 - 9/01"]
+	["Robomi Z" , "31/03 - 08/04"],
+	["Detective Conan Collab" , "08/04 - 20/04"],
+	["Guild Wars (Dark Enemies)", "22/04 - 29/04"],
+	["New Scenario Event", "30/04 - 08/05"]
 ]
 
+# creating events embed
 for event in events:
 	eventsEmbed.add_field(name=event[0], value=event[1], inline=False)
 
-#assigning prefix and description
-description = '''Multipurpose GBF oriented bot with useful (sometimes) commands!'''
-bot = commands.Bot(command_prefix = '~', description = description)
+# creating gifs embed
+gifEmbed=discord.Embed(title = 'GIF List', description = 'Use ~gif <name> to post a GIF, names are shown below')
+for pair in gifDict.items():
+	gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
 
-#starting up
-@bot.event
-async def on_ready():
-	print('Logged in as')
-	print(bot.user.name)
-	print(bot.user.id)
-	print('------')
-	await bot.change_presence(game = discord.Game(name="Djeetablue Fantasy", url="game.granbluefantasy.jp", type = 1))
+# # not nessecary unless you want to override lib's event
+# @bot.event
+# async def on_ready():
+# 	print('Logged in as')
+# 	print(bot.user.name)
+# 	print(bot.user.id)
+# 	print('------')
+# 	await bot.change_presence(game = discord.Game(name = "Djeetablue Fantasy")) # put some game here if you want
 
-#anti-lurking message
 @bot.event
 async def on_member_join(member):
-	if member.server.id == '267994151436550146':
-		await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
+	"""Greets new member on join.
+	
+	I have no idea how member.server is working, 
+	sometimes it does, sometimes it does not.
+	"""
+	await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
 
-#our beloved emotes
-@bot.command(description = 'I will show your desired emote!')
-async def emo(emoName:str):	
+
+@bot.command()
+async def emo(emoName:str):
+	"""Shows requested emote.
+
+	Displays requested emote, list avaible by typing
+	<prefix>emolist
+	""" 	
 	try:
-		await bot.upload(os.getcwd() + '/res/emotes/' + emoName + '.png')
+		await bot.upload(os.getcwd() + '/res/emotes/' + emoName.lower() + '.png')
 	except:
 		await bot.say("No match found.")
 
-@bot.command(description = 'I will show you a list with all emotes!')
+@bot.command()
+async def siete(emoName:str):
+	"""Shows sietefied emote.
+
+	Displays requested emote, list avaible by typing
+	<prefix>emolist
+	""" 		
+	try:
+		await bot.upload(os.getcwd() + '/res/siete/' + emoName.lower() + '.png')
+	except:
+		await bot.say("No match found.")
+
+@bot.command()
 async def emolist():
-	await bot.say('<https://imgur.com/a/0Js7z>\n6mb pic behind the link ')
+	"""Shows all avaible emotes.
 
+	Sends imgur album link with all 
+	avaible emotes and siete emotes.
+	"""
+	await bot.say('<https://imgur.com/a/jmGm3>\nHidden cuz big pic')
 
-#ninja echo
-@bot.command(pass_context = True, description = 'I will say smth. Make me say smth bad and I will ~~stab you~~ add you to visctoms :dagger:')
+@bot.command()
+async def gif(gifName:str):
+	"""Shows requested GIF emote.
+
+	Full list of GIF emotes is avaible
+	by typing <prefix>giflist
+	"""
+	try:
+		await bot.say(gifDict[gifName.lower()])
+	except:
+		await bot.say("No match found.")
+
+@bot.command()
+async def giflist():
+	"""Shows full list of GIF emotes avaible.
+
+	Sends embed with the list of all gif emotes.
+	Unlike usual emotes list, this one is 
+	auto-generated.
+	"""
+	await bot.say(embed = gifEmbed)
+
+@bot.command(pass_context = True)
 async def say(ctx, *, msg:str):
+	"""Echoes message.
+
+	Will delete and echo passed message
+	after 1 second.
+	"""
 	await bot.delete_message(ctx.message)
 	await bot.type()
 	await asyncio.sleep(1)
 	await bot.say(msg)
 
-#roles list
-@bot.command(pass_context = True, description = 'I will show you a list of roles that can be (un)assigned.')
+@bot.command(pass_context = True)
 async def roles(ctx):
-	tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
+	"""Shows roles list.
+
+	Disaplys roles that are lower in role hierarchy
+	than bot's role. If this doesn't work, check code
+	and bot's role name, case matters.
+	"""
+	out = ":pencil: __**These are the roles I can (un)assign you with:**__"
 	bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta-chan")
 
-	# lists the roles the bot can assign
-	for role in ctx.message.server.roles[1:]:
-		if role < bot_role:
-			tmp += "\n  - " + role.name
+	for role in ctx.message.server.roles:
+		if role < bot_role and not role.is_everyone:
+			out += "\n  - " + role.name
 
-	await bot.say(tmp)	
+	await bot.say(out)
 
-#assigning and unassigning roles
-@bot.command(pass_context = True, description = 'I will (un)assign you desired role!')
+@bot.command(pass_context = True)
 async def role(ctx, *, role: discord.Role):
+	"""Assigns or unassigns the role.
+
+	Same command is used for both assigning and 
+	unassigning. Case-sensitive.
+	"""
 	try:
 		if role in ctx.message.author.roles:
 			await bot.remove_roles(ctx.message.author, role)
 			await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been removed from your roles.")
-		else:
+		else:	
 			await bot.add_roles(ctx.message.author, role)
 			await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been added to your roles.")
 	except Exception as e:
 		await bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
 
-#rollin' rollin'
-@bot.command(description = 'I will roll a dice for you!')
+@bot.command()
 async def roll(roll:str):
+	"""Will roll a dice for you.
+
+	Rolls a dice both in WoW (/roll N) and 
+	in DnD (/roll NdN) formats, where N is either
+	range or (number of dices)d(range).
+	"""
 	out = ":game_die: | Hmm, let it be **"
 	try:
 		if "d" not in roll:
@@ -206,180 +280,197 @@ async def roll(roll:str):
 		out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
 	await bot.say(out)
 
-#ping-pong
-@bot.command(pass_context = True, description = 'Check if I\'m alive!')
+@bot.command(pass_context = True)
 async def ping(ctx):
-	msg = await bot.say("Pong!")
-	await bot.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - ctx.message.timestamp).microseconds//1000)) + "ms")
+	"""Checks if bot is alive.
 
-#choose smth
-@bot.command(pass_context = True, description = 'I will make a choice for you! The format is ~choose <Option 1>, <Option 2>, etc.')
+	No, it's not ping to game server.
+	"""
+	msg = await bot.say("Pong!")
+	await bot.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - 
+		ctx.message.timestamp).microseconds // 1000)) + "ms")
+
+@bot.command(pass_context = True)
 async def choose(ctx):
+	"""Makes a choice.
+
+	Makes random choice out of all provided variants,
+	separated by comma.
+	"""
 	variants = ctx.message.content[8:]
-	if ',' in variants:
+	if ',' in variants and variants[-1] != ',':
 		variants = variants.strip().split(',')
-		await bot.say(":thinking:| " + random.choice(fancy_answer_list) + "**" + random.choice(variants).strip() + "!**")
+		await bot.say(":thinking:| " + random.choice(fancy_answer) + 
+			"**" + random.choice(variants).strip() + "!**")
 	else:
 		await bot.say("Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
 
-
-	# old code that i need to remake to avaoid crashes with spaces overload
-	# if ',' in choices:
-	# 	choices = choices.strip().split(',')
-	# 	await bot.say(":thinking:| I choose **" + random.choice(choices) + "!**")
-	# else:
-	# 	await bot.say("Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
-
-#events
-@bot.command(description = 'I will show schedule of events from this month!')
+@bot.command()
 async def events():
+	"""Shows upcoming events schedule.
+
+	If it's outdated, bot host forgot to update it.
+	Poke him/her with a stick, tenderly.
+	"""
 	await bot.say(embed = eventsEmbed)
 
-#revealing true self
-@bot.command(pass_context = True, description = 'I will use my powers to reveal true self of the chosen one!')
-async def reveal(ctx, *, userName):
-	if userName[1] == "@":
-		user = discord.utils.get(ctx.message.server.members, mention = userName)
-	else:
-		user = discord.utils.get(ctx.message.server.members, display_name = userName)
-	await bot.say("I'm sure it's **" + user.name + "**!")
-
-#trials based on excel table
-@bot.command(description = 'I will show you current or future trial!')
-async def trials(arg:str):
-	if arg == "today":
-		await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
-	elif arg.isdigit():
-		await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][0]) + " Trial")
-	elif arg.isalpha():    
-		for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-			if arg.lower() == sheet.row[int(record)][0].lower():
-				await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
-				break
-	else:
-		await bot.say("Please check your input and try again. Use ~help for more info.")
-
-#showdowns too
-@bot.command(description = 'I will show you current or future showdown!')
-async def showdowns(arg:str):
-	if arg == "today":
-		await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
-	elif arg.isdigit():
-		await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][1]) + " Showdown")
-	elif arg.isalpha():    
-		for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-			if arg.lower() == sheet.row[int(record)][1].lower():
-				await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][1]) + " showdown")
-				break
-	else:
-		await bot.say("Please check your input and try again. Use ~help for more info.")
-
-#F
-@bot.command(pass_context = True, description = 'Press F to pay respects.')
+@bot.command(pass_context = True)
 async def f(ctx):
-	# with open('respects.txt','r+') as f:
-	# 	count = int(f.read()) + 1
-	# 	f.seek(0)
-	# 	f.truncate()
-	# 	f.write(str(count))
+	"""Press F to pay respects.
+
+	Pays respect in general or for a specified cause.
+	"""
 	if ctx.message.content.strip() == "~f":
-		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects.\n", color=0x8b75a5) # + str(count) + " total."
+		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + 
+		"** has paid their respects.\n", color=0x8b75a5)
 	else:
-		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + "** has paid their respects for **" + ctx.message.content[3:] + ".**\n", color=0x8b75a5)# + str(count) + " total."
+		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + 
+		"** has paid their respects for **" + ctx.message.content[3:] + ".**\n", color=0x8b75a5)# + str(count) + " total."
 	await bot.say(embed = respectsMessage)
 
 #yesno
-@bot.command(description = 'I will make a decesion for you!')
+@bot.command()
 async def yesno():
-	await bot.say(ast.literal_eval(requests.get("http://yesno.wtf/api").text.replace("false", "\"false\"")).get('image'))
+	"""Will send GIF with yes or no answer."""
+	await bot.say(requests.get("http://yesno.wtf/api").json()['image'])
 
-#git api test 'n stuffs
 @bot.command()
 async def zen():
+	"""Sends zen quote from GitHub"""
 	await bot.say(requests.get("https://api.github.com/zen").text)
 
 @bot.command()
 async def gw():
+	"""Shows GW timings.
+
+	Very broken, will fix someday.
+	"""
 	if gw_mode:
-		if (datetime.now(timezone('Asia/Tokyo')).hour >= 7):# and (datetime.now(timezone('Asia/Tokyo')).hour < 24): #check command right after round start
-			if datetime.now(timezone('Asia/Tokyo')).day - 11 == 0:
-				await bot.say(':point_right: :clock12: | Interlude ends and Round 1 starts in ' + str(30 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-			elif 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 11) + ' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+		if (datetime.now(timezone('Asia/Tokyo')).day == gwstart.day and 
+			datetime.now(timezone('Asia/Tokyo')).hour >= 19) or \
+			datetime.now(timezone('Asia/Tokyo')).day == gwstart.day + 1:
+			await bot.say(':point_right: :clock12: | Prelims end in '+ str(prelimsend.day -
+				datetime.now(timezone('Asia/Tokyo')).day) + ' days ' + str(prelimsend.hour -
+				datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(prelimsend.minute -
+				datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')	
+		elif (datetime.now(timezone('Asia/Tokyo')).hour >= 7):
+			if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
+				await bot.say(':point_right: :clock12: | Round ' + 
+					str(datetime.now(timezone('Asia/Tokyo')).day - 16) +
+					' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' +
+					str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
-				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 11) + ' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
-		elif datetime.now(timezone('Asia/Tokyo')).day - 11 <= 5: # day of start(22) - 2
+				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) + 
+					' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+
+		elif datetime.now(timezone('Asia/Tokyo')).day - 16 <= 5: # day of start(14) + 2
 			if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 11) + ' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) + 
+					' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + 
+					str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
-				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 11) + ' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
+				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) + 
+					' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 		else:
-			await bot.say('Guild Wars 34 is over, thanks for your hard work.')				
+			await bot.say('Guild Wars 36 is over, thanks for your hard work.')
 	else:
-		# print(datetime.now(timezone('Asia/Tokyo')))
-		# print(gwstart)
-		diff = gwstart - datetime.now(timezone('Asia/Tokyo'))
-		# print(diff)
-		# print(timedelta(seconds = diff.seconds))
-		m, s = divmod(diff.seconds, 60)
-		h, m = divmod(m, 60)
-		await bot.say('Guild Wars 35 will have **Wind** enemies. It is scheduled to arrive in January.')
+		await bot.say('Guild Wars 37 will have **Dark** enemies. It is scheduled to arrive in late April.')
 
 @bot.command(pass_context = True)
 async def disgusting(ctx):
+	"""Shows random disgusted anime girl.
+
+	You can specify number of pic, no list avaible though.
+	Final is a perv.
+	"""
 	msg = ctx.message.content
 	if msg.strip() == "~disgusting":
-		await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,37)) + '.png')
-	elif int(msg[12:]) > 0 and int(msg[12:]) < 38 :
+		await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,38)) + '.png')
+	elif int(msg[12:]) > 0 and int(msg[12:]) < 39 :
 		await bot.upload(os.getcwd() + '/res/disgusting/' + msg[12:] + '.png')
+
+@bot.command(pass_context = True)
+async def bigmoji(ctx):
+	"""Shows full size of emoji.
+
+	Just send emoji right after command name.
+	"""
+	try:
+		str = ctx.message.content[9:]
+		fields = str.split(':')
+		mim = '.gif' if fields.pop(0) == "<a" else '.png'
+		await bot.say('https://discordapp.com/api/emojis/' 
+					+ fields[1][:len(fields[1])-1] + mim)
+	except:
+		await bot.say('Sorry I can\'t retrieve this emote')
 
 @bot.command()
 async def mai():
+	"""Equivalent to ~emo mai"""
 	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
 
 @bot.command()
-async def shrug():
-	await bot.say("¯\_(ツ)_/¯")
+async def avatar(user: discord.Member):
+	"""Shows avatar of the user"""
+	await bot.say(user.avatar_url)
 
 @bot.command()
-async def lenny():
-	await bot.say("( ͡° ͜ʖ ͡°)")
+async def wiki(*, query: str):
+	"""Searches gbf.wiki"""
+	url = 'https://gbf.wiki/api.php?action=query&list=search&format=json&utf8=&srsearch=' + query
+	r = requests.get(url = url).json()
+	if r["query"]["searchinfo"]["totalhits"] != 0:
+		await bot.say("https://gbf.wiki/" + r['query']['search'][0]["title"].replace(' ', '_'))
+	else:
+		await bot.say("Nothing found, please check your input and try again.")
 
-@bot.command()
-async def tableflip():
-	await bot.say("(╯°□°）╯︵ ┻━┻")
-
-@bot.command(pass_context = True)
-async def test(ctx):
-	print(ctx.message.server.id)
-
-
-#insults
 @bot.event
 async def on_message(message):
-	if message.author.id in victim_list:
-		if (message.server.id != "301829994567434241") and (random.randint(1,100) == 1):
-			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
+	global gm
+	global gn
 
-	# pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
-	pool = ["🇱", "🇪", "🇼", "🇩", "🍆"]
-	if message.author.id in victim_list and random.randint(1,100) == 1:
-		for letter in pool:
-			await bot.add_reaction(message, letter)
+	# scripted interactions on messages
+	if not message.author.bot:
+		if gm and "GoodMorning" in message.content and "say" not in message.content.lower():
+			await bot.send_message(message.channel, "GoodMorning")
+			gm = False
+			await asyncio.sleep(60)
+			gm = True
+		elif gn and "GoodNight" in message.content and "say" not in message.content.lower():
+			await bot.send_message(message.channel, "GoodNight")
+			gn = False
+			await asyncio.sleep(60)
+			gn = True
+		elif "/o/" in message.content.lower():
+			await bot.send_message(message.channel, "\\o\\")
+		elif "\\o\\" in message.content.lower():
+			await bot.send_message(message.channel, "/o/")
+		elif message.content.lower() == "ayy":
+			await bot.send_message(message.channel, "lmao")
+		elif "\\o/" in message.content.lower():
+			await bot.send_message(message.channel, "\\o/")
+
+	# profanity filter, specify bad words in tuple on the beggining
+	for word in badWords:
+		if word in message.content.lower():
+			await bot.delete_message(message)
+			await bot.send_message(message.channel, message.author.mention + " is a baka")
+			await bot.add_roles(message.author, discord.utils.get(message.server.roles, name = 'mute')) # set role for mute here
+			await asyncio.sleep(300)
+			await bot.remove_roles(message.author, discord.utils.get(message.server.roles, name = 'mute'))
+
+	# double prefix, in this example works with specified prefix and !
+	if message.content.startswith('!'):
+		message.content = message.content.replace('!', bot.command_prefix)
+
+	# echo on 3 msges
+	logs = []
+	async for msg in bot.logs_from(message.channel, limit = 3):
+		logs.append(msg)
+	if logs[0].content == logs[1].content == logs[2].content and not \
+	(logs[0].author.bot or logs[1].author.bot or logs[2].author.bot):
+		await bot.send_message(message.channel, logs[0].content)
 
 	await bot.process_commands(message)
-	
-# @bot.event
-# async def on_message(message):
-# 	await bot.process_commands(message)	
 
-# (message.author.id == 185069144184455168) and 
-# pepeGun = discord.utils.get(message.server.emojis, name = 'pepeGun')
-# if not pepeGun == None:
-# 	for wrong_name in wrong_names:
-# 		if wrong_name.lower() in message.content.lower():
-# 			await bot.send_message(message.channel, "It's time to stop " + str(pepeGun) +"\nhttps://thumbs.gfycat.com/AdmirableShadyCur-size_restricted.gif")
-# 			break
-
-#run token
-bot.run('MzE0Nzk4NjM1NDI0Njc3ODg4.C_9r5w.jgercQMOJwhkkXX01gpFP0VCO2Y')
+bot.run()
