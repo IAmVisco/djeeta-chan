@@ -29,7 +29,7 @@ handler.setFormatter(logging.Formatter('%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
 # list of insults
-insults_list = [
+insults_list = (
 	" is a filthy weeb.",
 	", you're like Rapunzel but instead of letting down your hair you let everyone down.",
 	", you got rejected by Aniki.",
@@ -71,18 +71,12 @@ insults_list = [
 	", You should need a license to be that ugly.",
 	", Are you always this stupid or is today a special occasion?",
 	", If what you don't know can't hurt you, you're invulnerable.",
-]
+)
 
 # user id of people to be insulted
-victim_list = [
-	# "185069144184455168", # Visco
-	# "186873040292806656", # Naddie
-	# "155763234899492864", # Sleepy
-	# "235080660442677248", # RedTF
-	# "174852783084666880", # D.E.D
-	# "195463465861644288", # Eu
-	# "229273041954144257" # Sun
-]
+victim_list = (
+
+)
 
 # wrong_names = [
 # 	"Anre",
@@ -96,21 +90,19 @@ victim_list = [
 # 	"Tien"
 # ]
 
-fancy_answer_list = [
+fancy_answer_list = (
 	"Without a doubt it's ",
 	"It's certanly ",
 	"I would go for ",
 	"Signs point to ",
 	"I choose ",
 	"Lady luck told me it's "
-]
+)
 
-badWords = [
+badWords = (
 	# 'nigger',
 	# 'faggot',
-	# 'sperm',
-	# 'bottle'
-]
+)
 
 gifDict = {
 	'dayum': 'https://imgur.com/a/pEJEL',
@@ -159,11 +151,11 @@ gifDict = {
 # no name
 # https://78.media.tumblr.com/a0160ed8bb1b955a25f676da6d33da2f/tumblr_ntcha1rO5A1u0tkulo1_500.gif
 
-gw_mode = False
+gw_mode    = True
 gwstart    = datetime(2018, 4, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 4, 23, 23, 59, 0, 0, timezone('Asia/Tokyo'))
-gm = True
-gn = True
+gm         = True
+gn         = True
 
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for April", color=0x0bbbae)
@@ -198,13 +190,11 @@ async def on_ready():
 #anti-lurking message
 @bot.event
 async def on_member_join(member):
-	if member.server.id == '267994151436550146':
-		await bot.send_message(member.server, 'Welcome {0.mention} to {1.name}!'.format(member, member.server))
-	elif member.server.id == '265292778756374529':
+	if member.server.id == '265292778756374529':
 		await asyncio.sleep(5)
 		await bot.add_roles(member, discord.utils.get(member.server.roles, name = "pubs"))
 
-#our beloved emotes
+# our beloved emotes
 @bot.command(description = 'I will show your desired emote!')
 async def emo(emoName:str):	
 	try:
@@ -223,7 +213,7 @@ async def siete(emoName:str):
 async def emolist():
 	await bot.say('<https://imgur.com/a/jmGm3>\nHidden cuz big pic')
 
-@bot.command(description = 'I Will show you gif emoji!')
+@bot.command(description = 'I will show you gif emoji!')
 async def gif(gifName:str):
 	try:
 		await bot.say(gifDict[gifName.lower()])
@@ -364,25 +354,25 @@ async def gw():
 		elif (datetime.now(timezone('Asia/Tokyo')).hour >= 7):
 			if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
 				await bot.say(':point_right: :clock12: | Round ' + 
-					str(datetime.now(timezone('Asia/Tokyo')).day - 16) +
+					str(datetime.now(timezone('Asia/Tokyo')).day - 24) +
 					' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' +
 					str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
-				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) + 
+				await bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + 
 					' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 
-		elif datetime.now(timezone('Asia/Tokyo')).day - 16 <= 5: # day of start(14) + 2
+		elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(14) + 2
 			if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) + 
+				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + 
 					' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + 
 					str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
-				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 16) + 
+				await bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + 
 					' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 		else:
-			await bot.say('Guild Wars 36 is over, thanks for your hard work.')
+			await bot.say('Guild Wars 37 is over, thanks for your hard work.')
 	else:
-		await bot.say('Guild Wars 37 will have **Dark** enemies. It is scheduled to arrive in late April.')
+		await bot.say('Guild Wars 38 will have **IDK** enemies. It is scheduled to arrive soon.')
 
 @bot.command(pass_context = True, description = 'Final is a perv')
 async def disgusting(ctx):
