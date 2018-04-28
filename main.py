@@ -372,7 +372,7 @@ async def gw():
 		else:
 			await bot.say('Guild Wars 37 is over, thanks for your hard work.')
 	else:
-		await bot.say('Guild Wars 38 will have **IDK** enemies. It is scheduled to arrive soon.')
+		await bot.say('Guild Wars 38 will have **Water** enemies. It is scheduled to arrive in May.')
 
 @bot.command(pass_context = True, description = 'Final is a perv')
 async def disgusting(ctx):
