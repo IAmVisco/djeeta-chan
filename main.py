@@ -8,8 +8,7 @@
 #make proper ~help/wait for docu on existing one
 
 #importing libraries
-import discord
-from discord.ext import commands
+import discordbot as discord
 import random
 import logging
 import asyncio
@@ -21,12 +20,7 @@ from pytz import timezone
 from PIL import Image, ImageOps
 import urllib.request
 
-#enabling logging
-logger = logging.getLogger('discord')
-logger.setLevel(logging.INFO)
-handler = logging.FileHandler(filename = 'errors.log', encoding = 'utf-8', mode = 'w')
-handler.setFormatter(logging.Formatter('%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(handler)
+bot = discord.DiscordBot()
 
 # list of insults
 insults_list = (
@@ -78,17 +72,6 @@ victim_list = (
 
 )
 
-# wrong_names = [
-# 	"Anre",
-# 	"Tweyen",
-# 	"Threo",
-# 	"Feower",
-# 	"Seox",
-# 	"Seofon",
-# 	"Eahta",
-# 	"Niyon",
-# 	"Tien"
-# ]
 
 fancy_answer_list = (
 	"Without a doubt it's ",
@@ -156,6 +139,7 @@ gwstart    = datetime(2018, 4, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 4, 23, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 gm         = True
 gn         = True
+casuals_id = '265292778756374529'
 
 #creating events embed
 eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for April", color=0x0bbbae)
@@ -174,10 +158,6 @@ for pair in gifDict.items():
 	gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
 	gifEmbed.set_footer(text = 'Help me review and add more gifs! https://pastebin.com/v3u8DG22')
 
-#assigning prefix and description
-description = '''Multipurpose GBF oriented bot with useful commands and a bunch of emotes!'''
-bot = commands.Bot(command_prefix = '~', description = description)
-
 #starting up
 @bot.event
 async def on_ready():
@@ -190,13 +170,17 @@ async def on_ready():
 #anti-lurking message
 @bot.event
 async def on_member_join(member):
-	if member.server.id == '265292778756374529':
+	if member.server.id == casuals_id:
 		await asyncio.sleep(5)
 		await bot.add_roles(member, discord.utils.get(member.server.roles, name = "pubs"))
 
-# our beloved emotes
 @bot.command(description = 'I will show your desired emote!')
-async def emo(emoName:str):	
+async def emo(emoName:str):
+	"""Shows requested emote.
+
+	Displays requested emote, list avaible by typing
+	<prefix>emolist
+	""" 	
 	try:
 		await bot.upload(os.getcwd() + '/res/emotes/' + emoName.lower() + '.png')
 	except:
@@ -204,6 +188,11 @@ async def emo(emoName:str):
 
 @bot.command(description = 'I will show your desired siete emote!')
 async def siete(emoName:str):	
+	"""Shows sietefied emote.
+
+	Displays requested emote, list avaible by typing
+	<prefix>emolist
+	""" 
 	try:
 		await bot.upload(os.getcwd() + '/res/siete/' + emoName.lower() + '.png')
 	except:
@@ -211,10 +200,20 @@ async def siete(emoName:str):
 
 @bot.command(description = 'I will show you a list with all emotes!')
 async def emolist():
+	"""Shows all avaible emotes.
+
+	Sends imgur album link with all 
+	avaible emotes and siete emotes.
+	"""
 	await bot.say('<https://imgur.com/a/jmGm3>\nHidden cuz big pic')
 
 @bot.command(description = 'I will show you gif emoji!')
 async def gif(gifName:str):
+	"""Shows requested GIF emote.
+
+	Full list of GIF emotes is avaible
+	by typing <prefix>giflist
+	"""
 	try:
 		await bot.say(gifDict[gifName.lower()])
 	except:
@@ -222,19 +221,35 @@ async def gif(gifName:str):
 
 @bot.command(description = 'I will show you a list of animated emojis!')
 async def giflist():
+	"""Shows full list of GIF emotes avaible.
+
+	Sends embed with the list of all gif emotes.
+	Unlike usual emotes list, this one is 
+	auto-generated.
+	"""
 	await bot.say(embed = gifEmbed)
 
 #ninja echo
 @bot.command(pass_context = True, description = 'I will say smth. Make me say smth bad and I will ~~stab you~~ add you to visctoms :dagger:')
 async def say(ctx, *, msg:str):
+	"""Echoes message.
+
+	Will delete and echo passed message
+	after 1 second.
+	"""
 	await bot.delete_message(ctx.message)
 	await bot.type()
 	await asyncio.sleep(1)
 	await bot.say(msg)
 
-#roles list
 @bot.command(pass_context = True, description = 'I will show you a list of roles that can be (un)assigned.')
 async def roles(ctx):
+	"""Shows roles list.
+
+	Disaplys roles that are lower in role hierarchy
+	than bot's role. If this doesn't work, check code
+	and bot's role name, case matters.
+	"""
 	tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
 	if ctx.message.server.id == '267994151436550146':
 		bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta-chan")
@@ -248,10 +263,14 @@ async def roles(ctx):
 	print(tmp)
 	await bot.say(tmp)
 
-#assigning and unassigning roles
 @bot.command(pass_context = True, description = 'I will (un)assign you desired role!')
 async def role(ctx, *, role: discord.Role):
-	if ctx.message.server.id != '265292778756374529':
+	"""Assigns or unassigns the role.
+
+	Same command is used for both assigning and 
+	unassigning. Case-sensitive.
+	"""
+	if ctx.message.server.id != casuals_id:
 		try:
 			if role in ctx.message.author.roles:
 				await bot.remove_roles(ctx.message.author, role)
@@ -262,9 +281,14 @@ async def role(ctx, *, role: discord.Role):
 		except Exception as e:
 			await bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
 
-#rollin' rollin'
 @bot.command(description = 'I will roll a dice for you!')
 async def roll(roll:str):
+	"""Will roll a dice for you.
+
+	Rolls a dice both in WoW (/roll N) and 
+	in DnD (/roll NdN) formats, where N is either
+	range or (number of dices)d(range).
+	"""
 	out = ":game_die: | Hmm, let it be **"
 	try:
 		if "d" not in roll:
@@ -279,16 +303,23 @@ async def roll(roll:str):
 		out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
 	await bot.say(out)
 
-#ping-pong
 @bot.command(pass_context = True, description = 'Check if I\'m alive!')
 async def ping(ctx):
+	"""Checks if bot is alive.
+
+	No, it's not ping to game server.
+	"""
 	msg = await bot.say("Pong!")
 	await bot.edit_message(msg, "Pong! Time taken: " + str(int((msg.timestamp - 
 		ctx.message.timestamp).microseconds // 1000)) + "ms")
 
-#choose smth
 @bot.command(pass_context = True, description = 'I will make a choice for you! The format is ~choose <Option 1>, <Option 2>, etc.')
 async def choose(ctx):
+	"""Makes a choice.
+
+	Makes random choice out of all provided variants,
+	separated by comma.
+	"""
 	variants = ctx.message.content[8:]
 	if ',' in variants and variants[-1] != ',':
 		variants = variants.strip().split(',')
@@ -297,22 +328,21 @@ async def choose(ctx):
 	else:
 		await bot.say("Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
 
-
-	# old code that i need to remake to avoid crashes with spaces overload
-	# if ',' in choices:
-	# 	choices = choices.strip().split(',')
-	# 	await bot.say(":thinking:| I choose **" + random.choice(choices) + "!**")
-	# else:
-	# 	await bot.say("Please check your input again. The format is ~choose <Option 1>, <Option 2>, etc.")
-
-#events
 @bot.command(description = 'I will show schedule of events from this month!')
 async def events():
+	"""Shows upcoming events schedule.
+
+	If it's outdated, bot host forgot to update it.
+	Poke him/her with a stick, tenderly.
+	"""
 	await bot.say(embed = eventsEmbed)
 
-#F
 @bot.command(pass_context = True, description = 'Press F to pay respects.')
 async def f(ctx):
+	"""Press F to pay respects.
+
+	Pays respect in general or for a specified cause.
+	"""
 	if ctx.message.content.strip() == "~f":
 		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + 
 		"** has paid their respects.\n", color=0x8b75a5) # + str(count) + " total."
@@ -321,18 +351,22 @@ async def f(ctx):
 		"** has paid their respects for **" + ctx.message.content[3:] + ".**\n", color=0x8b75a5)# + str(count) + " total."
 	await bot.say(embed = respectsMessage)
 
-#yesno
 @bot.command(description = 'I will make a decision for you!')
 async def yesno():
+	"""Will send GIF with yes or no answer."""
 	await bot.say(requests.get("http://yesno.wtf/api").json()['image'])
 
-#git api test 'n stuffs
 @bot.command(description = 'Random zen quote from GitHub.')
 async def zen():
+	"""Sends zen quote from GitHub"""
 	await bot.say(requests.get("https://api.github.com/zen").text)
 
 @bot.command(description = 'I will show when GW round will start/end!')
 async def gw():
+	"""Shows GW timings.
+
+	Very broken on certain days, will fix someday.
+	"""
 	if gw_mode:
 		if (datetime.now(timezone('Asia/Tokyo')).day == gwstart.day and 
 			datetime.now(timezone('Asia/Tokyo')).hour >= 19) or \
@@ -376,6 +410,11 @@ async def gw():
 
 @bot.command(pass_context = True, description = 'Final is a perv')
 async def disgusting(ctx):
+	"""Shows random disgusted anime girl.
+
+	You can specify number of pic, no list avaible though.
+	Final is a perv.
+	"""
 	msg = ctx.message.content
 	if msg.strip() == "~disgusting":
 		await bot.upload(os.getcwd() + '/res/disgusting/' + str(random.randint(1,38)) + '.png')
@@ -384,25 +423,32 @@ async def disgusting(ctx):
 
 @bot.command(pass_context = True, description = 'I will show bigger version of your emoji!')
 async def bigmoji(ctx):
+	"""Shows full size of emoji.
+
+	Just send emoji right after command name.
+	"""
 	try:
 		str = ctx.message.content[9:]
 		fields = str.split(':')
 		mim = '.gif' if fields.pop(0) == "<a" else '.png'
 		await bot.say('https://discordapp.com/api/emojis/' 
-					+ fields[1][:len(fields[1])-1] + mim)
+					+ fields[1][:len(fields[1]) - 1] + mim)
 	except:
 		await bot.say('Sorry I can\'t retrieve this emote')
 
 @bot.command()
 async def mai():
+	"""Equivalent to ~emo mai"""
 	await bot.upload(os.getcwd() + '/res/emotes/mai.png')
 
 @bot.command(description = "I will retrieve avatar URL of user you provided!")
 async def avatar(user: discord.Member):
+	"""Shows avatar of the user"""
 	await bot.say(user.avatar_url)
 
 @bot.command(description = "I will search gbf.wiki for you!")
 async def wiki(*, query: str):
+	"""Searches gbf.wiki"""
 	url = 'https://gbf.wiki/api.php?action=query&list=search&format=json&utf8=&srsearch=' + query
 	r = requests.get(url = url).json()
 	print(query)
@@ -411,17 +457,19 @@ async def wiki(*, query: str):
 	else:
 		await bot.say("Nothing found, please check your input and try again.")
 
-# emotes for phone mode
 @bot.command()
 async def shrug():
+	"""Shows shrug emote, useful if you are on phone."""
 	await bot.say("¯\_(ツ)_/¯")
 
 @bot.command()
 async def lenny():
+	"""Shows lenny emote, useful if you are on phone."""
 	await bot.say("( ͡° ͜ʖ ͡°)")
 
 @bot.command()
-async def tableflip():	
+async def tableflip():
+	"""Shows tableflip emote, useful if you are on phone."""
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
 @bot.event 
@@ -469,7 +517,7 @@ async def on_message(message):
 			await bot.send_message(message.channel, "\\o/")
 
 	# profanity filter
-	if message.server.id == '265292778756374529':
+	if message.server.id == casuals_id:
 		for word in badWords:
 			if word in message.content.lower():
 				await bot.delete_message(message)
@@ -484,7 +532,7 @@ async def on_message(message):
 		message.content = message.content.replace('!', '~')
 
 	# echo on 3 msges
-	if message.server.id != '265292778756374529':
+	if message.server.id != casuals_id:
 		logs = []
 		async for msg in bot.logs_from(message.channel, limit = 3):
 			logs.append(msg)
@@ -494,113 +542,4 @@ async def on_message(message):
 
 	await bot.process_commands(message)
 
-#run token
-bot.run('Mzg2NDQ5MDkzMzg1Mzg4MDUz.DQQErQ.3SJ8ftYbFWIfQc2lIDVga2cU0cg')
-
-# FOR FUTURE USE
-###############################################
-
-# @bot.command()
-# async def avatar(user: discord.Member):
-# 	await bot.say(user.avatar_url)
-
-# @bot.command()
-# async def names(user : discord.User):
-# 	await bot.say("Name " + user.name + " Nickname " + user.display_name)
-
-# # bless
-# @bot.command()
-# async def bless(user: discord.User):
-# 	try:
-# 		url = urllib.request.Request(user.avatar_url, headers={'User-Agent': 'Mozilla/5.0'})
-# 		with urllib.request.urlopen(url) as response, open(os.getcwd() + '/res/etc/image.png', 'wb') as out_file:
-# 			data = response.read()
-# 			out_file.write(data)
-# 		size = 96, 96
-# 		mask = Image.open(os.getcwd() + '/res/etc/mask.png').convert("L")
-# 		im = Image.open(os.getcwd() + '/res/etc/image.png')
-# 		out = ImageOps.fit(im, mask.size, centering = (0.5, 0.5))
-# 		out.putalpha(mask)
-# 		out.thumbnail(size, Image.ANTIALIAS)
-# 		img_w, img_h = out.size
-# 		bg = Image.open(os.getcwd() + '/res/etc/bless.png').convert("RGBA")
-# 		offset = (160 - img_w // 2, 110 - img_h // 2)
-# 		bg.alpha_composite(out, offset)
-# 		bg.save(os.getcwd() + '/res/etc/bless_out.png')
-# 		await bot.upload(os.getcwd() + '/res/etc/bless_out.png')
-# 		os.remove(os.getcwd() + '/res/etc/bless_out.png')
-# 		os.remove(os.getcwd() + '/res/etc/image.png')
-# 	except:
-# 		await bot.say("Check your input and try again. The format is ~bless <mention>")
-
-
-# DEAD CODE REGION 
-###############################################
-# trials based on excel table
-# @bot.command(description = 'I will show you current or future trial!')
-# async def trials():#arg:str):
-# 	# if arg == "today":
-# 	# 	await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][0]) + " Trial")
-# 	# elif arg.isdigit():
-# 	# 	await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][0]) + " Trial")
-# 	# elif arg.isalpha():    
-# 	# 	for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-# 	# 		if arg.lower() == sheet.row[int(record)][0].lower():
-# 	# 			await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][0]) + " Trial")
-# 	# 			break
-# 	# else:
-# 	# 	await bot.say("Please check your input and try again. Use ~help for more info.")
-# 	await bot.say("I'm too lazy to write good code for this one.")
-# #showdowns too
-# @bot.command(description = 'I will show you current or future showdown!')
-
-# #revealing true self
-# @bot.command(pass_context = True, description = 'I will use my powers to reveal true self of the chosen one!')
-# async def reveal(ctx, *, userName):
-# 	if userName[1] == "@":
-# 		user = discord.utils.get(ctx.message.server.members, mention = userName)
-# 	else:
-# 		user = discord.utils.get(ctx.message.server.members, display_name = userName)
-# 	await bot.say("I'm sure it's **" + user.name + "**!")
-
-# async def showdowns():#arg:str):
-# 	# if arg == "today":
-# 	# 	await bot.say(str(datetime.now(timezone('Europe/Samara')).strftime("%d of %b (today) - ")) + str(sheet.row[datetime.now(timezone('Europe/Samara')).day-1][1]) + " Showdown")
-# 	# elif arg.isdigit():
-# 	# 	await bot.say(arg + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[int(arg)-1][1]) + " Showdown")
-# 	# elif arg.isalpha():    
-# 	# 	for record in range(datetime.now(timezone('Europe/Samara')).day, len(sheet.column[1])):
-# 	# 		if arg.lower() == sheet.row[int(record)][1].lower():
-# 	# 			await bot.say(str(record+1) + str(datetime.now(timezone('Europe/Samara')).strftime(" of %b - ")) + str(sheet.row[record][1]) + " showdown")
-# 	# 			break
-# 	# else:
-# 	# 	await bot.say("Please check your input and try again. Use ~help for more info.")
-# 	await bot.say("I'm too lazy to write good code for this one.") 
-
-# @bot.event
-# async def on_message(message):
-# 	await bot.process_commands(message)	
-
-# (message.author.id == 185069144184455168) and 
-# pepeGun = discord.utils.get(message.server.emojis, name = 'pepeGun')
-# if not pepeGun == None:
-# 	for wrong_name in wrong_names:
-# 		if wrong_name.lower() in message.content.lower():
-# 			await bot.send_message(message.channel, "It's time to stop " + str(pepeGun) +"\nhttps://thumbs.gfycat.com/AdmirableShadyCur-size_restricted.gif")
-# 			break
-
-#insults
-# if message.author.id in victim_list:
-# 	if (message.server.id != "301829994567434241"):
-# 		pool = ["🇱", "🇪", "🇼", "🇩", "🍆"]
-# 		pool = ["🇸","🇹","🇺","🇵","🇮","🇩"]
-# 		if message.author.id in victim_list and random.randint(1,100) == 1:
-# 			for letter in pool:
-# 				await bot.add_reaction(message, letter)
-# 		if (random.randint(1,100) == 1):
-# 			await bot.send_message(message.channel, message.author.mention + random.choice(insults_list))
-
-# Beaver is ded MingLow
-# if beaver <= 0 and "beaver" in message.content.lower() and ("dead" in message.content.lower() or "ded" in message.content.lower()):
-# 	await bot.send_message(message.channel, "MingLow")
-# 	beaver = 10
+bot.run()
