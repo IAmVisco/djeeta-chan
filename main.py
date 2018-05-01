@@ -142,12 +142,13 @@ gn         = True
 casuals_id = '265292778756374529'
 
 #creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for April", color=0x0bbbae)
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for May", color=0x0bbbae)
 events = [
-	["Robomi Z" , "31/03 - 08/04"],
-	["Detective Conan Collab" , "08/04 - 20/04"],
-	["Guild Wars (Dark Enemies)", "22/04 - 29/04"],
-	["New Scenario Event", "30/04 - 08/05"]
+	["A Thousand Reasons" , "30/04 - 08/05"],
+	["The Girl who Leapt Through Mountains (Rerun)" , "09/05 - 14/05"],
+	["Xeno Vohu Clash (Rerun)" , "15/05 - 22/05"],
+	["Guild Wars (Water Enemies)", "23/05 - 30/05"],
+	["New Scenario Event", "31/05 - 09/06"]
 ]
 
 for event in events:
