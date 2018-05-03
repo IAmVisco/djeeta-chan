@@ -461,7 +461,7 @@ async def userinfo(ctx, user: discord.Member = None):
 	if user is None:
 		user = ctx.message.author
 
-	userInfo = discord.Embed(title = user, color = 0x07f7e2)
+	userInfo = discord.Embed(title = str(user), color = 0x07f7e2)
 	userInfo.set_thumbnail(url = user.avatar_url)
 	userInfo.add_field(name = 'Status', value = user.status)
 	userInfo.add_field(name = 'ID', value = user.id)
