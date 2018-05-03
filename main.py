@@ -351,7 +351,7 @@ async def f(ctx):
 
 @bot.command()
 async def yesno():
-	"""Will send GIF with yes or no answer."""
+	"""Sends GIF with yes or no answer."""
 	await bot.say(requests.get("http://yesno.wtf/api").json()['image'])
 
 @bot.command()
@@ -461,7 +461,7 @@ async def userinfo(ctx, user: discord.Member = None):
 	if user is None:
 		user = ctx.message.author
 
-	userInfo = discord.Embed(title = user.name + '#' + user.discriminator, color = 0x07f7e2)
+	userInfo = discord.Embed(title = user, color = 0x07f7e2)
 	userInfo.set_thumbnail(url = user.avatar_url)
 	userInfo.add_field(name = 'Status', value = user.status)
 	userInfo.add_field(name = 'ID', value = user.id)
@@ -481,19 +481,35 @@ async def serverinfo(ctx):
 	serverInfo = discord.Embed(title = server.name, color = 0x07f7e2)
 	serverInfo.set_thumbnail(url = server.icon_url)
 	serverInfo.add_field(name = 'ID', value = server.id)
-	serverInfo.add_field(name = 'Owner', value = server.owner.name + 
-		'#' + server.owner.discriminator)
+	serverInfo.add_field(name = 'Owner', value = server.owner)
 	serverInfo.add_field(name = 'Region', value = server.region)
 	serverInfo.add_field(name = 'Members', value = server.member_count)
 	serverInfo.add_field(name = 'Channels', value = sum(1 for _ in server.channels))
 	serverInfo.add_field(name = 'Creation date', 
 		value = server.created_at.strftime("%d %b %Y %H:%M %Z"))
 	serverInfo.add_field(name = 'Roles list', 
-		value = ', '.join(role.name for role in server.roles))
+		value = ', '.join(role.name for role in server.role_hierarchy))
 	serverInfo.set_footer(text = strfdelta(datetime.now() - startTime, 
 		"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
 		icon_url = bot.user.avatar_url)
 	await bot.say(embed = serverInfo)
+
+@bot.command()
+async def info():
+	"""Shows info about bot and bot's developer."""
+	owner = await bot.get_user_info(bot.config.get("meta", {}).get("owner", ""))
+	botInfo = discord.Embed(title = 'GitHub Repository', 
+		url = 'https://github.com/IAmVisco/djeeta-chan', color = 0x07f7e2)
+	botInfo.set_author(name = str(bot.user) + ' ID :' + bot.user.id)
+	botInfo.set_thumbnail(url = bot.user.avatar_url)
+	botInfo.add_field(name = 'Servers connected', value = sum(1 for _ in bot.servers))
+	botInfo.add_field(name = 'Users known', value = sum(1 for _ in bot.get_all_members()))
+	botInfo.add_field(name = 'Channels known', value = sum(1 for _ in bot.get_all_channels()))
+	botInfo.add_field(name = 'Owner', value = owner)
+	botInfo.set_footer(text = strfdelta(datetime.now() - startTime, 
+		"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
+		icon_url = bot.user.avatar_url)
+	await bot.say(embed = botInfo)
 
 @bot.command()
 async def shrug():
