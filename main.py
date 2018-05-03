@@ -487,8 +487,9 @@ async def serverinfo(ctx):
 	serverInfo.add_field(name = 'Channels', value = sum(1 for _ in server.channels))
 	serverInfo.add_field(name = 'Creation date', 
 		value = server.created_at.strftime("%d %b %Y %H:%M %Z"))
-	serverInfo.add_field(name = 'Roles list', 
-		value = ', '.join(role.name for role in server.role_hierarchy))
+	rolesList = ', '.join(role.name for role in server.role_hierarchy)
+	if len(rolesList) < 1025:
+		serverInfo.add_field(name = 'Roles list', value = rolesList)
 	serverInfo.set_footer(text = strfdelta(datetime.now() - startTime, 
 		"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
 		icon_url = bot.user.avatar_url)
