@@ -424,6 +424,46 @@ async def wiki(*, query: str):
 	else:
 		await bot.say("Nothing found, please check your input and try again.")
 
+@bot.command(pass_context = True)
+async def userinfo(ctx, user: discord.Member = None):
+	"""Shows info about user."""
+	if user is None:
+		user = ctx.message.author
+
+	userInfo = discord.Embed(title = user.name + '#' + user.discriminator, color = 0x07f7e2)
+	userInfo.set_thumbnail(url = user.avatar_url)
+	userInfo.add_field(name = 'Status', value = user.status)
+	userInfo.add_field(name = 'ID', value = user.id)
+	userInfo.add_field(name = 'Account creation date', 
+		value = user.created_at.strftime("%d %b %Y %H:%M %Z"))
+	userInfo.add_field(name = 'Server join date', 
+		value = user.joined_at.strftime("%d %b %Y %H:%M %Z"))
+	userInfo.set_footer(text = strfdelta(datetime.now() - startTime, 
+		"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
+		icon_url = bot.user.avatar_url)
+	await bot.say(embed = userInfo)
+
+@bot.command(pass_context = True)
+async def serverinfo(ctx):
+	"""Shows info about server"""
+	server = ctx.message.server;
+	serverInfo = discord.Embed(title = server.name, color = 0x07f7e2)
+	serverInfo.set_thumbnail(url = server.icon_url)
+	serverInfo.add_field(name = 'ID', value = server.id)
+	serverInfo.add_field(name = 'Owner', value = server.owner.name + 
+		'#' + server.owner.discriminator)
+	serverInfo.add_field(name = 'Region', value = server.region)
+	serverInfo.add_field(name = 'Members', value = server.member_count)
+	serverInfo.add_field(name = 'Channels', value = sum(1 for _ in server.channels))
+	serverInfo.add_field(name = 'Creation date', 
+		value = server.created_at.strftime("%d %b %Y %H:%M %Z"))
+	serverInfo.add_field(name = 'Roles list', 
+		value = ', '.join(role.name for role in server.roles))
+	serverInfo.set_footer(text = strfdelta(datetime.now() - startTime, 
+		"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
+		icon_url = bot.user.avatar_url)
+	await bot.say(embed = serverInfo)
+
 @bot.event
 async def on_message(message):
 	global gm
