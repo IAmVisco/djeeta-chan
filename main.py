@@ -8,7 +8,8 @@ import asyncio
 import os
 import requests
 import ast
-from datetime import datetime, timedelta
+from datetime import datetime
+from time import strftime
 from pytz import timezone
 import urllib.request
 
@@ -117,6 +118,7 @@ gifDict = {
 gw_mode    = False
 gwstart    = datetime(2018, 4, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 4, 23, 23, 59, 0, 0, timezone('Asia/Tokyo'))
+startTime  = datetime.now()
 gm         = True
 gn         = True
 
@@ -137,6 +139,13 @@ for event in events:
 gifEmbed=discord.Embed(title = 'GIF List', description = 'Use ~gif <name> to post a GIF, names are shown below')
 for pair in gifDict.items():
 	gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
+
+def strfdelta(tdelta, fmt):
+    """ timedelta formatter """
+    d = {"D": tdelta.days}
+    d["h"], rem = divmod(tdelta.seconds, 3600)
+    d["m"], d["s"] = divmod(rem, 60)
+    return fmt.format(**d)
 
 # # not nessecary unless you want to override lib's event
 # @bot.event
@@ -430,7 +439,7 @@ async def userinfo(ctx, user: discord.Member = None):
 	if user is None:
 		user = ctx.message.author
 
-	userInfo = discord.Embed(title = user, color = 0x07f7e2)
+	userInfo = discord.Embed(title = str(user), color = 0x07f7e2)
 	userInfo.set_thumbnail(url = user.avatar_url)
 	userInfo.add_field(name = 'Status', value = user.status)
 	userInfo.add_field(name = 'ID', value = user.id)
