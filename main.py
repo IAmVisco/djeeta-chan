@@ -304,8 +304,7 @@ async def roll(roll:str):
 			out += str(random.randint(1, int(roll[1:])))
 		else:
 			for i in range(int(roll.split("d")[0])):
-				out += "\nDice " + str(i+1) + ": " + 
-				str(random.randint(1,int(roll.split("d")[1])))
+				out += "\nDice " + str(i+1) + ": " + str(random.randint(1,int(roll.split("d")[1])))
 		out += "**"
 	except:
 		out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
