@@ -122,24 +122,7 @@ startTime  = datetime.now()
 gm         = True
 gn         = True
 
-# events data
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for April", color=0x0bbbae)
-events = [
-	["Robomi Z" , "31/03 - 08/04"],
-	["Detective Conan Collab" , "08/04 - 20/04"],
-	["Guild Wars (Dark Enemies)", "22/04 - 29/04"],
-	["New Scenario Event", "30/04 - 08/05"]
-]
-
-# creating events embed
-for event in events:
-	eventsEmbed.add_field(name=event[0], value=event[1], inline=False)
-
-# creating gifs embed
-gifEmbed=discord.Embed(title = 'GIF List', description = 'Use ~gif <name> to post a GIF, names are shown below')
-for pair in gifDict.items():
-	gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
-
+# Utility functions
 def strfdelta(tdelta, fmt):
     """ timedelta formatter """
     d = {"D": tdelta.days}
@@ -147,7 +130,29 @@ def strfdelta(tdelta, fmt):
     d["m"], d["s"] = divmod(rem, 60)
     return fmt.format(**d)
 
-# # not nessecary unless you want to override lib's event
+def RandomColor():
+	return int('0x' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)]), 0)
+
+# Events data
+eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for April", color = RandomColor())
+events = [
+	["Robomi Z" , "31/03 - 08/04"],
+	["Detective Conan Collab" , "08/04 - 20/04"],
+	["Guild Wars (Dark Enemies)", "22/04 - 29/04"],
+	["New Scenario Event", "30/04 - 08/05"]
+]
+
+# Creating events embed
+for event in events:
+	eventsEmbed.add_field(name=event[0], value=event[1], inline=False)
+
+# Creating gifs embed
+gifEmbed=discord.Embed(title = 'GIF List', description = 'Use ~gif <name> to post a GIF, names are shown below')
+for pair in gifDict.items():
+	gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
+
+
+# # Not nessecary unless you want to override lib's event
 # @bot.event
 # async def on_ready():
 # 	print('Logged in as')
@@ -331,10 +336,10 @@ async def f(ctx):
 	"""
 	if ctx.message.content.strip() == "~f":
 		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + 
-		"** has paid their respects.\n", color=0x8b75a5)
+		"** has paid their respects.\n", color = RandomColor())
 	else:
 		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + 
-		"** has paid their respects for **" + ctx.message.content[3:] + ".**\n", color=0x8b75a5)# + str(count) + " total."
+		"** has paid their respects for **" + ctx.message.content[3:] + ".**\n", color = RandomColor())# + str(count) + " total."
 	await bot.say(embed = respectsMessage)
 
 #yesno
@@ -439,7 +444,7 @@ async def userinfo(ctx, user: discord.Member = None):
 	if user is None:
 		user = ctx.message.author
 
-	userInfo = discord.Embed(title = str(user), color = 0x07f7e2)
+	userInfo = discord.Embed(title = str(user), color = RandomColor())
 	userInfo.set_thumbnail(url = user.avatar_url)
 	userInfo.add_field(name = 'Status', value = user.status)
 	userInfo.add_field(name = 'ID', value = user.id)
@@ -456,7 +461,7 @@ async def userinfo(ctx, user: discord.Member = None):
 async def serverinfo(ctx):
 	"""Shows info about server"""
 	server = ctx.message.server;
-	serverInfo = discord.Embed(title = server.name, color = 0x07f7e2)
+	serverInfo = discord.Embed(title = server.name, color = RandomColor())
 	serverInfo.set_thumbnail(url = server.icon_url)
 	serverInfo.add_field(name = 'ID', value = server.id)
 	serverInfo.add_field(name = 'Owner', value = server.owner)
@@ -477,7 +482,7 @@ async def info():
 	"""Shows info about bot and bot's developer."""
 	owner = await bot.get_user_info(bot.config.get("meta", {}).get("owner", ""))
 	botInfo = discord.Embed(title = 'GitHub Repository', 
-		url = 'https://github.com/IAmVisco/djeeta-chan', color = 0x07f7e2)
+		url = 'https://github.com/IAmVisco/djeeta-chan', color = RandomColor())
 	botInfo.set_author(name = str(bot.user) + ' ID :' + bot.user.id)
 	botInfo.set_thumbnail(url = bot.user.avatar_url)
 	botInfo.add_field(name = 'Servers connected', value = sum(1 for _ in bot.servers))
