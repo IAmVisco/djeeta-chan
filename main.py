@@ -122,7 +122,7 @@ gifDict = {
 	'nice': 'https://imgur.com/a/mgw6A',
 	'laugh': 'https://imgur.com/a/ps5I5'
 }
-# Help me review and add more gifs! https://pastebin.com/v3u8DG22
+# More gifs https://pastebin.com/v3u8DG22
 
 gw_mode    = False
 gwstart    = datetime(2018, 4, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
@@ -132,8 +132,20 @@ gm         = True
 gn         = True
 casuals_id = '265292778756374529'
 
-#creating events embed
-eventsEmbed=discord.Embed(title="Event schedule", description="Schedule for May", color=0x0bbbae)
+# Utility functions
+def strfdelta(tdelta, fmt):
+    """ timedelta formatter """
+    d = {"D": tdelta.days}
+    d["h"], rem = divmod(tdelta.seconds, 3600)
+    d["m"], d["s"] = divmod(rem, 60)
+    return fmt.format(**d)
+
+def RandomColor():
+	return int('0x' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)]), 0)
+
+# Creating events embed
+eventsEmbed=discord.Embed(title="Event schedule", 
+	description="Schedule for May", color = RandomColor())
 events = [
 	["A Thousand Reasons" , "30/04 - 08/05"],
 	["The Girl who Leapt Through Mountains (Rerun)" , "09/05 - 14/05"],
@@ -145,18 +157,13 @@ events = [
 for event in events:
 	eventsEmbed.add_field(name = event[0], value = event[1], inline = False)
 
-gifEmbed=discord.Embed(title = 'GIF List', description = 'Use ~gif <name> to post a GIF, names are shown below')
+gifEmbed=discord.Embed(title = 'GIF List', description = 
+	'Use ~gif <name> to post a GIF, names are shown below', color = RandomColor())
 for pair in gifDict.items():
 	gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
 
-def strfdelta(tdelta, fmt):
-    """ timedelta formatter """
-    d = {"D": tdelta.days}
-    d["h"], rem = divmod(tdelta.seconds, 3600)
-    d["m"], d["s"] = divmod(rem, 60)
-    return fmt.format(**d)
 
-#starting up
+# Starting up
 @bot.event
 async def on_ready():
 	print('Logged in as')
@@ -165,7 +172,7 @@ async def on_ready():
 	print('------')
 	await bot.change_presence(game = discord.Game(name="Djeetablue Fantasy"))
 
-#anti-lurking message
+# Anti-lurking message
 @bot.event
 async def on_member_join(member):
 	if member.server.id == casuals_id:
@@ -272,10 +279,12 @@ async def role(ctx, *, role: discord.Role):
 		try:
 			if role in ctx.message.author.roles:
 				await bot.remove_roles(ctx.message.author, role)
-				await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been removed from your roles.")
+				await bot.say(ctx.message.author.mention + ", the role " + 
+					role.name + " has been removed from your roles.")
 			else:	
 				await bot.add_roles(ctx.message.author, role)
-				await bot.say(ctx.message.author.mention + ", the role " + role.name + " has been added to your roles.")
+				await bot.say(ctx.message.author.mention + ", the role " + 
+					role.name + " has been added to your roles.")
 		except Exception as e:
 			await bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
 
@@ -295,7 +304,8 @@ async def roll(roll:str):
 			out += str(random.randint(1, int(roll[1:])))
 		else:
 			for i in range(int(roll.split("d")[0])):
-				out += "\nDice " + str(i+1) + ": " + str(random.randint(1,int(roll.split("d")[1])))
+				out += "\nDice " + str(i+1) + ": " + 
+				str(random.randint(1,int(roll.split("d")[1])))
 		out += "**"
 	except:
 		out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
@@ -343,10 +353,10 @@ async def f(ctx):
 	"""
 	if ctx.message.content.strip() == "~f":
 		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + 
-		"** has paid their respects.\n", color=0x8b75a5) # + str(count) + " total."
+		"** has paid their respects.\n", color = RandomColor()) # + str(count) + " total."
 	else:
 		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + 
-		"** has paid their respects for **" + ctx.message.content[3:] + ".**\n", color=0x8b75a5)# + str(count) + " total."
+		"** has paid their respects for **" + ctx.message.content[3:] + ".**\n", color = RandomColor())# + str(count) + " total."
 	await bot.say(embed = respectsMessage)
 
 @bot.command()
@@ -461,7 +471,7 @@ async def userinfo(ctx, user: discord.Member = None):
 	if user is None:
 		user = ctx.message.author
 
-	userInfo = discord.Embed(title = str(user), color = 0x07f7e2)
+	userInfo = discord.Embed(title = str(user), color = RandomColor())
 	userInfo.set_thumbnail(url = user.avatar_url)
 	userInfo.add_field(name = 'Status', value = user.status)
 	userInfo.add_field(name = 'ID', value = user.id)
@@ -478,7 +488,7 @@ async def userinfo(ctx, user: discord.Member = None):
 async def serverinfo(ctx):
 	"""Shows info about server"""
 	server = ctx.message.server;
-	serverInfo = discord.Embed(title = server.name, color = 0x07f7e2)
+	serverInfo = discord.Embed(title = server.name, color = RandomColor())
 	serverInfo.set_thumbnail(url = server.icon_url)
 	serverInfo.add_field(name = 'ID', value = server.id)
 	serverInfo.add_field(name = 'Owner', value = server.owner)
@@ -500,7 +510,7 @@ async def info():
 	"""Shows info about bot and bot's developer."""
 	owner = await bot.get_user_info(bot.config.get("meta", {}).get("owner", ""))
 	botInfo = discord.Embed(title = 'GitHub Repository', 
-		url = 'https://github.com/IAmVisco/djeeta-chan', color = 0x07f7e2)
+		url = 'https://github.com/IAmVisco/djeeta-chan', color = RandomColor())
 	botInfo.set_author(name = str(bot.user) + ' ID :' + bot.user.id)
 	botInfo.set_thumbnail(url = bot.user.avatar_url)
 	botInfo.add_field(name = 'Servers connected', value = sum(1 for _ in bot.servers))
