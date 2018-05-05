@@ -493,6 +493,11 @@ async def info():
 		"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
 		icon_url = bot.user.avatar_url)
 	await bot.say(embed = botInfo)
+	
+@bot.command(pass_context = True)
+async def poll(ctx):
+	await bot.add_reaction(ctx.message, '✅')
+	await bot.add_reaction(ctx.message, '❎')
 
 @bot.event
 async def on_message(message):
