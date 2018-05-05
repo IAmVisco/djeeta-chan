@@ -521,6 +521,11 @@ async def info():
 		icon_url = bot.user.avatar_url)
 	await bot.say(embed = botInfo)
 
+@bot.command(pass_context = True)
+async def poll(ctx):
+	await bot.add_reaction(ctx.message, '✅')
+	await bot.add_reaction(ctx.message, '❎')
+
 @bot.command()
 async def shrug():
 	"""Shows shrug emote, useful if you are on phone."""
