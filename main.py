@@ -172,12 +172,8 @@ async def on_ready():
 	print('------')
 	await bot.change_presence(game = discord.Game(name="Djeetablue Fantasy"))
 
-# Anti-lurking message
-@bot.event
-async def on_member_join(member):
-	if member.server.id == casuals_id:
-		await asyncio.sleep(5)
-		await bot.add_roles(member, discord.utils.get(member.server.roles, name = "pubs"))
+# @bot.event
+# async def on_member_join(member):
 
 @bot.command()
 async def emo(emoName:str):
@@ -543,24 +539,6 @@ async def tableflip():
 	"""Shows tableflip emote, useful if you are on phone."""
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
-@bot.event 
-async def on_member_update(before, after):
-	# If Casuals or GuestStar role is added, remove pub role
-
-	cas_role = [before.roles[i] for i in range(len(before.roles)) if str(before.roles[i]) == "Casuals" or before.roles[i].id == "340178120919351307"]
-	old_match = len(cas_role)
-	cas_role = [after.roles[i] for i in range(len(after.roles)) if str(after.roles[i]) == "Casuals" or after.roles[i].id == "340178120919351307"]
-	if len(cas_role) <= old_match:
-		return
-	pub_role = [before.roles[i] for i in range(len(before.roles)) if before.roles[i].id == "419124938247766026"]
-	if len(pub_role) == 0:
-		return
-	#assured that he still has the pub role since only 1 update at a time, but for ensurace
-	pub_role = [after.roles[i] for i in range(len(after.roles)) if after.roles[i].id == "419124938247766026"]
-	if len(pub_role) == 0:
-		return
-	await bot.remove_roles(after, pub_role[0])
-
 @bot.event
 async def on_message(message):
 	global gm
@@ -586,16 +564,6 @@ async def on_message(message):
 			await bot.send_message(message.channel, "lmao")
 		elif "\\o/" in message.content.lower():
 			await bot.send_message(message.channel, "\\o/")
-
-	# # profanity filter
-	# if message.server.id == casuals_id:
-	# 	for word in badWords:
-	# 		if word in message.content.lower():
-	# 			await bot.delete_message(message)
-	# 			await bot.send_message(message.channel, message.author.mention + " is a baka")
-	# 			await bot.add_roles(message.author, discord.utils.get(message.server.roles, name = 'nadeko-mute'))
-	# 			await asyncio.sleep(300)
-	# 			await bot.remove_roles(message.author, discord.utils.get(message.server.roles, name = 'nadeko-mute'))
 
 	# double prefix
 	if message.content.startswith('!') and not (message.content.startswith('!emo') 
