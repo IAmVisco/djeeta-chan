@@ -487,12 +487,12 @@ async def userinfo(ctx, user: discord.Member = None):
 async def serverinfo(ctx):
 	"""Shows info about server"""
 	server = ctx.message.server;
-	serverInfo = discord.Embed(title = server.name, color = RandomColor())
+	serverInfo = discord.Embed(title = server.name + server.id, color = RandomColor())
 	serverInfo.set_thumbnail(url = server.icon_url)
-	serverInfo.add_field(name = 'ID', value = server.id)
 	serverInfo.add_field(name = 'Owner', value = server.owner)
 	serverInfo.add_field(name = 'Region', value = server.region)
 	serverInfo.add_field(name = 'Members', value = server.member_count)
+	serverInfo.add_field(name = 'Roles', value = sum(1 for _ in server.roles))
 	serverInfo.add_field(name = 'Channels', value = sum(1 for _ in server.channels))
 	serverInfo.add_field(name = 'Creation date', 
 		value = server.created_at.strftime("%d %b %Y %H:%M %Z"))
@@ -523,6 +523,7 @@ async def info():
 
 @bot.command(pass_context = True)
 async def poll(ctx):
+	"""Creates quick poll with reactions on the message."""
 	await bot.add_reaction(ctx.message, '✅')
 	await bot.add_reaction(ctx.message, '❎')
 
