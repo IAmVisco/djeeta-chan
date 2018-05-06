@@ -461,7 +461,8 @@ async def userinfo(ctx, user: discord.Member = None):
 async def serverinfo(ctx):
 	"""Shows info about server"""
 	server = ctx.message.server;
-	serverInfo = discord.Embed(title = server.name + server.id, color = RandomColor())
+	serverInfo = discord.Embed(title = 
+		server.name + ' (ID: ' + server.id + ')', color = RandomColor())
 	serverInfo.set_thumbnail(url = server.icon_url)
 	serverInfo.add_field(name = 'Owner', value = server.owner)
 	serverInfo.add_field(name = 'Region', value = server.region)
