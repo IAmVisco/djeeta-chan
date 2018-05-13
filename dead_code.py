@@ -168,3 +168,40 @@ async def on_member_update(before, after):
 	if len(pub_role) == 0:
 		return
 	await bot.remove_roles(after, pub_role[0])
+
+	@bot.command(pass_context = True)
+async def record(ctx):
+	the_file = open('logs/output.txt', 'w+')
+	lst = []
+	async for log in bot.logs_from(ctx.message.channel, limit=100000000000000):
+		stringTime = log.timestamp.strftime("%Y-%m-%d %H:%M")
+		msg = str(log.content.encode('UTF-8'))[2:-1]
+		atr = str(log.author)
+		template = '[{stringTime}] <{author}> {message}\n'
+		lst.append(template.format(stringTime=stringTime, author=atr, message=msg))
+
+	lst.reverse()
+	try:
+		for line in lst:
+			if ('spoo.py' not in line):
+				the_file.write(line.replace("<@id>", "@name").replace("<@id>", "@name").replace("\\n", "\n"))
+			else:
+				print(line)
+	except:
+		print(line)
+	the_file.close()
+	print('Done!')
+
+# @bot.command(pass_context = True)
+# async def list(ctx):
+# 	toms  = discord.utils.get(ctx.message.server.roles, name = 'Toms')
+# 	for user in ctx.message.server.members:
+# 		if toms in user.roles:
+# 			print(str(user) + ' ', end = '')
+# 			print(user.nick)
+
+# @bot.command(pass_context = True)
+# async def summon(ctx, user: discord.User):
+# 	for _ in range(50):
+# 		await bot.say(user.mention)
+
