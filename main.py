@@ -179,8 +179,7 @@ async def on_ready():
 async def emo(emoName:str):
 	"""Shows requested emote.
 
-	Displays requested emote, list avaible by typing
-	<prefix>emolist
+	List avaible by typing <prefix>emolist.
 	""" 	
 	try:
 		await bot.upload(os.getcwd() + '/res/emotes/' + emoName.lower() + '.png')
@@ -191,8 +190,7 @@ async def emo(emoName:str):
 async def siete(emoName:str):	
 	"""Shows sietefied emote.
 
-	Displays requested emote, list avaible by typing
-	<prefix>emolist
+	List avaible by typing <prefix>emolist.
 	""" 
 	try:
 		await bot.upload(os.getcwd() + '/res/siete/' + emoName.lower() + '.png')
@@ -201,11 +199,7 @@ async def siete(emoName:str):
 
 @bot.command()
 async def emolist():
-	"""Shows all avaible emotes.
-
-	Sends imgur album link with all 
-	avaible emotes and siete emotes.
-	"""
+	"""Shows all avaible emotes."""
 	await bot.say('<https://imgur.com/a/jmGm3>\nHidden cuz big pic')
 
 @bot.command()
@@ -222,12 +216,7 @@ async def gif(gifName:str):
 
 @bot.command()
 async def giflist():
-	"""Shows full list of GIF emotes avaible.
-
-	Sends embed with the list of all gif emotes.
-	Unlike usual emotes list, this one is 
-	auto-generated.
-	"""
+	"""Shows full list of GIF emotes avaible."""
 	await bot.say(embed = gifEmbed)
 
 #ninja echo
@@ -318,11 +307,7 @@ async def ping(ctx):
 
 @bot.command(pass_context = True)
 async def choose(ctx):
-	"""Makes a choice.
-
-	Makes random choice out of all provided variants,
-	separated by comma.
-	"""
+	"""Makes a choice."""
 	variants = ctx.message.content[8:]
 	if ',' in variants and variants[-1] != ',':
 		variants = variants.strip().split(',')
@@ -342,10 +327,7 @@ async def events():
 
 @bot.command(pass_context = True)
 async def f(ctx):
-	"""Press F to pay respects.
-
-	Pays respect in general or for a specified cause.
-	"""
+	"""Press F to pay respects."""
 	if ctx.message.content.strip() == "~f":
 		respectsMessage = discord.Embed(description = "**" + ctx.message.author.name + 
 		"** has paid their respects.\n", color = RandomColor()) # + str(count) + " total."
@@ -415,7 +397,6 @@ async def gw():
 async def disgusting(ctx):
 	"""Shows random disgusted anime girl.
 
-	You can specify number of pic, no list avaible though.
 	Final is a perv.
 	"""
 	msg = ctx.message.content
@@ -426,10 +407,7 @@ async def disgusting(ctx):
 
 @bot.command(pass_context = True)
 async def bigmoji(ctx):
-	"""Shows full size of emoji.
-
-	Just send emoji right after command name.
-	"""
+	"""Shows full size of emoji."""
 	try:
 		str = ctx.message.content[9:]
 		fields = str.split(':')
@@ -526,17 +504,17 @@ async def poll(ctx):
 
 @bot.command()
 async def shrug():
-	"""Shows shrug emote, useful if you are on phone."""
+	"""Shows shrug emote."""
 	await bot.say("¯\_(ツ)_/¯")
 
 @bot.command()
 async def lenny():
-	"""Shows lenny emote, useful if you are on phone."""
+	"""Shows lenny emote."""
 	await bot.say("( ͡° ͜ʖ ͡°)")
 
 @bot.command()
 async def tableflip():
-	"""Shows tableflip emote, useful if you are on phone."""
+	"""Shows tableflip emote."""
 	await bot.say("(╯°□°）╯︵ ┻━┻")
 
 @bot.event
