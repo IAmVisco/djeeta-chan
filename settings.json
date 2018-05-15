@@ -7,5 +7,6 @@
     "credentials": {
         "token": "Mzg2NDQ5MDkzMzg1Mzg4MDUz.DQQErQ.3SJ8ftYbFWIfQc2lIDVga2cU0cg",
         "client_id": "386449093385388053"
-    }
+    },
+    "cogs": ["gbf", "utility", "fun"]
 }

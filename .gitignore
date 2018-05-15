@@ -1,2 +1,4 @@
 *.log
 /trash
+/__pycache__
+/data
