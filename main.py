@@ -157,11 +157,11 @@ events = [
 for event in events:
 	eventsEmbed.add_field(name = event[0], value = event[1], inline = False)
 
-gifEmbed=discord.Embed(title = 'GIF List', description = 
+gifEmbed = discord.Embed(title = 'GIF List', description = 
 	'Use ~gif <name> to post a GIF, names are shown below', color = RandomColor())
+
 for pair in gifDict.items():
 	gifEmbed.add_field(name = pair[0], value = pair[1], inline = True)
-
 
 # Starting up
 @bot.event
