@@ -2,3 +2,4 @@
 /trash
 /__pycache__
 /data
+db_pg.py

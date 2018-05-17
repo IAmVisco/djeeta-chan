@@ -8,5 +8,6 @@
         "token": "Mzg2NDQ5MDkzMzg1Mzg4MDUz.DQQErQ.3SJ8ftYbFWIfQc2lIDVga2cU0cg",
         "client_id": "386449093385388053"
     },
-    "cogs": ["gbf", "utility", "fun"]
+    "cogs": ["gbf", "utility", "fun"],
+    "DB_URL": "postgres://qgcnqmyruunfog:e5b54968a883acaf19692b2421912381a5d5a9d53321d52d8f5e220b5876e030@ec2-54-228-181-43.eu-west-1.compute.amazonaws.com:5432/ddveispkuunf2r"
 }

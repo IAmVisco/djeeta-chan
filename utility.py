@@ -1,10 +1,12 @@
 import discord
 from discord.ext import commands
+from discordbot.bot_utils import checks, config
 from time import strftime
 from utils import RandomColor, strfdelta
 from datetime import datetime
 import requests
 import random
+import psycopg2
 
 fancy_answers = (
 	"Without a doubt it's ",
@@ -16,6 +18,10 @@ fancy_answers = (
 )
 
 casuals_id = '265292778756374529'
+
+config = config.Config('settings.json', directory="")
+conn = psycopg2.connect(config.get("DB_URL", ""), sslmode = 'require')
+db = conn.cursor()
 
 class Utility():
 	def __init__(self, bot):
@@ -106,7 +112,6 @@ class Utility():
 			icon_url = self.bot.user.avatar_url)
 		await self.bot.say(embed = botInfo)
 
-
 	@commands.command(pass_context = True)
 	async def ping(self, ctx):
 		"""Checks if bot is alive.
@@ -183,6 +188,24 @@ class Utility():
 	async def yesno(self):
 		"""Sends GIF with yes or no answer."""
 		await self.bot.say(requests.get("http://yesno.wtf/api").json()['image'])
+
+	@commands.group(invoke_without_command = True)
+	async def gf(self):
+		userInfo = discord.Embed(title = "Girls' Frontline Friend List", color = RandomColor())
+		userInfo.set_footer(text = strfdelta(datetime.utcnow() - self.bot.uptime, 
+			"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
+			icon_url = self.bot.user.avatar_url)
+		db.execute("SELECT * FROM test ORDER BY uid")
+		for record in db:
+			userInfo.add_field(name = record[1], value = record[2])
+		await self.bot.say(embed = userInfo)
+
+	@gf.command(name = 'add', hidden = True)
+	@checks.is_owner()
+	async def add_user_to_list(self, nick, uid):
+		db.execute("INSERT INTO test (name, uid) VALUES (%s, %s)", (nick, uid))
+		conn.commit()
+		await self.bot.say('Nick {} successfully added to the list.'.format(nick))
 
 def setup(bot):
 	bot.add_cog(Utility(bot))
