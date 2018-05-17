@@ -191,6 +191,7 @@ class Utility():
 
 	@commands.group(invoke_without_command = True)
 	async def gf(self):
+		"""Shows a list with Girls' Frontline Nicks and UIDs"""
 		userInfo = discord.Embed(title = "Girls' Frontline Friend List", color = RandomColor())
 		userInfo.set_footer(text = strfdelta(datetime.utcnow() - self.bot.uptime, 
 			"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
