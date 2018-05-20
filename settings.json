@@ -7,7 +7,6 @@
     "credentials": {
         "token": "YOUR_TOKEN",
         "client_id": "CLIENT_ID"
-        // those 2 options are from your discord bot account
-        // from https://discordapp.com/developers/applications/me
-    }
+    },
+    "cogs": ["gbf", "utility", "fun"]
 }
