@@ -17,7 +17,7 @@ events = [
 for event in events:
 	eventsEmbed.add_field(name = event[0], value = event[1], inline = False)
 
-gw_mode    = False
+gw_mode    = True
 gwstart    = datetime(2018, 4, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 4, 23, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 
@@ -62,20 +62,20 @@ class GBF():
 			elif (datetime.now(timezone('Asia/Tokyo')).hour >= 7):
 				if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
 					await self.bot.say(':point_right: :clock12: | Round ' + 
-						str(datetime.now(timezone('Asia/Tokyo')).day - 24) +
+						str(datetime.now(timezone('Asia/Tokyo')).day - 25) +
 						' ends in ' + str(23 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' +
 						str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 				else:
-					await self.bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + 
+					await self.bot.say(':point_right: :clock12: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 25) + 
 						' ends in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 
-			elif datetime.now(timezone('Asia/Tokyo')).day - 24 <= 5: # day of start(14) + 2
+			elif datetime.now(timezone('Asia/Tokyo')).day - 25 <= 5: # day of start(14) + 2
 				if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
-					await self.bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + 
+					await self.bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 25) + 
 						' starts in ' + str(6 - datetime.now(timezone('Asia/Tokyo')).hour) + ' hours ' + 
 						str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 				else:
-					await self.bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 24) + 
+					await self.bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 25) + 
 						' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
 				await self.bot.say('Guild Wars 37 is over, thanks for your hard work.')

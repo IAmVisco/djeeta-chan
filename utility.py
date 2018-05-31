@@ -190,16 +190,26 @@ class Utility():
 		await self.bot.say(requests.get("http://yesno.wtf/api").json()['image'])
 
 	@commands.group(invoke_without_command = True)
-	async def gf(self):
+	async def gf(self, nick=None):
 		"""Shows a list with Girls' Frontline Nicks and UIDs"""
-		userInfo = discord.Embed(title = "Girls' Frontline Friend List", color = RandomColor())
-		userInfo.set_footer(text = strfdelta(datetime.utcnow() - self.bot.uptime, 
-			"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
-			icon_url = self.bot.user.avatar_url)
-		db.execute("SELECT * FROM test ORDER BY uid")
-		for record in db:
+		if nick is None:
+			userInfo = discord.Embed(title = "Girls' Frontline Friend List", color = RandomColor())
+			userInfo.set_footer(text = strfdelta(datetime.utcnow() - self.bot.uptime, 
+				"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
+				icon_url = self.bot.user.avatar_url)
+			db.execute("SELECT * FROM test ORDER BY uid")
+			for record in db:
+				userInfo.add_field(name = record[1], value = record[2])
+			await self.bot.say(embed = userInfo)
+		else:
+			userInfo = discord.Embed(title = "Girls' Frontline User Info", color = RandomColor())
+			userInfo.set_footer(text = strfdelta(datetime.utcnow() - self.bot.uptime, 
+				"Alive for {D} days {h} hours {m} minutes {s} seconds."), 
+				icon_url = self.bot.user.avatar_url)
+			db.execute("SELECT * FROM test WHERE LOWER(name) = LOWER('{}')".format(nick))
+			record = db.fetchone()
 			userInfo.add_field(name = record[1], value = record[2])
-		await self.bot.say(embed = userInfo)
+			await self.bot.say(embed = userInfo)
 
 	@gf.command(name = 'add', hidden = True)
 	@checks.is_owner()

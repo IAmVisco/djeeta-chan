@@ -55,7 +55,8 @@ class Fun():
 	@commands.command(pass_context = True)
 	async def disgusting(self, ctx):
 		"""Shows random disgusted anime girl.
-
+		
+		You can specify number of pic, no list avaible though.
 		Final is a perv.
 		"""
 		msg = ctx.message.content
