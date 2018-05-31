@@ -80,7 +80,7 @@ class GBF():
 			else:
 				await self.bot.say('Guild Wars 38 is over, thanks for your hard work.')
 		else:
-			await self.bot.say('Guild Wars 39 will have **Earth** enemies. It is scheduled to arrive on June 16th.')
+			await self.bot.say('Guild Wars 39 will have **Earth** enemies. It is scheduled to arrive on Jule 16th.')
 
 	@commands.command()
 	async def wiki(self,*, query: str):
