@@ -6,19 +6,18 @@ from utils import RandomColor
 import requests
 
 eventsEmbed=discord.Embed(title="Event schedule", 
-	description="Schedule for May", color = RandomColor())
+	description="Schedule for June", color = RandomColor())
 events = [
-	["A Thousand Reasons" , "30/04 - 08/05"],
-	["The Girl who Leapt Through Mountains (Rerun)" , "09/05 - 14/05"],
-	["Xeno Vohu Clash (Rerun)" , "15/05 - 22/05"],
-	["Guild Wars (Water Enemies)", "23/05 - 30/05"],
-	["New Scenario Event", "31/05 - 09/06"]
+	["Handsome Gorilla" , "31/05 - 09/06"],
+	["Xeno Ifrit Clash (Rerun)" , "10/06 - 17/06"],
+	["Persona 5 Collab" , "18/06 - 29/06"],
+	["New Scenario Event", "30/06 - 09/07"]
 ]
 
 for event in events:
 	eventsEmbed.add_field(name = event[0], value = event[1], inline = False)
 
-gw_mode    = True
+gw_mode    = False
 gwstart    = datetime(2018, 4, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 4, 23, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 
@@ -79,9 +78,9 @@ class GBF():
 					await self.bot.say(':point_right: :clock7: | Round ' + str(datetime.now(timezone('Asia/Tokyo')).day - 25) + 
 						' starts in ' + str(60 - datetime.now(timezone('Asia/Tokyo')).minute) + ' minutes.')
 			else:
-				await self.bot.say('Guild Wars 37 is over, thanks for your hard work.')
+				await self.bot.say('Guild Wars 38 is over, thanks for your hard work.')
 		else:
-			await self.bot.say('Guild Wars 38 will have **Water** enemies. It is scheduled to arrive in May.')
+			await self.bot.say('Guild Wars 39 will have **Earth** enemies. It is scheduled to arrive on Jule 16th.')
 
 	@commands.command()
 	async def wiki(self,*, query: str):
