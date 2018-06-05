@@ -27,9 +27,11 @@ class Utility():
 	def __init__(self, bot):
 		self.bot = bot
 
-	@commands.command()
-	async def avatar(self, user: discord.Member):
+	@commands.command(pass_context = True)
+	async def avatar(self, ctx, user: discord.Member=None):
 		"""Shows avatar of the user"""
+		if user is None:
+			user = ctx.message.author
 		await self.bot.say(user.avatar_url)
 
 	@commands.command(pass_context = True)
@@ -149,8 +151,9 @@ class Utility():
 		Same command is used for both assigning and 
 		unassigning. Case-sensitive.
 		"""
+		print(role)
 		if ctx.message.server.id != casuals_id:
-			try:
+			if role is not None:
 				if role in ctx.message.author.roles:
 					await self.bot.remove_roles(ctx.message.author, role)
 					await self.bot.say(ctx.message.author.mention + ", the role " + 
@@ -159,11 +162,11 @@ class Utility():
 					await self.bot.add_roles(ctx.message.author, role)
 					await self.bot.say(ctx.message.author.mention + ", the role " + 
 						role.name + " has been added to your roles.")
-			except Exception as e:
-				await self.bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
+			else:
+				await self.bot.say("Please check your input again. Roles are case-sensitive, available roles can be viewed using ~roles.")
 
 	@commands.command()
-	async def roll(self, roll:str):
+	async def roll(self, roll: str):
 		"""Will roll a dice for you.
 
 		Rolls a dice both in WoW (/roll N) and 
