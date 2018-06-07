@@ -133,9 +133,8 @@ class Utility():
 		and bot's role name, case matters.
 		"""
 		tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
-		if ctx.message.server.id == '267994151436550146':
-			bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta")
-		else:
+		bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta")
+		if bot_role is None:
 			bot_role = discord.utils.get(ctx.message.server.roles, name = "Bot")
 
 		# lists the roles the bot can assign
