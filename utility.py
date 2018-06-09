@@ -20,9 +20,11 @@ class Utility():
 	def __init__(self, bot):
 		self.bot = bot
 
-	@commands.command()
-	async def avatar(self, user: discord.Member):
+	@commands.command(pass_context = True)
+	async def avatar(self, ctx, user: discord.Member=None):
 		"""Shows avatar of the user"""
+		if user is None:
+			user = ctx.message.author
 		await self.bot.say(user.avatar_url)
 
 	@commands.command(pass_context = True)
@@ -124,9 +126,8 @@ class Utility():
 		and bot's role name, case matters.
 		"""
 		tmp = ":pencil: __**These are the roles I can (un)assign you with:**__"
-		if ctx.message.server.id == '267994151436550146':
-			bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta-chan")
-		else:
+		bot_role = discord.utils.get(ctx.message.server.roles, name = "Djeeta")
+		if bot_role is None:
 			bot_role = discord.utils.get(ctx.message.server.roles, name = "Bot")
 
 		# lists the roles the bot can assign
@@ -152,7 +153,7 @@ class Utility():
 				await self.bot.say(ctx.message.author.mention + ", the role " + 
 					role.name + " has been added to your roles.")
 		except Exception as e:
-			await self.bot.say("Please check your input again. The format is ~role <role name>. Available roles can be viewed using ~roles.")
+				await self.bot.say("Please check your input again. Roles are case-sensitive, available roles can be viewed using ~roles.")
 
 	@commands.command()
 	async def roll(self, roll:str):
