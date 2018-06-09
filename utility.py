@@ -39,6 +39,20 @@ class Utility():
 		except:
 			await self.bot.say('Sorry I can\'t retrieve this emote')
 
+	@commands.command()
+	async def calc(self, *, expr: str):
+		"""Calculates passed expression.
+
+		Expression you pass will be evaluated by Python
+		compiler with few exceptions so use its syntax if possible.
+		"""
+		try:
+			out = ":1234: | Answer is **"
+			out += str(eval(expr.replace("^", "**").replace("x", "*")))#, {'__builtins__':{}})) + "**."
+		except:
+			out = "Failed to evaluate the expression. Please try again."
+		await self.bot.say(out)
+
 	@commands.command(pass_context = True)
 	async def choose(self, ctx):
 		"""Makes a choice."""
