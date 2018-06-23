@@ -307,12 +307,16 @@ async def on_ready():
 	if not hasattr(bot, 'uptime'):
 		bot.uptime = datetime.datetime.utcnow()
 
-	loop = asyncio.get_event_loop()
-	# t = Thread(target=looper, args=(loop))
-	# t = Thread(target=loop_feeds)
-	# t.start()
-	asyncio.set_event_loop(loop)
-	loop.run_until_complete(feeder())
+	try:
+
+		loop = asyncio.get_event_loop()
+		# t = Thread(target=looper, args=(loop))
+		# t = Thread(target=loop_feeds)
+		# t.start()
+		asyncio.set_event_loop(loop)
+		loop.run_until_complete(feeder())
+	except Exception as e:
+		print("Loop already started")
 
 if __name__ == "__main__":
 	bot.load_cogs()
