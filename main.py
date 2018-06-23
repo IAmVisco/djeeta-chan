@@ -7,20 +7,13 @@
 
 #importing libraries
 import discordbot as discord
-import discord as disco
 import random
 import aiohttp
 import asyncio
 
-
-
-from threading import Thread
-
 from pyquery import PyQuery as pq
-import requests
 import json
 import datetime
-import time
 import re
 from pathlib import Path
 
@@ -157,7 +150,7 @@ async def fetch(session, url):
     async with session.get(url) as response:
         return await response.text()
 
-async def feeder():			
+async def feeder():
 	#check feed forever
 	# print("Starting Feed.")
 	check_files()
@@ -173,7 +166,7 @@ async def feeder():
 
 	channels = list()
 	for chid in _TWITTER_FEED_DATA["GBF"]["channels"]:
-		channels.append(disco.Client.get_channel(bot, chid))
+		channels.append(bot.get_channel(chid))
 
 	while(1):
 		disc = list()
@@ -241,7 +234,7 @@ async def feeder():
 				embed.set_image(url=imgUrls.pop(0))
 
 			for channel in channels:
-				await disco.Client.send_message(bot, channel, embed=embed)
+				await bot.send_message(channel, embed=embed)
 
 			while len(imgUrls) > 0:
 				iu = imgUrls.pop(0)
@@ -252,7 +245,7 @@ async def feeder():
 				embed.set_thumbnail(url=avatar)
 				embed.set_image(iu)
 				for channel in channels:
-					await disco.Client.send_message(bot, channel, embed=embed)
+					await bot.send_message(channel, embed=embed)
 
 
 		if hasUpdate:
