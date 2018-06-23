@@ -9,7 +9,9 @@
 import discordbot as discord
 import discord as disco
 import random
+import aiohttp
 import asyncio
+
 
 
 from threading import Thread
@@ -158,28 +160,18 @@ def check_files():
 				"\t}\n"+
 			"}")
 
-@bot.event
-async def on_ready():
-	print('Logged in as:')
-	print('Username: ' + bot.user.name)
-	print('ID: ' + bot.user.id)
-	print('------')
-	await bot.change_presence(game=discord.Game(name='{}help for help'.format(bot.command_prefix)))
-	if not hasattr(bot, 'uptime'):
-		bot.uptime = datetime.datetime.utcnow()
+async def fetch(session, url):
+    async with session.get(url) as response:
+        return await response.text()
 
+# @asyncio.coroutine
+async def feeder():			
+	#check feed forever
 	print("Starting Feed.")
 	check_files()
-# 	feed = Thread(target=feeder)
-# 	feed.start()
 
-
-
-# async def feeder():
-	#check feed forever
 	url = 'https://twitter.com/granbluefantasy'
 	twitter = "https://twitter.com"
-	chan_id = "265339097642565632"
 	_TWITTER_FEED_DATA = {};
 
 	with open("res/twitter.json","r") as read_file:
@@ -195,16 +187,21 @@ async def on_ready():
 	# print(channel.name)	
 	# await disco.Client.send_message(bot, channel, "Testing")
 	while(1):
-		print("Checking Feed...")
+		# print("Checking Feed...")
 		disc = list()
 		hasUpdate = False
-		req = requests.get(
-		    url, 
-		    headers={
-		        'User-Agent': _UAGENT
-		    }
-		)
-		d = pq(req.content)
+		# req = requests.get(
+		#     url, 
+		#     headers={
+		#         'User-Agent': _UAGENT
+		#     }
+		# )
+
+		# d = pq(req.content)
+		async with aiohttp.ClientSession() as session:
+			html = await fetch(session, url)
+
+		d = pq(html)
 		tweetList = d("#stream-items-id li[data-item-id]")
 
 		for item in tweetList.items():
@@ -289,8 +286,37 @@ async def on_ready():
 			# save to file
 			# how...
 
-		time.sleep(_TWITTER_FEED_DATA["GBF"]["interval"])
+		# time.sleep(_TWITTER_FEED_DATA["GBF"]["interval"])
+		await asyncio.sleep(_TWITTER_FEED_DATA["GBF"]["interval"])
 
+def loop_feeds():
+	feeder()
+
+def looper(loop):
+
+	asyncio.set_event_loop(loop)
+	loop.run_until_complete(feeder())
+
+@bot.event
+async def on_ready():
+	print('Logged in as:')
+	print('Username: ' + bot.user.name)
+	print('ID: ' + bot.user.id)
+	print('------')
+	await bot.change_presence(game=discord.Game(name='{}help for help'.format(bot.command_prefix)))
+	if not hasattr(bot, 'uptime'):
+		bot.uptime = datetime.datetime.utcnow()
+
+	try:
+
+		loop = asyncio.get_event_loop()
+		# t = Thread(target=looper, args=(loop))
+		# t = Thread(target=loop_feeds)
+		# t.start()
+		asyncio.set_event_loop(loop)
+		loop.run_until_complete(feeder())
+	except Exception as e:
+		print("Loop already started")
 
 if __name__ == "__main__":
 	bot.load_cogs()
