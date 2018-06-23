@@ -139,13 +139,6 @@ async def on_message(message):
 
 	await bot.process_commands(message)
 
-
-# for feeding
-# with open("res/twitterFeed.json", "r") as reader:
-#	data = json.load(reader)
-
-# in seconds
-
 def check_files():
 	path = Path("res/twitter.json")
 	if not path.is_file():
@@ -164,10 +157,9 @@ async def fetch(session, url):
     async with session.get(url) as response:
         return await response.text()
 
-# @asyncio.coroutine
 async def feeder():			
 	#check feed forever
-	print("Starting Feed.")
+	# print("Starting Feed.")
 	check_files()
 
 	url = 'https://twitter.com/granbluefantasy'
@@ -183,21 +175,10 @@ async def feeder():
 	for chid in _TWITTER_FEED_DATA["GBF"]["channels"]:
 		channels.append(disco.Client.get_channel(bot, chid))
 
-	# channel = disco.Client.get_channel(bot, chan_id) # get channel
-	# print(channel.name)	
-	# await disco.Client.send_message(bot, channel, "Testing")
 	while(1):
-		# print("Checking Feed...")
 		disc = list()
 		hasUpdate = False
-		# req = requests.get(
-		#     url, 
-		#     headers={
-		#         'User-Agent': _UAGENT
-		#     }
-		# )
 
-		# d = pq(req.content)
 		async with aiohttp.ClientSession() as session:
 			html = await fetch(session, url)
 
@@ -208,7 +189,6 @@ async def feeder():
 			# check if its a retweet
 			tweet = item(".tweet")
 			permalink = tweet.attr("data-permalink-path")
-			# print("Testing: "+permalink)
 			if not permalink.startswith("/granbluefantasy"):
 				# It's a retweet
 				continue
@@ -229,8 +209,6 @@ async def feeder():
 
 			textContainer = tweet("div.js-tweet-text-container")
 			textContainer("a.u-hidden").remove()
-			# description = textContainer.text()
-			# description = ""
 
 			for a in textContainer("a").items():
 				raw = a.html()
@@ -252,7 +230,6 @@ async def feeder():
 				for img in imgContainer.items():
 					imgUrls.append(img.attr("data-image-url"))
 			# Build the embed
-			# print("NEW EMBED: "+user_name+" "+description[:20]+url)
 			embed = discord.Embed(title = "Link to Tweet",
 					description = description,
 					timestamp = datetime.datetime(1970,1,1).utcfromtimestamp((datetime_ms/1000)), # 32400 = offset for JST
@@ -286,14 +263,12 @@ async def feeder():
 			# save to file
 			# how...
 
-		# time.sleep(_TWITTER_FEED_DATA["GBF"]["interval"])
 		await asyncio.sleep(_TWITTER_FEED_DATA["GBF"]["interval"])
 
 def loop_feeds():
 	feeder()
 
 def looper(loop):
-
 	asyncio.set_event_loop(loop)
 	loop.run_until_complete(feeder())
 
@@ -308,11 +283,7 @@ async def on_ready():
 		bot.uptime = datetime.datetime.utcnow()
 
 	try:
-
 		loop = asyncio.get_event_loop()
-		# t = Thread(target=looper, args=(loop))
-		# t = Thread(target=loop_feeds)
-		# t.start()
 		asyncio.set_event_loop(loop)
 		loop.run_until_complete(feeder())
 	except Exception as e:
