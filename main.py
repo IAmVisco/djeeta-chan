@@ -7,8 +7,20 @@
 
 #importing libraries
 import discordbot as discord
+import discord as disco
 import random
 import asyncio
+
+
+from threading import Thread
+
+from pyquery import PyQuery as pq
+import requests
+import json
+import datetime
+import time
+import re
+from pathlib import Path
 
 bot = discord.DiscordBot()
 
@@ -125,6 +137,161 @@ async def on_message(message):
 
 	await bot.process_commands(message)
 
+
+# for feeding
+# with open("res/twitterFeed.json", "r") as reader:
+#	data = json.load(reader)
+
+# in seconds
+
+def check_files():
+	path = Path("res/twitter.json")
+	if not path.is_file():
+		path.touch()
+		path.write_text(
+			"{\n"+
+				"\t\"GBF\":{\n"+
+					"\t\t\"url\": \"https://twitter.com/granbluefantasy\",\n"+
+					"\t\t\"channels\": [ \"396353984287342593\", \"460113527697309696\" ],\n"+
+					"\t\t\"interval\": 30,\n"+
+					"\t\t\"discriminators\": []\n"+
+				"\t}\n"+
+			"}")
+
+@bot.event
+async def on_ready():
+	print('Logged in as:')
+	print('Username: ' + bot.user.name)
+	print('ID: ' + bot.user.id)
+	print('------')
+	await bot.change_presence(game=discord.Game(name='{}help for help'.format(bot.command_prefix)))
+	if not hasattr(bot, 'uptime'):
+		bot.uptime = datetime.datetime.utcnow()
+
+	print("Starting Feed.")
+	check_files()
+# 	feed = Thread(target=feeder)
+# 	feed.start()
+
+
+
+# async def feeder():
+	#check feed forever
+	url = 'https://twitter.com/granbluefantasy'
+	twitter = "https://twitter.com"
+	chan_id = "265339097642565632"
+	_TWITTER_FEED_DATA = {};
+
+	with open("res/twitter.json","r") as read_file:
+		_TWITTER_FEED_DATA = json.load(read_file)
+
+	_UAGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"'
+
+	channels = list()
+	for chid in _TWITTER_FEED_DATA["GBF"]["channels"]:
+		channels.append(disco.Client.get_channel(bot, chid))
+
+	# channel = disco.Client.get_channel(bot, chan_id) # get channel
+	# print(channel.name)	
+	# await disco.Client.send_message(bot, channel, "Testing")
+	while(1):
+		print("Checking Feed...")
+		disc = list()
+		hasUpdate = False
+		req = requests.get(
+		    url, 
+		    headers={
+		        'User-Agent': _UAGENT
+		    }
+		)
+		d = pq(req.content)
+		tweetList = d("#stream-items-id li[data-item-id]")
+
+		for item in tweetList.items():
+			# check if its a retweet
+			tweet = item(".tweet")
+			permalink = tweet.attr("data-permalink-path")
+			# print("Testing: "+permalink)
+			if not permalink.startswith("/granbluefantasy"):
+				# It's a retweet
+				continue
+
+			tweet_id = tweet.attr("data-item-id")
+			disc.append(tweet_id)
+			if tweet_id not in _TWITTER_FEED_DATA["GBF"]["discriminators"]:
+				hasUpdate = True
+			else:
+				continue
+
+			screen_name = tweet.attr("data-screen-name")
+			user_name = tweet.attr("data-name")
+
+			header = tweet("div.stream-item-header")
+			avatar = header("img.avatar").attr("src")
+			datetime_ms = int(header("span[data-time-ms]").attr("data-time-ms"))
+
+			textContainer = tweet("div.js-tweet-text-container")
+			textContainer("a.u-hidden").remove()
+			# description = textContainer.text()
+			# description = ""
+
+			for a in textContainer("a").items():
+				raw = a.html()
+				# #hash and @name
+				raw = re.sub(r"</?s>(\n)?", "", raw)
+				raw = re.sub(r"</?b>(\n)?", "**", raw)
+				raw = re.sub(r"</?u>(\n)?", "__", raw)
+				hre = a.attr("href")
+				if not hre.startswith("http"):
+					hre = twitter + hre
+				raw = "["+raw+"]("+hre+")"
+				a.replace_with(raw)
+			description = textContainer.text()
+			
+			imgUrls = list()
+
+			if tweet.hasClass("has-cards"):
+				imgContainer = tweet("div[data-image-url]")
+				for img in imgContainer.items():
+					imgUrls.append(img.attr("data-image-url"))
+			# Build the embed
+			# print("NEW EMBED: "+user_name+" "+description[:20]+url)
+			embed = discord.Embed(title = "Link to Tweet",
+					description = description,
+					timestamp = datetime.datetime(1970,1,1).utcfromtimestamp((datetime_ms/1000)), # 32400 = offset for JST
+					url = "https://twitter.com"+permalink)
+			embed.set_author(name = "@"+screen_name, url=url, icon_url=avatar)
+			embed.set_thumbnail(url=avatar)
+
+			if len(imgUrls) > 0:
+				embed.set_image(url=imgUrls.pop(0))
+
+			for channel in channels:
+				await disco.Client.send_message(bot, channel, embed=embed)
+
+			while len(imgUrls) > 0:
+				iu = imgUrls.pop(0)
+				embed = discord.Embed(title = "Link to Tweet",
+					timestamp = datetime.datetime(1970,1,1).utcfromtimestamp((datetime_ms/1000)), # 32400 = offset for JST
+					url = twitter+permalink)
+				embed.set_author(name = "@"+screen_name, url=url, icon_url=avatar)
+				embed.set_thumbnail(url=avatar)
+				embed.set_image(iu)
+				for channel in channels:
+					await disco.Client.send_message(bot, channel, embed=embed)
+
+
+		if hasUpdate:
+			# save new list
+			_TWITTER_FEED_DATA["GBF"]["discriminators"] = disc
+			with open("res/twitter.json", "w") as write_file:
+				json.dump(_TWITTER_FEED_DATA, write_file, indent=4)
+			# save to file
+			# how...
+
+		time.sleep(_TWITTER_FEED_DATA["GBF"]["interval"])
+
+
 if __name__ == "__main__":
-    bot.load_cogs()
-    bot.run()
+	bot.load_cogs()
+	bot.run()
