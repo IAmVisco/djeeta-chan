@@ -55,7 +55,7 @@ class Utility():
 		"""
 		try:
 			out = ":1234: | Answer is **"
-			out += str(eval(expr.replace("^", "**").replace("x", "*")))#, {'__builtins__':{}})) + "**."
+			out += str(eval(expr.replace("^", "**").replace("x", "*").replace(",", "."), {'__builtins__':{}})) + "**."
 		except:
 			out = "Failed to evaluate the expression. Please try again."
 		await self.bot.say(out)
