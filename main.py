@@ -237,7 +237,7 @@ async def processTwitter(feed_name, channels, data):
 				url = twitter+permalink)
 			embed.set_author(name = "@"+screen_name, url=data['url'], icon_url=avatar)
 			embed.set_thumbnail(url=avatar)
-			embed.set_image(iu)
+			embed.set_image(url=iu)
 			for channel in channels:
 				await bot.send_message(channel, embed=embed)
 	if hasUpdate:
@@ -277,6 +277,7 @@ async def feeder():
 
 	try:
 		print("Twitter Feed " + _TWITTER_FEED_DATA["config"]["type"])
+		print(_TWITTER_FEED_DATA["config"])
 	except Exception as e:
 		# Will throw error if config doesnt exist and make a config
 		_TWITTER_FEED_DATA = rebuildTwitterData(_TWITTER_FEED_DATA)
