@@ -3,4 +3,4 @@
 /__pycache__
 /data
 db_pg.py
-/rsc/twitter.json
+/res/twitter.json
