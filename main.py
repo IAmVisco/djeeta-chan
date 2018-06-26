@@ -16,6 +16,7 @@ import json
 import datetime
 import re
 from pathlib import Path
+from discord.ext import commands
 
 bot = discord.DiscordBot()
 
@@ -155,14 +156,14 @@ async def fetch(session, url):
     async with session.get(url) as response:
         return await response.text()
 
-def processTwitter(feed_name, channels, data):
+async def processTwitter(feed_name, channels, data):
 	# _UAGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"'
 	twitter = "https://twitter.com"
 	disc = list()
 	hasUpdate = False
 
 	async with aiohttp.ClientSession() as session:
-		html = await fetch(session, url)
+		html = await fetch(session, data['url'])
 
 	d = pq(html)
 	tweetList = d("#stream-items-id li[data-item-id]")
@@ -174,6 +175,8 @@ def processTwitter(feed_name, channels, data):
 		if not permalink.startswith("/"+data["url"].split('/')[-1]): #  "/granbluefantasy"):
 			# It's a retweet
 			continue
+
+		#Get Tweet Data
 
 		tweet_id = tweet.attr("data-item-id")
 		disc.append(tweet_id)
@@ -222,9 +225,11 @@ def processTwitter(feed_name, channels, data):
 		if len(imgUrls) > 0:
 			embed.set_image(url=imgUrls.pop(0))
 
+		# Send The Tweets
 		for channel in channels:
 			await bot.send_message(channel, embed=embed)
 
+		# Send Additional Included Images
 		while len(imgUrls) > 0:
 			iu = imgUrls.pop(0)
 			embed = discord.Embed(title = "Link to Tweet",
@@ -274,7 +279,7 @@ async def feeder():
 		print("Twitter Feed " + _TWITTER_FEED_DATA["config"]["type"])
 	except Exception as e:
 		# Will throw error if config doesnt exist and make a config
-		_TWITTER_FEED_DATA = rebuildTwitterData()
+		_TWITTER_FEED_DATA = rebuildTwitterData(_TWITTER_FEED_DATA)
 		with open("res/twitter.json", "w") as write_file:
 			json.dump(_TWITTER_FEED_DATA, write_file, indent=4)
 
@@ -288,7 +293,7 @@ async def feeder():
 	while(1):
 		hasUpdate = False
 		for feed in _TWITTER_FEED_DATA["config"]["include"]:
-			hasUpdate = processTwitter(feed, _FEED_CHANNELS[feed], _TWITTER_FEED_DATA[feed]) or hasUpdate
+			hasUpdate = (await processTwitter(feed, _FEED_CHANNELS[feed], _TWITTER_FEED_DATA[feed])) or hasUpdate
 
 		if hasUpdate:
 			# save new list
