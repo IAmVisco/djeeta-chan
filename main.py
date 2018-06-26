@@ -136,6 +136,7 @@ async def on_message(message):
 def check_files():
 	path = Path("res/twitter.json")
 	if not path.is_file():
+		print("No JSON found, creating new one.")
 		path.touch()
 		path.write_text(
 			"{\n"+
@@ -281,15 +282,12 @@ def rebuildTwitterData(oldData):
 
 async def feeder():
 	#check feed forever
-	# print("Starting Feed.")
 	check_files()
-	# url = 'https://twitter.com/granbluefantasy'
 	_TWITTER_FEED_DATA = {}
 	_FEED_CHANNELS = {}
 
 	with open("res/twitter.json","r") as read_file:
 		_TWITTER_FEED_DATA = json.load(read_file)
-
 
 	try:
 		print("Twitter Feed " + _TWITTER_FEED_DATA["config"]["type"])
@@ -319,14 +317,6 @@ async def feeder():
 				json.dump(_TWITTER_FEED_DATA, write_file, indent=4)
 
 		await asyncio.sleep(_TWITTER_FEED_DATA["config"]["interval"])
-
-
-# def loop_feeds():
-# 	feeder()
-
-# def looper(loop):
-# 	asyncio.set_event_loop(loop)
-# 	loop.run_until_complete(feeder())
 
 @bot.event
 async def on_ready():
