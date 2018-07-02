@@ -6,10 +6,13 @@
 #Make DB for multi server ~~drifting~~ settings
 
 #importing libraries
+import discord
 import discordbot as discord
+from discordbot.bot_utils import config
 import random
 import aiohttp
 import asyncio
+import psycopg2
 
 from pyquery import PyQuery as pq
 import json
@@ -19,6 +22,9 @@ from pathlib import Path
 from discord.ext import commands
 
 bot = discord.DiscordBot()
+config = config.Config('settings.json', directory="")
+conn = psycopg2.connect(config.get("DB_URL", ""), sslmode = 'require')
+db = conn.cursor()
 
 # list of insults
 # insults_list = (
@@ -78,6 +84,7 @@ bot = discord.DiscordBot()
 gm         = True
 gn         = True
 casuals_id = '265292778756374529'
+db_responce = '';
 
 # # Starting up
 # @bot.event
@@ -132,42 +139,6 @@ async def on_message(message):
 			await bot.send_message(message.channel, logs[0].content)
 
 	await bot.process_commands(message)
-
-def check_files():
-	path = Path("res/twitter.json")
-	if not path.is_file():
-		print("No JSON found, creating new one.")
-		path.touch()
-		path.write_text(
-			"{\n"+
-				"\t\"config\":{\n"+
-					"\t\t\"type\": \"Config\",\n"+
-					"\t\t\"interval\": 30,\n"+
-					"\t\t\"include\": [ \"GBF\" ]\n"+
-				"\t},\n"+
-				"\t\"GBF\":{\n"+
-					"\t\t\"url\": \"https://twitter.com/granbluefantasy\",\n"+
-					"\t\t\"channels\": [ \"396353984287342593\", \"460113527697309696\" ],\n"+
-				 	# "\t\t\"interval\": 30,\n"+
-					"\t\t\"discriminators\": [\
-			            \"1008643434544893952\",\
-			            \"1011520145032765440\",\
-			            \"1011519919928692736\",\
-			            \"1011519687849488386\",\
-			            \"1011443956557574144\",\
-			            \"1011176290613805056\",\
-			            \"1010825440422850561\",\
-			            \"1010825292229722112\",\
-			            \"1010734273953869824\",\
-			            \"1010432282572701696\",\
-			            \"1010356789433417728\",\
-			            \"1010100331961696262\",\
-			            \"1010069898037420034\",\
-			            \"1009994402415108096\",\
-			            \"1009737932897337344\",\
-			            \"1009731686911709184\"]\n"+
-				"\t}\n"+
-			"}")
 
 async def fetch(session, url):
     async with session.get(url) as response:
@@ -282,28 +253,25 @@ def rebuildTwitterData(oldData):
 
 async def feeder():
 	#check feed forever
-	check_files()
 	_TWITTER_FEED_DATA = {}
 	_FEED_CHANNELS = {}
-
-	with open("res/twitter.json","r") as read_file:
-		_TWITTER_FEED_DATA = json.load(read_file)
+	db.execute("SELECT * FROM tweets WHERE id = 1")
+	_TWITTER_FEED_DATA = json.loads(db.fetchone()[1])
 
 	try:
 		print("Twitter Feed " + _TWITTER_FEED_DATA["config"]["type"])
 		print(_TWITTER_FEED_DATA["config"])
 	except Exception as e:
 		# Will throw error if config doesnt exist and make a config
-		_TWITTER_FEED_DATA = rebuildTwitterData(_TWITTER_FEED_DATA)
-		with open("res/twitter.json", "w") as write_file:
-			json.dump(_TWITTER_FEED_DATA, write_file, indent=4)
-
+		# _TWITTER_FEED_DATA = rebuildTwitterData(_TWITTER_FEED_DATA)
+		# with open("res/twitter.json", "w") as write_file:
+		# 	json.dump(_TWITTER_FEED_DATA, write_file, indent=4)
+		print("Cannot read JSON")
 
 	for feed in _TWITTER_FEED_DATA["config"]["include"]:
 		_FEED_CHANNELS[feed] = list()
 		for chid in _TWITTER_FEED_DATA[feed]["channels"]:
 			_FEED_CHANNELS[feed].append(bot.get_channel(chid))
-
 
 	while(1):
 		hasUpdate = False
@@ -311,10 +279,8 @@ async def feeder():
 			hasUpdate = (await processTwitter(feed, _FEED_CHANNELS[feed], _TWITTER_FEED_DATA[feed])) or hasUpdate
 
 		if hasUpdate:
-			# save new list
-			# _TWITTER_FEED_DATA[feed_name]["discriminators"] = disc
-			with open("res/twitter.json", "w") as write_file:
-				json.dump(_TWITTER_FEED_DATA, write_file, indent=4)
+			db.execute("UPDATE tweets SET info = '" + json.dumps(_TWITTER_FEED_DATA) + "' WHERE id = 1")
+			conn.commit()
 
 		await asyncio.sleep(_TWITTER_FEED_DATA["config"]["interval"])
 

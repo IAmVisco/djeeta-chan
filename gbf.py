@@ -8,10 +8,11 @@ import requests
 eventsEmbed=discord.Embed(title="Event schedule", 
 	description="Schedule for June", color = RandomColor())
 events = [
-	["Handsome Gorilla" , "31/05 - 09/06"],
-	["Xeno Ifrit Clash (Rerun)" , "10/06 - 17/06"],
-	["Persona 5 Collab" , "18/06 - 29/06"],
-	["New Scenario Event", "30/06 - 09/07"]
+	["Together in Song" , "30/06 - 08/07"],
+	["Rise of the Beasts" , "09/07 - 15/07"],
+	["Guild Wars (Earth enemies)" , "16/07 - 23/07"],
+	["Poacher's Day (Rerun)" , "24/07 - 30/07"],
+	["New Scenario Event", "31/07 - 08/08"]
 ]
 
 for event in events:
