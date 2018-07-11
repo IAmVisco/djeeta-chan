@@ -1,5 +1,6 @@
 import random
 
+
 def strfdelta(tdelta, fmt):
     """ timedelta formatter """
     d = {"D": tdelta.days}
@@ -7,5 +8,6 @@ def strfdelta(tdelta, fmt):
     d["m"], d["s"] = divmod(rem, 60)
     return fmt.format(**d)
 
+
 def RandomColor():
-	return int('0x' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)]), 0)
+    return int('0x' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)]), 0)

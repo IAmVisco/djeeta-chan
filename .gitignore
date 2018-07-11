@@ -4,3 +4,6 @@
 /data
 db_pg.py
 /res/twitter.json
+/venv
+*.sublime-project
+*.sublime-workspace
