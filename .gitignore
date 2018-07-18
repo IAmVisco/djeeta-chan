@@ -7,3 +7,4 @@ db_pg.py
 /venv
 *.sublime-project
 *.sublime-workspace
+*.sublime-settings

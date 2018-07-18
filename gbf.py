@@ -19,9 +19,10 @@ events = [
 for event in events:
     eventsEmbed.add_field(name=event[0], value=event[1], inline=False)
 
-gw_mode = False
-gwstart = datetime(2018, 4, 22, 19, 0, 0, 0, timezone('Asia/Tokyo'))
-prelimsend = datetime(2018, 4, 23, 23, 59, 0, 0, timezone('Asia/Tokyo'))
+gw_mode = True
+gwstart = datetime(2018, 7, 16, 19, 0, 0, 0, timezone('Asia/Tokyo'))
+prelimsend = datetime(2018, 7, 17, 23, 59, 0, 0, timezone('Asia/Tokyo'))
+GW_CONST = gwstart.day + 2
 
 
 class GBF():
@@ -57,7 +58,7 @@ class GBF():
             elif (datetime.now(timezone('Asia/Tokyo')).hour >= 7):
                 if 23 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
                     await self.bot.say(':point_right: :clock12: | Round ' +
-                                       str(datetime.now(timezone('Asia/Tokyo')).day - 25) +
+                                       str(datetime.now(timezone('Asia/Tokyo')).day - GW_CONST) +
                                        ' ends in ' +
                                        str(23 - datetime.now(timezone('Asia/Tokyo')).hour) +
                                        ' hours ' +
@@ -65,15 +66,15 @@ class GBF():
                                        ' minutes.')
                 else:
                     await self.bot.say(':point_right: :clock12: | Round ' +
-                                       str(datetime.now(timezone('Asia/Tokyo')).day - 25) +
+                                       str(datetime.now(timezone('Asia/Tokyo')).day - GW_CONST) +
                                        ' ends in ' +
                                        str(60 - datetime.now(timezone('Asia/Tokyo')).minute) +
                                        ' minutes.')
 
-            elif datetime.now(timezone('Asia/Tokyo')).day - 25 <= 5:  # day of start(14) + 2
+            elif datetime.now(timezone('Asia/Tokyo')).day - GW_CONST <= 5:
                 if 6 - datetime.now(timezone('Asia/Tokyo')).hour != 0:
                     await self.bot.say(':point_right: :clock7: | Round ' +
-                                       str(datetime.now(timezone('Asia/Tokyo')).day - 25) +
+                                       str(datetime.now(timezone('Asia/Tokyo')).day - GW_CONST) +
                                        ' starts in ' +
                                        str(6 - datetime.now(timezone('Asia/Tokyo')).hour) +
                                        ' hours ' +
@@ -81,7 +82,7 @@ class GBF():
                                        ' minutes.')
                 else:
                     await self.bot.say(':point_right: :clock7: | Round ' +
-                                       str(datetime.now(timezone('Asia/Tokyo')).day - 25) +
+                                       str(datetime.now(timezone('Asia/Tokyo')).day - GW_CONST) +
                                        ' starts in ' +
                                        str(60 - datetime.now(timezone('Asia/Tokyo')).minute) +
                                        ' minutes.')
