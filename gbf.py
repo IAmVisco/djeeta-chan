@@ -19,7 +19,7 @@ events = [
 for event in events:
     eventsEmbed.add_field(name=event[0], value=event[1], inline=False)
 
-gw_mode = True
+gw_mode = False
 gwstart = datetime(2018, 7, 16, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 7, 17, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 GW_CONST = gwstart.day + 2
@@ -87,10 +87,10 @@ class GBF():
                                        str(60 - datetime.now(timezone('Asia/Tokyo')).minute) +
                                        ' minutes.')
             else:
-                await self.bot.say('Guild Wars 38 is over, thanks for your hard work.')
+                await self.bot.say('Guild Wars 40 is over, thanks for your hard work.')
         else:
-            await self.bot.say('Guild Wars 39 will have **Earth** enemies. ' +
-                               'It is scheduled to arrive on Jule 16th.')
+            await self.bot.say('Guild Wars 40 will have **Fire** enemies. ' +
+                               'It is scheduled to arrive on August 23rd.')
 
     @commands.command()
     async def wiki(self, *, query: str):
