@@ -64,8 +64,8 @@ class Fun():
         msg = ctx.message.content
         if msg.strip() == "~disgusting":
             await self.bot.upload(os.getcwd() +
-                                  '/res/disgusting/' + str(random.randint(1, 38)) + '.png')
-        elif int(msg[12:]) > 0 and int(msg[12:]) < 39:
+                                  '/res/disgusting/' + str(random.randint(1, 39)) + '.png')
+        elif int(msg[12:]) > 0 and int(msg[12:]) < 40:
             await self.bot.upload(os.getcwd() + '/res/disgusting/' + msg[12:] + '.png')
 
     @commands.command()
