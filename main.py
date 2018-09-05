@@ -121,6 +121,8 @@ async def on_message(message):
             await bot.send_message(message.channel, "lmao")
         elif "\\o/" in message.content.lower():
             await bot.send_message(message.channel, "\\o/")
+        elif "owo" in message.content.lower():
+            await bot.send_message(message.channel, "What's this?")
 
     # double prefix
     if message.content.startswith('!') and not (message.content.startswith('!emo') or
