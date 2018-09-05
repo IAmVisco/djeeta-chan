@@ -6,14 +6,14 @@ from utils import RandomColor
 import requests
 
 eventsEmbed = discord.Embed(title="Event schedule",
-                            description="Schedule for August",
+                            description="Schedule for September",
                             color=RandomColor())
 events = [
-    ["Bzzt! Amped Up Summer", "31/07 - 08/08"],
-    ["Love Live Sunshine Collab", "09/08 - 21/08"],
-    ["Xeno Cocytus", "17/08 - 23/08"],
-    ["Guild Wars (Fire enemies)", "23/08 - 30/08"],
-    ["New Scenario Event", "31/08 - 09/09"]
+    ["The Other Side of the Sky", "31/08 - 09/09"],
+    ["Ranger Sign Bravo! (rerun)", "09/09 - 15/09"],
+    ["Rise of the Beasts", "16/09 - 22/09"],
+    ["Xeno Sagittarius", "23/09 - 29/09"],
+    ["New Scenario Event", "30/09 - 08/10"]
 ]
 
 for event in events:
