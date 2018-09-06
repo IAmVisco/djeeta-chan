@@ -16,6 +16,7 @@ from pyquery import PyQuery as pq
 import json
 import datetime
 import re
+from random import randint
 # from pathlib import Path
 
 bot = discord.DiscordBot()
@@ -122,7 +123,10 @@ async def on_message(message):
         elif "\\o/" in message.content.lower():
             await bot.send_message(message.channel, "\\o/")
         elif re.search(r'(^|\W)(owo)($|\W)', message.content.lower()) is not None:
-            await bot.send_message(message.channel, "What's this?")
+            if (randint(1, 100) <= 5):
+                await bot.send_message(message.channel, "kys")
+            else:
+                await bot.send_message(message.channel, "What's this?")
 
     # double prefix
     if message.content.startswith('!') and not (message.content.startswith('!emo') or
