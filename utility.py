@@ -7,6 +7,7 @@ from datetime import datetime
 import requests
 import random
 import psycopg2
+import os
 
 fancy_answers = (
     "Without a doubt it's ",
@@ -27,6 +28,11 @@ db = conn.cursor()
 class Utility():
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command()
+    async def env(self, key=''):
+        print(os.environ.get(key))
+        await self.bot.say(os.environ.get(key))
 
     @commands.command(pass_context=True)
     async def avatar(self, ctx, user: discord.Member=None):
