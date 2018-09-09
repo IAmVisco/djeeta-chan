@@ -114,6 +114,8 @@ async def on_message(message):
             gn = False
             await asyncio.sleep(60)
             gn = True
+        elif "play despacito" in message.content.lower() and bot.user.mentioned_in(message):
+            await bot.send_message(message.channel, "https://www.youtube.com/watch?v=kJQP7kiw5Fk")
         elif "/o/" in message.content.lower():
             await bot.send_message(message.channel, "\\o\\")
         elif "\\o\\" in message.content.lower():
