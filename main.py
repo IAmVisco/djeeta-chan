@@ -20,6 +20,7 @@ from random import randint
 # from pathlib import Path
 
 bot = discord.DiscordBot()
+# reading db conn string, should be done from os.env but I am lazy
 config = config.Config('settings.json', directory="")
 conn = psycopg2.connect(config.get("DB_URL", ""), sslmode='require')
 db = conn.cursor()
