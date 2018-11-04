@@ -21,7 +21,7 @@ fancy_answers = (
 casuals_id = '265292778756374529'
 alive_timestamp = 'Alive for {D} days {h} hours {m} minutes {s} seconds.'
 config = config.Config('settings.json', directory="")
-conn = psycopg2.connect(config.get("DB_URL", ""), sslmode='require')
+conn = psycopg2.connect(os.environ["DATABASE_URL"], sslmode='require')
 db = conn.cursor()
 
 
