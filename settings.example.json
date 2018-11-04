@@ -1,0 +1,12 @@
+{
+    "meta": {
+        "owner": "YOUR_ID",
+        "prefix": "~",
+        "description": "Djeeta bot"
+    },
+    "credentials": {
+        "token": "YOUR_TOKEN",
+        "client_id": "CLIENT_ID"
+    },
+    "cogs": ["gbf", "utility", "fun"]
+}

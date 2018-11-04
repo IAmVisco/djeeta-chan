@@ -1,10 +1,8 @@
-*.log
-/trash
 /__pycache__
 /data
-db_pg.py
-/res/twitter.json
 /venv
+*.log
 *.sublime-project
 *.sublime-workspace
 *.sublime-settings
+settings.json
