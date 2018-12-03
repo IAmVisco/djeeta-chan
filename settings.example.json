@@ -8,5 +8,5 @@
         "token": "YOUR_TOKEN",
         "client_id": "CLIENT_ID"
     },
-    "cogs": ["gbf", "utility", "fun"]
+    "cogs": ["cogs.gbf", "cogs.utility", "cogs.fun"]
 }
