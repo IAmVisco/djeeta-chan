@@ -4,7 +4,7 @@ from discordbot.bot_utils import checks, config
 # from time import strftime
 from utils import RandomColor, strfdelta
 from datetime import datetime
-import requests
+import aiohttp
 import random
 import psycopg2
 import os
@@ -192,19 +192,17 @@ class Utility():
         """Will roll a dice for you.
 
         Rolls a dice both in WoW (/roll N) and
-        in DnD (/roll NdN) formats, where N is either
-        range or (number of dices)d(range).
+        in DnD (/roll NdN+NdN+...) formats.
         """
         out = ":game_die: | Hmm, let it be **"
         try:
             if "d" not in roll:
                 out += str(random.randint(1, int(roll)))
-            elif roll[0] == "d":
-                out += str(random.randint(1, int(roll[1:])))
             else:
-                for i in range(int(roll.split("d")[0])):
-                    out += "\nDice " + str(i + 1) + ": " + \
-                           str(random.randint(1, int(roll.split("d")[1])))
+                async with aiohttp.ClientSession() as session:
+                    async with session.get("https://rolz.org/api/?" + roll + ".json") as resp:
+                        result = await resp.json()
+                        out += str(result.get("result")) + result.get("details").replace("+", "+ ")
             out += "**"
         except Exception:
             out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
@@ -213,7 +211,10 @@ class Utility():
     @commands.command()
     async def yesno(self):
         """Sends GIF with yes or no answer."""
-        await self.bot.say(requests.get("http://yesno.wtf/api").json()['image'])
+        async with aiohttp.ClientSession() as session:
+            async with session.get("http://yesno.wtf/api") as resp:
+                result = await resp.json()
+        await self.bot.say(result.get("image"))
 
     @commands.group(invoke_without_command=True)
     async def gf(self, nick=None):

@@ -115,14 +115,16 @@ async def on_message(message):
             gn = False
             await asyncio.sleep(60)
             gn = True
-        elif "play despacito" in message.content.lower() and bot.user.mentioned_in(message):
+        elif "djeeta play despacito" in message.content.lower():
             await bot.send_message(message.channel, "https://www.youtube.com/watch?v=kJQP7kiw5Fk")
         elif "/o/" in message.content.lower():
             await bot.send_message(message.channel, "\\o\\")
         elif "\\o\\" in message.content.lower():
             await bot.send_message(message.channel, "/o/")
-        elif message.content.lower() == "ayy":
+        elif message.content == "ayy":
             await bot.send_message(message.channel, "lmao")
+        elif message.content == "AYY":
+            await bot.send_message(message.channel, "LMAO")
         elif "\\o/" in message.content.lower():
             await bot.send_message(message.channel, "\\o/")
         elif re.search(r'(^|\W)(owo)($|\W)', message.content.lower()) is not None:
