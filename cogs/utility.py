@@ -186,19 +186,21 @@ class Utility():
     async def roll(self, *, roll: str):
         """Will roll a dice for you.
 
-        Rolls a dice both in WoW (/roll N) and
-        in DnD (/roll NdN+NdN+...) formats.
+        Rolls a dice both in WoW (~roll N) and
+        in DnD (~roll NdN + N +...) formats.
         """
-        out = ":game_die: | Hmm, let it be **"
+        header = ":game_die: | Hmm, let it be "
         try:
             if "d" not in roll:
-                out += str(random.randint(1, int(roll)))
+                number = str(random.randint(1, int(roll)))
+                out = f"{header}**{number}**"
             else:
                 async with aiohttp.ClientSession() as session:
                     async with session.get("https://rolz.org/api/?" + roll.replace(" ", "") + ".json") as resp:
                         result = await resp.json()
-                        out += str(result.get("result")) + result.get("details").replace("+", "+ ")
-            out += "**"
+                        number = str(result.get("result"))
+                        details = result.get("details").replace(" ", "").replace("+", " + ")
+                        out = f"{header}**{number} {details}**"
         except Exception:
             out = "Please check your input again. The format is ~roll <number> or ~roll <NdN>."
         await self.bot.say(out)
