@@ -29,11 +29,6 @@ class Utility():
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def env(self, key=''):
-        print(os.environ.get(key))
-        await self.bot.say(os.environ.get(key))
-
     @commands.command(pass_context=True)
     async def avatar(self, ctx, user: discord.Member=None):
         """Shows avatar of the user"""
@@ -188,7 +183,7 @@ class Utility():
                                    "available roles can be viewed using ~roles.")
 
     @commands.command()
-    async def roll(self, roll: str):
+    async def roll(self, *, roll: str):
         """Will roll a dice for you.
 
         Rolls a dice both in WoW (/roll N) and
@@ -200,7 +195,7 @@ class Utility():
                 out += str(random.randint(1, int(roll)))
             else:
                 async with aiohttp.ClientSession() as session:
-                    async with session.get("https://rolz.org/api/?" + roll + ".json") as resp:
+                    async with session.get("https://rolz.org/api/?" + roll.replace(" ", "") + ".json") as resp:
                         result = await resp.json()
                         out += str(result.get("result")) + result.get("details").replace("+", "+ ")
             out += "**"
