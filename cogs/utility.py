@@ -182,7 +182,7 @@ class Utility():
                 await self.bot.say("Please check your input again. Roles are case-sensitive, " +
                                    "available roles can be viewed using ~roles.")
 
-    @commands.command()
+    @commands.command(aliases=['dice'])
     async def roll(self, *, roll: str):
         """Will roll a dice for you.
 
@@ -212,6 +212,18 @@ class Utility():
             async with session.get("http://yesno.wtf/api") as resp:
                 result = await resp.json()
         await self.bot.say(result.get("image"))
+
+    @commands.command()
+    async def wiki(self, *, query: str):
+        """Searches gbf.wiki"""
+        url = 'https://gbf.wiki/api.php?action=query&list=search&format=json&utf8=&srsearch=' + query
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                r = await response.json()
+                if r["query"]["searchinfo"]["totalhits"] != 0:
+                    await self.bot.say("https://gbf.wiki/" + r['query']['search'][0]["title"].replace(' ', '_'))
+                else:
+                    await self.bot.say("Nothing found, please check your input and try again.")
 
     @commands.group(invoke_without_command=True)
     async def gf(self, nick=None):

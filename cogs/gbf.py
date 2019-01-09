@@ -92,18 +92,6 @@ class GBF():
             await self.bot.say('Guild Wars 40 will have **Fire** enemies. ' +
                                'It is scheduled to arrive on August 23rd.')
 
-    @commands.command()
-    async def wiki(self, *, query: str):
-        """Searches gbf.wiki"""
-        url = 'https://gbf.wiki/api.php?action=query&' + \
-              'list=search&format=json&utf8=&srsearch=' + query
-        r = requests.get(url=url).json()
-        if r["query"]["searchinfo"]["totalhits"] != 0:
-            await self.bot.say("https://gbf.wiki/" +
-                               r['query']['search'][0]["title"].replace(' ', '_'))
-        else:
-            await self.bot.say("Nothing found, please check your input and try again.")
-
 
 def setup(bot):
     bot.add_cog(GBF(bot))
