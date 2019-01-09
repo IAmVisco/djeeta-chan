@@ -19,7 +19,7 @@ events = [
 for event in events:
     eventsEmbed.add_field(name=event[0], value=event[1], inline=False)
 
-gw_mode = True
+gw_mode = False
 gwstart = datetime(2018, 8, 23, 19, 0, 0, 0, timezone('Asia/Tokyo'))
 prelimsend = datetime(2018, 8, 24, 23, 59, 0, 0, timezone('Asia/Tokyo'))
 GW_CONST = gwstart.day + 2

@@ -1,4 +1,4 @@
-aiohttp==3.4.4
+aiohttp==1.0.0
 async-timeout==3.0.1
 attrs==18.2.0
 certifi==2018.10.15
@@ -17,6 +17,6 @@ pyquery==1.4.0
 pytz==2018.7
 requests==2.20.0
 urllib3==1.24.1
-websockets==7.0
+websockets==3.1
 yarl==1.2.6
 zope.interface==4.6.0
