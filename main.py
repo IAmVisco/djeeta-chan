@@ -22,7 +22,7 @@ import re
 
 bot = discord.DiscordBot()
 config = config.Config('settings.json', directory="")
-logging.basicConfig(format='%(levelname)s:%(module)s:%(message)s', level=logging.INFO)
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 conn = psycopg2.connect(os.environ["DATABASE_URL"], sslmode='require')
 db = conn.cursor()
 
