@@ -9,5 +9,5 @@ def strfdelta(tdelta, fmt):
     return fmt.format(**d)
 
 
-def RandomColor():
+def random_color():
     return int('0x' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)]), 0)

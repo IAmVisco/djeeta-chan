@@ -8,6 +8,8 @@
 # importing libraries
 import discordbot as discord
 from discordbot.bot_utils import config
+from random import randint
+import logging
 import aiohttp
 import asyncio
 import psycopg2
@@ -17,11 +19,10 @@ from pyquery import PyQuery as pq
 import json
 import datetime
 import re
-from random import randint
-# from pathlib import Path
 
 bot = discord.DiscordBot()
 config = config.Config('settings.json', directory="")
+logging.basicConfig(format='%(levelname)s:%(module)s:%(message)s', level=logging.INFO)
 conn = psycopg2.connect(os.environ["DATABASE_URL"], sslmode='require')
 db = conn.cursor()
 
@@ -83,19 +84,7 @@ db = conn.cursor()
 gm = True
 gn = True
 casuals_id = '265292778756374529'
-db_responce = ''
-
-# # Starting up
-# @bot.event
-# async def on_ready():
-#     print('Logged in as')
-#     print(bot.user.name)
-#     print(bot.user.id)
-#     print('------')
-#     await bot.change_presence(game = discord.Game(name="Djeetablue Fantasy"))
-
-# @bot.event
-# async def on_member_join(member):
+db_response = ''
 
 
 @bot.event
@@ -273,28 +262,18 @@ async def feeder():
     db.execute("SELECT * FROM tweets WHERE id = 1")
     _TWITTER_FEED_DATA = json.loads(db.fetchone()[1])
 
-    try:
-        print("Twitter Feed " + _TWITTER_FEED_DATA["config"]["type"])
-        print(_TWITTER_FEED_DATA["config"])
-    except Exception as e:
-        # Will throw error if config doesnt exist and make a config
-        # _TWITTER_FEED_DATA = rebuildTwitterData(_TWITTER_FEED_DATA)
-        # with open("res/twitter.json", "w") as write_file:
-        #     json.dump(_TWITTER_FEED_DATA, write_file, indent=4)
-        print("Cannot read JSON")
-
     for feed in _TWITTER_FEED_DATA["config"]["include"]:
         _FEED_CHANNELS[feed] = list()
         for chid in _TWITTER_FEED_DATA[feed]["channels"]:
             _FEED_CHANNELS[feed].append(bot.get_channel(chid))
 
     while(1):
-        hasUpdate = False
+        has_update = False
         for feed in _TWITTER_FEED_DATA["config"]["include"]:
-            hasUpdate = (await processTwitter(
-                feed, _FEED_CHANNELS[feed], _TWITTER_FEED_DATA[feed])) or hasUpdate
+            has_update = (await processTwitter(
+                feed, _FEED_CHANNELS[feed], _TWITTER_FEED_DATA[feed])) or has_update
 
-        if hasUpdate:
+        if has_update:
             db.execute(
                 "UPDATE tweets SET info = '" + json.dumps(_TWITTER_FEED_DATA) + "' WHERE id = 1")
             conn.commit()

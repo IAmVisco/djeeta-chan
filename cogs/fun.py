@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from utils import RandomColor
+from utils import random_color
 import os
 import random
 import requests
@@ -42,9 +42,32 @@ gifDict = {
 }
 # More gifs https://pastebin.com/v3u8DG22
 
+SSR_pool = ("Altair", "Percival", "Charlotta (Water)", "Aglovale", "Izmir", "Siegfried", "Aletheia", "Lancelot (Water)",
+            "Yuisis", "Jeanne d'Arc", "Ferry", "Albert", "Seruel", "Baotorda", "Jeanne d'Arc", "Beatrix", "Vira",
+            "Vaseraga (Dark)", "Lancelot (Wind)", "Chat Noir", "Catherine", "Petra", "Agielba", "Rosamia", "Vania",
+            "Veight", "Zeta (Dark)", "Lancelot and Vane", "Heles", "Nezahualpilli", "Athena", "Anne", "Razia",
+            "Arulumaya", "Carmelina", "Azazel", "Forte", "Zeta (Fire)", "Yuel (Fire)", "Tsubasa", "Aoidos", "Vane",
+            "Nemone", "Vaseraga (Earth)", "Melissabelle", "Gawain", "Charlotta (Light)", "Silva (Water)", "Lady Grey",
+            "Wulf and Renie", "Hallessena", "Melleau", "Anthuria", "Magisa", "Zahlhamelina", "Lily", "Romeo",
+            "Cagliostro", "De La Fille", "De La Fille", "Yurius", "Korwa", "Juliet", "Sarunan", "Cagliostro",
+            "Marquiares", "Sarunan", "Yngwie", "Silva (Light)", "Cucouroux", "Eustace (Earth)", "Lennah", "Tiamat",
+            "Robomi", "Zooey", "Freezie", "Eustace (Dark)", "Societte (Fire)", "Ghandagoza", "Grea", "Aliza",
+            "Lady Katapillar and Vira", "Societte (Water)", "Ayer", "Soriz", "Scathacha", "Dorothy and Claudia",
+            "Cerberus", "Lunalu", "Metera", "Ilsa", "Metera", "Feena", "Levin Sisters", "Clarisse", "Lilele", "Sophia",
+            "Yggdrasil", "Sara", "Arriet", "Selfira", "Clarisse", "Therese", "Yuel (Water)", "Narmaya", "Amira",
+            "Yodarha", "Nicholas", "Agni", "Athena", "Michael", "Prometheus", "Satyr", "Sethlans", "Shiva",
+            "Sylph, Flutterspirit of Purity", "Twin Elements", "Zaoshen", "Bonito", "Ca Ong", "Europa", "Gabriel",
+            "Grani", "Kaguya", "Macula Marius", "Neptune", "Oceanus", "Poseidon, the Tide Father", "Snow White",
+            "Varuna", "Ankusha", "Baal", "Cybele", "Gilgamesh", "Godsworn Alexiel", "Gorilla", "Medusa", "Tezcatlipoca",
+            "Titan", "Uriel", "Anat, for Love and War", "Freyr", "Garuda", "Garula, Shining Hawk", "Grimnir", "Hamsa",
+            "Morrigna", "Nezha", "Quetzalcoatl", "Raphael", "Rose Queen", "Setekh", "Siren", "Zephyrus", "Adramelech",
+            "Aphrodite", "Apollo", "Grand Order", "Halluel and Malluel", "Hector", "Lucifer", "Odin", "Thor",
+            "Vortex Dragon", "Zeus", "Anubis", "Bahamut", "Dark Angel Olivia", "Hades", "Lich", "Nacht", "Satan",
+            "Tsukuyomi", "Typhon")
+
 gifEmbed = discord.Embed(title='GIF List',
                          description='Use ~gif <name> to post a GIF, names are shown below',
-                         color=RandomColor())
+                         color=random_color())
 
 for pair in gifDict.items():
     gifEmbed.add_field(name=pair[0], value=pair[1], inline=True)
@@ -101,12 +124,12 @@ class Fun():
         if ctx.message.content.strip() == "~f":
             respectsMessage = discord.Embed(description="**" + ctx.message.author.name +
                                             "** has paid their respects.\n",
-                                            color=RandomColor())  # + str(count) + " total."
+                                            color=random_color())  # + str(count) + " total."
         else:
             respectsMessage = discord.Embed(description="**" + ctx.message.author.name +
                                             "** has paid their respects for **" +
                                             ctx.message.content[3:] + ".**\n",
-                                            color=RandomColor())  # + str(count) + " total."
+                                            color=random_color())  # + str(count) + " total."
         await self.bot.say(embed=respectsMessage)
 
     @commands.command()
@@ -171,6 +194,31 @@ class Fun():
         """Creates quick poll with reactions on the message."""
         await self.bot.add_reaction(ctx.message, '✅')
         await self.bot.add_reaction(ctx.message, '❎')
+
+    @commands.command()
+    async def gacha(self):
+        """Rolls 10 part GBF gacha.
+
+        Rates are adjusted according to
+        the game, without any rate ups.
+        """
+        rolls = []
+        got_ssr = True
+        out = ":game_die: | **You got these items:**\n"
+        for i in range(10):
+            x = random.randint(1, 100)
+            if x > 97:
+                rolls.append("**SSR - {}**".format(random.choice(SSR_pool)))
+                got_ssr = False
+            elif i == 9 or 82 < x < 97:
+                rolls.append("SR")
+            else:
+                rolls.append("R")
+        out += ", ".join(rolls)
+        if got_ssr:
+            out += "\nBetter luck next time!"
+        # print(out)
+        await self.bot.say(out)
 
 
 def setup(bot):

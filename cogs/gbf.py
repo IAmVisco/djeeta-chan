@@ -2,12 +2,12 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 from pytz import timezone
-from utils import RandomColor
+from utils import random_color
 import requests
 
 eventsEmbed = discord.Embed(title="Event schedule",
                             description="Schedule for September",
-                            color=RandomColor())
+                            color=random_color())
 events = [
     ["The Other Side of the Sky", "31/08 - 09/09"],
     ["Ranger Sign Bravo! (rerun)", "09/09 - 15/09"],

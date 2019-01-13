@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
 from discordbot.bot_utils import checks, config
-# from time import strftime
-from utils import RandomColor, strfdelta
+from collections import Counter
+from utils import random_color, strfdelta
 from datetime import datetime
 import aiohttp
 import random
@@ -11,7 +11,7 @@ import os
 
 fancy_answers = (
     "Without a doubt it's ",
-    "It's certanly ",
+    "It's certainly ",
     "I would go for ",
     "Signs point to ",
     "I choose ",
@@ -80,7 +80,7 @@ class Utility():
         """Shows info about user."""
         if user is None:
             user = ctx.message.author
-        userInfo = discord.Embed(title=str(user), color=RandomColor())
+        userInfo = discord.Embed(title=str(user), color=random_color())
         userInfo.set_thumbnail(url=user.avatar_url)
         userInfo.add_field(name='Status', value=user.status)
         userInfo.add_field(name='ID', value=user.id)
@@ -97,7 +97,7 @@ class Utility():
         """Shows info about server"""
         server = ctx.message.server
         serverInfo = discord.Embed(title=server.name + ' (ID: ' + server.id + ')',
-                                   color=RandomColor())
+                                   color=random_color())
         serverInfo.set_thumbnail(url=server.icon_url)
         serverInfo.add_field(name='Owner', value=server.owner)
         serverInfo.add_field(name='Region', value=server.region)
@@ -117,14 +117,17 @@ class Utility():
     async def botinfo(self):
         """Shows info about bot and bot's developer."""
         owner = await self.bot.get_user_info(self.bot.config.get("meta", {}).get("owner", ""))
+        channel_types = Counter(c.type for c in self.bot.get_all_channels())
+        voice = channel_types[discord.ChannelType.voice]
+        text = channel_types[discord.ChannelType.text]
         botInfo = discord.Embed(title='GitHub Repository',
                                 url='https://github.com/IAmVisco/djeeta-chan',
-                                color=RandomColor())
+                                color=random_color())
         botInfo.set_author(name=str(self.bot.user) + ' ID :' + self.bot.user.id)
         botInfo.set_thumbnail(url=self.bot.user.avatar_url)
         botInfo.add_field(name='Servers connected', value=sum(1 for _ in self.bot.servers))
         botInfo.add_field(name='Users known', value=sum(1 for _ in self.bot.get_all_members()))
-        botInfo.add_field(name='Channels known', value=sum(1 for _ in self.bot.get_all_channels()))
+        botInfo.add_field(name='Channels known', value=f"{text} text/{voice} voice")
         botInfo.add_field(name='Owner', value=owner)
         botInfo.set_footer(text=strfdelta(datetime.utcnow() - self.bot.uptime, alive_timestamp),
                            icon_url=self.bot.user.avatar_url)
@@ -229,7 +232,7 @@ class Utility():
     async def gf(self, nick=None):
         """Shows a list with Girls' Frontline Nicks and UIDs"""
         if nick is None:
-            userInfo = discord.Embed(title="Girls' Frontline Friend List", color=RandomColor())
+            userInfo = discord.Embed(title="Girls' Frontline Friend List", color=random_color())
             userInfo.set_footer(text=strfdelta(datetime.utcnow() - self.bot.uptime,
                                                alive_timestamp),
                                 icon_url=self.bot.user.avatar_url)
@@ -238,7 +241,7 @@ class Utility():
                 userInfo.add_field(name=record[1], value=record[2])
             await self.bot.say(embed=userInfo)
         else:
-            userInfo = discord.Embed(title="Girls' Frontline User Info", color=RandomColor())
+            userInfo = discord.Embed(title="Girls' Frontline User Info", color=random_color())
             userInfo.set_footer(text=strfdelta(datetime.utcnow() - self.bot.uptime,
                                                alive_timestamp),
                                 icon_url=self.bot.user.avatar_url)
