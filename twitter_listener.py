@@ -17,8 +17,10 @@ class TweetsListener(StreamListener):
 
     def on_data(self, data):
         resp = json.loads(data)
-        self.bot.loop.create_task(send_tweet(resp, self.bot.get_channel([460113527697309696, 396353984287342593])))
-        # TODO: make subbed channels list config dependant or smth
+        subbed_channels = list()
+        for ch in [460113527697309696, 396353984287342593]:  # TODO: make subbed channels list config dependant
+            subbed_channels.append(self.bot.get_channel(ch))
+        self.bot.loop.create_task(send_tweet(resp, subbed_channels))
 
 
 async def send_tweet(resp, subbed_channels):
