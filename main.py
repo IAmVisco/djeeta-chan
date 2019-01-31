@@ -11,15 +11,15 @@ from twitter_listener import setup_twitter
 
 logging.basicConfig(format='%(levelname)s:%(asctime)s:%(message)s', level=logging.INFO, stream=sys.stdout)
 logging.info("Starting up...")
-bot = commands.Bot(command_prefix="~", description="Some description")
+bot = commands.Bot(command_prefix="~", description="Djeeta bot! Has some cool commands and a bunch of emotes.")
 
 gm_ready, gn_ready = True, True
 
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=discord.Game(name="with code"))
-    setup_twitter(bot)
+    await bot.change_presence(activity=discord.Game(name="~help to help"))
+    # setup_twitter(bot) TODO: fix retweets
     logging.info("Ready")
 
 
