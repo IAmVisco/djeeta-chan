@@ -24,7 +24,8 @@ class TweetsListener(StreamListener):
 
 
 async def send_tweet(resp, subbed_channels):
-    if resp.get("created_at"):
+    if resp.get("created_at") and not resp.get("retweeted_status"):
+        print(resp)
         twitter_url = "https://twitter.com/"
 
         if resp.get("truncated"):

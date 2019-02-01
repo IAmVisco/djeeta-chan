@@ -19,7 +19,7 @@ gm_ready, gn_ready = True, True
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="~help to help"))
-    # setup_twitter(bot) TODO: fix retweets
+    setup_twitter(bot)
     logging.info("Ready")
 
 
@@ -77,7 +77,7 @@ async def on_command_completion(ctx):
     logging.info(template.format(ctx))
 
 
-# @bot.event
+# @bot.event  # TODO: properly override this
 # async def on_command_error(ctx, error):
 #     if isinstance(error, commands.NoPrivateMessage):
 #         await ctx.send("You can't you this command in DMs!")
