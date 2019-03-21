@@ -1,3 +1,4 @@
+import ast
 import psutil
 import random
 import asyncio
@@ -52,8 +53,8 @@ class Utility(commands.Cog):
         """
         try:
             out = ":1234: | Answer is **"
-            out += str(eval(expr.replace("^", "**").replace("x", "*").replace(",", "."), {'__builtins__': {}})) + "**."
-        except:
+            out += str(ast.literal_eval(expr.replace("^", "**").replace("x", "*").replace(",", "."))) + "**."
+        except (ValueError, SyntaxError, TypeError):
             out = "Failed to evaluate the expression. Please try again."
         await ctx.send(out)
 

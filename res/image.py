@@ -1,6 +1,5 @@
 from os import listdir, getcwd
-from os.path import isfile, join
-import sys, math
+import math
 from PIL import Image, ImageFont, ImageDraw
 
 folder = input("Folder with emotes: ")
