@@ -50,7 +50,7 @@ query = """query ($name: String, $type: MediaType) {
 }"""
 
 
-class Weeb:
+class Weeb(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.res_path = os.getcwd() + "/res/"

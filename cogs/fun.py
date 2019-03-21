@@ -7,7 +7,7 @@ from discord.ext import commands
 from utils import random_color
 
 
-class Fun:
+class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.res_path = os.getcwd() + "/res/"
