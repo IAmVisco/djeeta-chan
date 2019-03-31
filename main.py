@@ -18,7 +18,7 @@ gm_ready, gn_ready = True, True
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=discord.Game(name="~help to help"))
+    await bot.change_presence(activity=discord.Game(name="with Teitoku <3"))
     setup_twitter(bot)
     logging.info("Ready")
 
