@@ -105,10 +105,5 @@ class Fun(commands.Cog):
         await ctx.send(result.get("image"))
 
 
-    @commands.command()
-    async def alright(self, ctx):
-        await ctx.send("Yes, Haruna is just fine!", file=discord.File(self.res_path + "daijoubu.mp3"))
-
-
 def setup(bot):
     bot.add_cog(Fun(bot))
