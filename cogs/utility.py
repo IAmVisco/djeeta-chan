@@ -82,7 +82,7 @@ class Utility(commands.Cog):
         user_info.add_field(name='Server join date', value=get_utc_string(user.joined_at))
         await ctx.send(embed=user_info)
 
-    @commands.command(alieases=["guildinfo"])
+    @commands.command(aliases=["guildinfo"])
     @commands.guild_only()
     async def serverinfo(self, ctx):
         """Shows info about server"""
@@ -250,7 +250,7 @@ class Utility(commands.Cog):
             out = "Please check your input again. The format is ~roll <dN> or ~roll <NdN>."
         await ctx.send(out)
 
-    @commands.command()
+    @commands.command(aliases=["vote"])
     @commands.guild_only()
     async def poll(self, ctx):
         """Creates quick poll with reactions on the message."""
