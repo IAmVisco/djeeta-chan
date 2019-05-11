@@ -35,7 +35,7 @@ class Utility(commands.Cog):
         """Shows full size of emoji."""
         if emoji is not None:
             try:
-                fields = emoji.split(':')
+                fields = emoji.split(":")
                 mim = ".gif" if fields.pop(0) == "<a" else ".png"
                 await ctx.send("https://discordapp.com/api/emojis/" + fields[-1][:-1] + mim)
             except:
@@ -76,10 +76,10 @@ class Utility(commands.Cog):
             user = ctx.author
         user_info = discord.Embed(title=str(user), color=random_color(), timestamp=datetime.utcnow())
         user_info.set_thumbnail(url=user.avatar_url)
-        user_info.add_field(name='Status', value=user.status)
-        user_info.add_field(name='ID', value=user.id)
-        user_info.add_field(name='Account creation date', value=get_utc_string(user.created_at))
-        user_info.add_field(name='Server join date', value=get_utc_string(user.joined_at))
+        user_info.add_field(name="Status", value=user.status)
+        user_info.add_field(name="ID", value=user.id)
+        user_info.add_field(name="Account creation date", value=get_utc_string(user.created_at))
+        user_info.add_field(name="Server join date", value=get_utc_string(user.joined_at))
         await ctx.send(embed=user_info)
 
     @commands.command(aliases=["guildinfo"])
@@ -91,15 +91,15 @@ class Utility(commands.Cog):
                                     color=random_color(),
                                     timestamp=datetime.utcnow())
         server_info.set_thumbnail(url=guild.icon_url)
-        server_info.add_field(name='Owner', value=guild.owner)
-        server_info.add_field(name='Region', value=guild.region)
-        server_info.add_field(name='Members', value=guild.member_count)
-        server_info.add_field(name='Roles', value=sum(1 for _ in guild.roles))
-        server_info.add_field(name='Channels', value=sum(1 for _ in guild.channels))
-        server_info.add_field(name='Creation date', value=get_utc_string(guild.created_at))
-        roles_list = ', '.join(role.name for role in guild.roles[::-1])
+        server_info.add_field(name="Owner", value=guild.owner)
+        server_info.add_field(name="Region", value=guild.region)
+        server_info.add_field(name="Members", value=guild.member_count)
+        server_info.add_field(name="Roles", value=sum(1 for _ in guild.roles))
+        server_info.add_field(name="Channels", value=sum(1 for _ in guild.channels))
+        server_info.add_field(name="Creation date", value=get_utc_string(guild.created_at))
+        roles_list = ", ".join(role.name for role in guild.roles[::-1])
         if len(roles_list) <= 1024:
-            server_info.add_field(name='Roles list', value=roles_list)
+            server_info.add_field(name="Roles list", value=roles_list)
         await ctx.send(embed=server_info)
 
     @commands.command(aliases=["about"])
@@ -122,13 +122,13 @@ class Utility(commands.Cog):
                                  timestamp=datetime.utcnow())
         bot_info.set_author(name=self.bot.user, icon_url=self.bot.user.avatar_url)
         bot_info.set_thumbnail(url=self.bot.user.avatar_url)
-        bot_info.add_field(name='Servers connected', value=len(list(self.bot.guilds)))
-        bot_info.add_field(name='Users known', value=len(list(self.bot.get_all_members())))
-        bot_info.add_field(name='Channels known', value=f"{text_channels} text/{voice_channels} voice")
-        bot_info.add_field(name='Owner', value=owner)
-        bot_info.add_field(name='Memory', value=f"{memory_usage:.2f} MiB")
-        bot_info.add_field(name='CPU', value=f"{cpu_usage:.2f}% CPU")
-        bot_info.set_footer(text='Made with discord.py', icon_url='http://i.imgur.com/5BFecvA.png')
+        bot_info.add_field(name="Servers connected", value=len(list(self.bot.guilds)))
+        bot_info.add_field(name="Users known", value=len(list(self.bot.get_all_members())))
+        bot_info.add_field(name="Channels known", value=f"{text_channels} text/{voice_channels} voice")
+        bot_info.add_field(name="Owner", value=owner)
+        bot_info.add_field(name="Memory", value=f"{memory_usage:.2f} MiB")
+        bot_info.add_field(name="CPU", value=f"{cpu_usage:.2f}% CPU")
+        bot_info.set_footer(text="Made with discord.py", icon_url="http://i.imgur.com/5BFecvA.png")
         await ctx.send(embed=bot_info)
 
     @commands.command()
@@ -230,7 +230,7 @@ class Utility(commands.Cog):
         except discord.Forbidden:
             await ctx.send("Sorry, the role is higher in server hierarchy than my own.")
 
-    @commands.command(aliases=['dice'])
+    @commands.command(aliases=["dice"])
     async def roll(self, ctx, *, roll: str):
         """Will roll a dice for you.
 
@@ -254,8 +254,8 @@ class Utility(commands.Cog):
     @commands.guild_only()
     async def poll(self, ctx):
         """Creates quick poll with reactions on the message."""
-        await ctx.message.add_reaction('✅')
-        await ctx.message.add_reaction('❎')
+        await ctx.message.add_reaction("✅")
+        await ctx.message.add_reaction("❎")
 
     @commands.command(description="I will say smth. Make me say smth bad and I will ~~stab you~~ add you to visctoms "
                                   ":dagger:")  # description left for memes sake
@@ -279,7 +279,7 @@ class Utility(commands.Cog):
             async with session.get(url) as response:
                 r = await response.json()
                 if r.get("query").get("searchinfo").get("totalhits") != 0:
-                    await ctx.send("https://gbf.wiki/" + r.get("query").get("search")[0]["title"].replace(' ', '_'))
+                    await ctx.send("https://gbf.wiki/" + r.get("query").get("search")[0]["title"].replace(" ", "_"))
                 else:
                     await ctx.send("Nothing found, please check your input and try again.")
 
@@ -304,12 +304,12 @@ class Utility(commands.Cog):
             await ctx.send(embed=user_info)
         await conn.close()
 
-    @gf.command(name='add', hidden=True)
+    @gf.command(name="add", hidden=True)
     @commands.is_owner()
     async def add_user_to_list(self, ctx, nick: str, uid: int):
         conn = await connect_to_db()
         await conn.execute("INSERT INTO test (name, uid) VALUES ($1, $2)", nick, uid)
-        await ctx.send('Nick {} successfully added to the list.'.format(nick))
+        await ctx.send(f"Nick {nick} successfully added to the list.")
         await conn.close()
 
 

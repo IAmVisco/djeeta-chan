@@ -7,7 +7,7 @@ import json
 from datetime import datetime
 import discord
 
-logging.basicConfig(format='%(levelname)s:%(asctime)s:%(message)s', level=logging.INFO, stream=sys.stdout)
+logging.basicConfig(format="%(levelname)s:%(asctime)s:%(message)s", level=logging.INFO, stream=sys.stdout)
 
 
 class TweetsListener(StreamListener):

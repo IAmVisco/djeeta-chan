@@ -20,7 +20,7 @@ class Fun(commands.Cog):
         List available by typing <prefix>emolist.
         """
         try:
-            await ctx.send(file=discord.File(self.res_path + "emotes/" + emo_name.lower() + '.png'))
+            await ctx.send(file=discord.File(self.res_path + "emotes/" + emo_name.lower() + ".png"))
         except FileNotFoundError:
             await ctx.send("No match found.")
 
@@ -32,7 +32,7 @@ class Fun(commands.Cog):
         List available by typing <prefix>emolist.
         """
         try:
-            await ctx.send(file=discord.File(self.res_path + "siete/" + emo_name.lower() + '.png'))
+            await ctx.send(file=discord.File(self.res_path + "siete/" + emo_name.lower() + ".png"))
         except FileNotFoundError:
             await ctx.send("No match found.")
 
@@ -40,7 +40,7 @@ class Fun(commands.Cog):
     @commands.guild_only()
     async def emolist(self, ctx):
         """Shows all avaible emotes."""
-        await ctx.send('<https://imgur.com/a/jmGm3>\nHidden cuz big pic')
+        await ctx.send("<https://imgur.com/a/jmGm3>\nHidden cuz big pic")
 
     @commands.command()
     @commands.guild_only()

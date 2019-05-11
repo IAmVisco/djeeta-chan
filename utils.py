@@ -1,12 +1,13 @@
+import re
 import os
 import ssl
-import asyncpg
-import random
 import pytz
+import asyncpg
+import random as r
 
 
 def random_color():
-    return int('0x' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)]), 0)
+    return int('0x' + ''.join([r.choice('0123456789ABCDEF') for _ in range(6)]), 0)
 
 
 def get_utc_string(dt):

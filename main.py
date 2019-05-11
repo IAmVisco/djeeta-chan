@@ -6,10 +6,10 @@ import discord
 import logging
 import random as r
 from discord.ext import commands
-
 from twitter_listener import setup_twitter
 
-logging.basicConfig(format='%(levelname)s:%(asctime)s:%(message)s', level=logging.INFO, stream=sys.stdout)
+
+logging.basicConfig(format="%(levelname)s:%(asctime)s:%(message)s", level=logging.INFO, stream=sys.stdout)
 logging.info("Starting up...")
 bot = commands.Bot(command_prefix="~", description="Djeeta bot! Has some cool commands and a bunch of emotes.")
 
@@ -23,49 +23,53 @@ async def on_ready():
     logging.info("Ready")
 
 
+def process_message_replies(message):
+    global gm_ready
+    global gn_ready
+    out = None
+    if gm_ready and "GoodMorning" in message.content:
+        out = "GoodMorning"
+        gm_ready = False
+    elif gn_ready and "GoodNight" in message.content:
+        out = "GoodNight"
+        gn_ready = False
+    elif "/o/" in message.content.lower():
+        out = "\\o\\"
+    elif "\\o\\" in message.content.lower():
+        out = "/o/"
+    elif re.search(r"(^|\W)(ay{2,})($|\W)", message.content.lower()) is not None:
+        out = "LMAO" if "AYY" in message.content else "lmao"
+    elif "\\o/" in message.content.lower():
+        out = "\\o/"
+    elif re.search(r"(^|\W)(owo)($|\W)", message.content.lower()) is not None:
+        if r.randint(1, 100) <= 20:
+            out = r.choice(["kys", "uwu", "o3o", " *nuzzles wuzzles*", "no", "Rawr xD", "·///·"])
+        else:
+            out = "What's this?"
+
+    return out
+
+
 @bot.event
 @commands.guild_only()
 async def on_message(message):
     global gm_ready
     global gn_ready
-    out = None
 
-    if not message.author.bot:
-        if gm_ready and "GoodMorning" in message.content:
-            out = "GoodMorning"
-            gm_ready = False
-        elif gn_ready and "GoodNight" in message.content:
-            out = "GoodNight"
-            gn_ready = False
-        elif "/o/" in message.content.lower():
-            out = "\\o\\"
-        elif "\\o\\" in message.content.lower():
-            out = "/o/"
-        elif re.search(r"(^|\W)(ay{2,})($|\W)", message.content.lower()) is not None:
-            out = "LMAO" if "AYY" in message.content else "lmao"
-        elif "\\o/" in message.content.lower():
-            out = "\\o/"
-        elif re.search(r"(^|\W)(owo)($|\W)", message.content.lower()) is not None:
-            if r.randint(1, 100) <= 5:
-                out = r.choice(["kys", "uwu", "o3o", " *nuzzles wuzzles*", "no", "Rawr xD", "·///·"])
-            else:
-                out = "What's this?"
+    out = process_message_replies(message) if not message.author.bot else None
 
-    logs = []
-    async for m in message.channel.history(limit=3):
-        logs.append(m)
+    logs = await message.channel.history(limit=3).flatten()
     if logs[0].content == logs[1].content == logs[2].content and not any([msg.author.bot for msg in logs]):
         out = logs[0].content
 
-    if out is not None:
+    if out:
         await message.channel.send(out)
 
     await bot.process_commands(message)
 
-    if not gm_ready or not gn_ready:
+    if not any([gm_ready, gn_ready]):
         await asyncio.sleep(60)
-        gm_ready = True
-        gn_ready = True
+        gm_ready = gn_ready = True
 
 
 @bot.event

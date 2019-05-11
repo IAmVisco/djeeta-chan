@@ -66,7 +66,7 @@ class Weeb(commands.Cog):
         pic_path = self.res_path + "disgusting/"
         pics = os.listdir(pic_path)
         if args and int(args[0]) <= len(pics):
-            await ctx.send(file=discord.File(pic_path + ctx.args[2] + '.png'))
+            await ctx.send(file=discord.File(pic_path + ctx.args[2] + ".png"))
         else:
             await ctx.send(file=discord.File(pic_path + random.choice(pics)))
 
