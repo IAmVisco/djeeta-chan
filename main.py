@@ -8,22 +8,22 @@ import random as r
 from discord.ext import commands
 from twitter_listener import setup_twitter
 
-
+__version__ = '3.0.1'
+gm_ready = gn_ready = True
 logging.basicConfig(format="%(levelname)s:%(asctime)s:%(message)s", level=logging.INFO, stream=sys.stdout)
-logging.info("Starting up...")
 bot = commands.Bot(command_prefix="~", description="Djeeta bot! Has some cool commands and a bunch of emotes.")
-
-gm_ready, gn_ready = True, True
 
 
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="~help to help"))
-    setup_twitter(bot)
-    logging.info("Ready")
+    # setup_twitter(bot)
+    logging.info(" {0.user.name} bot {1} - Ready. Running on Python v{2.major}.{2.minor}.{2.micro}-{2.releaselevel} "
+                 .format(bot, __version__, sys.version_info).center(70, "="))
 
 
 def process_message_replies(message):
+    # TODO: Move this to better place
     global gm_ready
     global gn_ready
     out = None

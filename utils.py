@@ -13,8 +13,13 @@ def get_utc_string(dt):
     return dt.astimezone(pytz.utc).strftime("%d %b %Y %H:%M %Z")
 
 
-async def connect_to_db():
+def create_ssl():
+    """Probably redundant, docs say that True can be passed to create default cert"""
     ssl_ctx = ssl.create_default_context()
     ssl_ctx.check_hostname = False
     ssl_ctx.verify_mode = ssl.CERT_NONE
-    return await asyncpg.connect(dsn=os.environ.get("DATABASE_URL"), ssl=ssl_ctx)
+    return ssl_ctx
+
+
+async def connect_to_db():
+    return await asyncpg.connect(dsn=os.environ.get("DATABASE_URL"), ssl=create_ssl())

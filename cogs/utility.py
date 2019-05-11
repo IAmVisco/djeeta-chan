@@ -171,41 +171,48 @@ class Utility(commands.Cog):
 
         return True
 
+    @staticmethod
+    async def add_role(ctx, role):
+        await ctx.author.add_roles(role)
+        await ctx.send(ctx.author.mention + ", the role " + role.name + " has been added to your roles.")
+
+    @staticmethod
+    async def remove_role(ctx, role):
+        await ctx.author.remove_roles(role)
+        await ctx.send(ctx.author.mention + ", the role " + role.name + " has been removed from your roles.")
+
     @commands.command()
     @commands.guild_only()
     async def role(self, ctx, *, role: discord.Role = None):
-        """Assigns or remove the role.
+        """Assigns or remove the role. Case-sensitive.
 
         Same command is used for both assigning and
-        unassigned. Case-sensitive.
+        unassigned.
         """
         if not await self.can_process_role(ctx, role):
             return
 
         try:
             if role in ctx.author.roles:
-                await ctx.author.remove_roles(role)
-                await ctx.send(ctx.author.mention + ", the role " + role.name + " has been removed from your roles.")
+                await self.remove_role(ctx, role)
             else:
-                await ctx.author.add_roles(role)
-                await ctx.send(ctx.author.mention + ", the role " + role.name + " has been added to your roles.")
+                await self.add_role(ctx, role)
         except discord.Forbidden:
             await ctx.send("Sorry, the role is higher in server hierarchy than my own.")
 
     @commands.command()
     @commands.guild_only()
     async def addrole(self, ctx, *, role: discord.Role = None):
-        """Assigns a role.
+        """Assigns a role. Case-sensitive.
 
         More explicit way to add a role. Check ~roles
-        for the full list. Case-sensitive."""
+        for the full list."""
         if not await self.can_process_role(ctx, role):
             return
 
         try:
             if role not in ctx.author.roles:
-                await ctx.author.add_roles(role)
-                await ctx.send(ctx.author.mention + ", the role " + role.name + " has been added to your roles.")
+                await self.add_role(ctx, role)
             else:
                 await ctx.send(ctx.author.mention + ", you have that role already!")
         except discord.Forbidden:
@@ -214,19 +221,18 @@ class Utility(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def removerole(self, ctx, *, role: discord.Role = None):
-        """Removes a role.
+        """Removes a role. Case-sensitive.
 
         More explicit way to remove a role. Check ~roles
-        for the full list. Case-sensitive."""
+        for the full list."""
         if not await self.can_process_role(ctx, role):
             return
 
         try:
             if role in ctx.author.roles:
-                await ctx.author.remove_roles(role)
-                await ctx.send(ctx.author.mention + ", the role " + role.name + " has been removed from your roles.")
+                await self.remove_role(ctx, role)
             else:
-                await ctx.send(ctx.author.mention + ", you don't that role!")
+                await ctx.send(ctx.author.mention + ", you don't have that role!")
         except discord.Forbidden:
             await ctx.send("Sorry, the role is higher in server hierarchy than my own.")
 
