@@ -17,7 +17,7 @@ bot = commands.Bot(command_prefix="~", description="Djeeta bot! Has some cool co
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Game(name="~help to help"))
-    # setup_twitter(bot)
+    setup_twitter(bot)
     logging.info(" {0.user.name} bot {1} - Ready. Running on Python v{2.major}.{2.minor}.{2.micro}-{2.releaselevel} "
                  .format(bot, __version__, sys.version_info).center(70, "="))
 
