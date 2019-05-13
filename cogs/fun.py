@@ -1,10 +1,8 @@
 import os
-import aiohttp
 import discord
 from datetime import datetime
 from discord.ext import commands
-
-from utils import random_color
+from utils import random_color, get_json_data
 
 
 class Fun(commands.Cog):
@@ -80,9 +78,8 @@ class Fun(commands.Cog):
     @commands.command()
     async def advice(self, ctx):
         """Fetches random advice from adviceslip.com."""
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://api.adviceslip.com/advice") as resp:
-                result = await resp.json(content_type=None)
+        url = "https://api.adviceslip.com/advice"
+        result = await get_json_data(url, content_type=None)
         await ctx.send(result.get("slip").get("advice"))
 
     @commands.command()
@@ -90,18 +87,15 @@ class Fun(commands.Cog):
     async def quote(self, ctx):
         """Fetches random quote from forismatic.com"""
         url = "http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as resp:
-                result = await resp.json()
-        await ctx.send("{0} - **{1}**".format(result.get("quoteText"), result.get("quoteAuthor")))
+        result = await get_json_data(url)
+        await ctx.send("{0} - **{1}**".format(result.get("quoteText").strip(), result.get("quoteAuthor")))
 
     @commands.command()
     @commands.guild_only()
     async def yesno(self, ctx):
         """Sends GIF with yes or no answer."""
-        async with aiohttp.ClientSession() as session:
-            async with session.get("http://yesno.wtf/api") as resp:
-                result = await resp.json()
+        url = "http://yesno.wtf/api"
+        result = await get_json_data(url)
         await ctx.send(result.get("image"))
 
 

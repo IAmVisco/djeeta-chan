@@ -1,6 +1,7 @@
 import os
 import ssl
 import pytz
+import aiohttp
 import asyncpg
 import random as r
 
@@ -23,3 +24,9 @@ def create_ssl():
 
 async def connect_to_db():
     return await asyncpg.connect(dsn=os.environ.get("DATABASE_URL"), ssl=create_ssl())
+
+
+async def get_json_data(url, content_type='application/json'):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            return await resp.json(content_type=content_type)
