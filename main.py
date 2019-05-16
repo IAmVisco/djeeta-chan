@@ -1,15 +1,13 @@
 import os
 import re
 import sys
-import asyncio
 import discord
 import logging
 import random as r
 from discord.ext import commands
 from twitter_listener import setup_twitter
 
-__version__ = '3.0.1'
-gm_ready = gn_ready = True
+__version__ = '3.0.2'
 logging.basicConfig(format="%(levelname)s:%(asctime)s:%(message)s", level=logging.INFO, stream=sys.stdout)
 bot = commands.Bot(command_prefix="~", description="Djeeta bot! Has some cool commands and a bunch of emotes.")
 
@@ -24,16 +22,8 @@ async def on_ready():
 
 def process_message_replies(message):
     # TODO: Move this to better place
-    global gm_ready
-    global gn_ready
     out = None
-    if gm_ready and "GoodMorning" in message.content:
-        out = "GoodMorning"
-        gm_ready = False
-    elif gn_ready and "GoodNight" in message.content:
-        out = "GoodNight"
-        gn_ready = False
-    elif "/o/" in message.content.lower():
+    if "/o/" in message.content.lower():
         out = "\\o\\"
     elif "\\o\\" in message.content.lower():
         out = "/o/"
@@ -53,8 +43,10 @@ def process_message_replies(message):
 @bot.event
 @commands.guild_only()
 async def on_message(message):
-    global gm_ready
-    global gn_ready
+    if "GoodMorning" == message.content or "GoodNight" == message.content:
+        emoji = discord.utils.find(lambda e: e.name == message.content, message.guild.emojis)
+        if emoji:
+            await message.add_reaction(emoji)
 
     out = process_message_replies(message) if not message.author.bot else None
 
@@ -66,10 +58,6 @@ async def on_message(message):
         await message.channel.send(out)
 
     await bot.process_commands(message)
-
-    if not any([gm_ready, gn_ready]):
-        await asyncio.sleep(60)
-        gm_ready = gn_ready = True
 
 
 @bot.event

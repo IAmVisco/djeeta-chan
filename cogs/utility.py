@@ -4,6 +4,7 @@ import asyncio
 import aiohttp
 import discord
 from discord.ext import commands
+from collections import Counter
 from datetime import datetime
 
 from utils import random_color, get_utc_string, connect_to_db
@@ -317,6 +318,37 @@ class Utility(commands.Cog):
         await conn.execute("INSERT INTO test (name, uid) VALUES ($1, $2)", nick, uid)
         await ctx.send(f"Nick {nick} successfully added to the list.")
         await conn.close()
+
+    @commands.command(hidden=True)
+    @commands.guild_only()
+    @commands.is_owner()
+    async def stats(self, ctx):
+        parse_msg = await ctx.send(':arrows_counterclockwise: | **Parsing channels...**')
+        c = Counter()
+        for ch in ctx.guild.text_channels:
+            if ch.permissions_for(ctx.guild.me).read_message_history:
+                msges = await ch.history(limit=None).flatten()
+                print(f'Received logs for #{ch}')
+                for msg in msges:
+                    c[msg.author] += 1
+                print(f'Done with #{ch}')
+            else:
+                print(f'Skipping #{ch}')
+        print('Parsed everything')
+        print(c)
+        out = ':chart_with_downwards_trend: | **Top 20 message senders**\n'
+        for index, (author, msg_count) in enumerate(c.most_common()[:20], start=1):
+            if index == 1:
+                medal = ':first_place:'
+            elif index == 2:
+                medal = ':second_place:'
+            elif index == 3:
+                medal = ':third_place:'
+            else:
+                medal = None
+
+            out += f'{index}. {author} - {msg_count}\n' if medal is None else f'{medal} **{author} - {msg_count}**\n'
+        await parse_msg.edit(content=out)
 
 
 def setup(bot):
