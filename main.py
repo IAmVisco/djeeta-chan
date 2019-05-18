@@ -43,8 +43,13 @@ def process_message_replies(message):
 @bot.event
 @commands.guild_only()
 async def on_message(message):
-    if "GoodMorning" == message.content or "GoodNight" == message.content:
-        emoji = discord.utils.find(lambda e: e.name == message.content, message.guild.emojis)
+    keyword = None
+    if "GoodMorning" in message.content:
+        keyword = "GoodMorning"
+    elif "GoodNight" in message.content:
+        keyword = "GoodNight"
+    if keyword:
+        emoji = discord.utils.find(lambda e: e.name == keyword, message.guild.emojis)
         if emoji:
             await message.add_reaction(emoji)
 
