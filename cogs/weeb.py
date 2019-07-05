@@ -115,11 +115,12 @@ class Weeb(commands.Cog):
         else:
             target = random.choice(SSR_pool)
         spark += f"\nYou got **{ssr_count} SSRs**, your SSR chance was **{ssr_chance}%!**" \
-                 f"\nYou sparked... **{target}!**"
+            f"\nYou sparked... **{target}!**"
         await ctx.send(spark)
 
     @staticmethod
     def get_weeb_embed(data):
+        score = str(data.get("averageScore") / 10) + " / 10" if data.get("averageScore") else "Not yet"
         embed = discord.Embed(title=data.get("title").get("romaji"),
                               colour=random_color(), url=data.get("siteUrl"),
                               description=re.sub(r"<.*?>", "", data.get("description")),
@@ -133,22 +134,29 @@ class Weeb(commands.Cog):
             embed.add_field(name="Episodes", value=data.get("episodes"))
         else:
             embed.add_field(name="Volumes", value=data.get("volumes"))
-        embed.add_field(name="Score", value=str(data.get("averageScore") / 10) + " / 10")
+        embed.add_field(name="Score", value=score)
         return embed
 
     @staticmethod
     async def get_anilist_data(name, media_type):
         url = "https://graphql.anilist.co"
+        payload = {
+            "query": query,
+            "variables": {
+                "name": name,
+                "type": media_type
+            }
+        }
         async with aiohttp.ClientSession() as session:
-            async with session.post(url, json={
-                "query": query,
-                "variables": {
-                    "name": name,
-                    "type": media_type
-                }
-            }) as response:
+            async with session.post(url, json=payload) as response:
                 res = await response.json()
         return res.get("data").get("Media")
+
+    @staticmethod
+    async def send_weeb_info_reply(ctx, media):
+        if not media:
+            return await ctx.send("Nothing found. Check your input and try again.")
+        await ctx.send(embed=Weeb.get_weeb_embed(media))
 
     @commands.command()
     async def anime(self, ctx, *, name):
@@ -156,8 +164,7 @@ class Weeb(commands.Cog):
 
         Because MAL has closed their API. Don't use MAL."""
         media = await self.get_anilist_data(name, "ANIME")
-        if media:
-            await ctx.send(embed=self.get_weeb_embed(media))
+        await self.send_weeb_info_reply(ctx, media)
 
     @commands.command(aliases=["ln", "novel"])
     async def manga(self, ctx, *, name):
@@ -165,8 +172,7 @@ class Weeb(commands.Cog):
 
         Because MAL has closed their API. Don't use MAL."""
         media = await self.get_anilist_data(name, "MANGA")
-        if media:
-            await ctx.send(embed=self.get_weeb_embed(media))
+        await self.send_weeb_info_reply(ctx, media)
 
 
 def setup(bot):

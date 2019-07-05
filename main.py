@@ -7,7 +7,7 @@ import random as r
 from discord.ext import commands
 from twitter_listener import setup_twitter
 
-__version__ = '3.0.2'
+__version__ = '3.0.3'
 logging.basicConfig(format="%(levelname)s:%(asctime)s:%(message)s", level=logging.INFO, stream=sys.stdout)
 bot = commands.Bot(command_prefix="~", description="Djeeta bot! Has some cool commands and a bunch of emotes.")
 
