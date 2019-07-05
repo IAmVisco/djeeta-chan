@@ -1,8 +1,10 @@
+import os
 import psutil
 import random
 import asyncio
 import aiohttp
 import discord
+import logging
 from discord.ext import commands
 from collections import Counter
 from datetime import datetime
@@ -114,7 +116,7 @@ class Utility(commands.Cog):
                 text_channels += 1
             if isinstance(channel, discord.VoiceChannel):
                 voice_channels += 1
-        memory_usage = self.process.memory_full_info().uss / 1024**2
+        memory_usage = self.process.memory_full_info().uss / 1024 ** 2
         cpu_usage = self.process.cpu_percent() / psutil.cpu_count()
 
         bot_info = discord.Embed(title="GitHub Repository",
@@ -349,6 +351,23 @@ class Utility(commands.Cog):
 
             out += f'{index}. {author} - {msg_count}\n' if medal is None else f'{medal} **{author} - {msg_count}**\n'
         await parse_msg.edit(content=out)
+
+    @commands.command(hidden=True)
+    async def restart(self, ctx):
+        url = os.environ.get("DYNO_URL")
+        token = os.environ.get("API_TOKEN")
+        headers = {
+            "Accept": "application/vnd.heroku+json;version=3",
+            "Authorization": f"Bearer {token}"
+        }
+        await ctx.send(":arrows_counterclockwise: | Restarting...")
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.delete(url, headers=headers):
+                    pass
+        except aiohttp.ClientError as e:
+            logging.error(e)
+            await ctx.send(":cold_sweat: | Restart failed, check logs")
 
 
 def setup(bot):
