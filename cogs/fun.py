@@ -1,4 +1,6 @@
 import os
+import typing
+import aiohttp
 import discord
 from datetime import datetime
 from discord.ext import commands
@@ -9,6 +11,7 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.res_path = os.getcwd() + "/res/"
+        self.ffz_url = "https://api.frankerfacez.com/v1/"
 
     @commands.command()
     @commands.guild_only()
@@ -39,6 +42,27 @@ class Fun(commands.Cog):
     async def emolist(self, ctx):
         """Shows all avaible emotes."""
         await ctx.send("<https://imgur.com/a/jmGm3>\nHidden cuz big pic")
+
+    @commands.command()
+    @commands.guild_only()
+    async def ffz(self, ctx, emoticon_name: typing.Optional[str]):
+        """Fetches passed emote from FrankerFacesZ."""
+        if emoticon_name is None:
+            await ctx.send("Please specify emoticon name!")
+            return
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f"{self.ffz_url}emoticons?q={emoticon_name}") as resp:
+                result = await resp.json(content_type=None)
+                emoticons = result.get("emoticons")
+                if len(emoticons) == 0:
+                    await ctx.send("Nothing was found!")
+                    return
+                emo = emoticons[0]
+                url = emo["urls"].get("4")
+                if url is None:
+                    url = emo.urls.get("1")
+                await ctx.send(f"https:{url}")
 
     @commands.command()
     @commands.guild_only()
