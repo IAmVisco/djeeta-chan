@@ -52,7 +52,7 @@ class Fun(commands.Cog):
             return
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"{self.ffz_url}emoticons?q={emoticon_name}") as resp:
+            async with session.get(f"{self.ffz_url}emoticons?q={emoticon_name}&sort=count-desc") as resp:
                 result = await resp.json(content_type=None)
                 emoticons = result.get("emoticons")
                 if len(emoticons) == 0:
