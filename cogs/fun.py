@@ -59,10 +59,17 @@ class Fun(commands.Cog):
                     await ctx.send("Nothing was found!")
                     return
                 emo = emoticons[0]
-                url = emo["urls"].get("4")
-                if url is None:
-                    url = emo.urls.get("1")
-                await ctx.send(f"https:{url}")
+                url = None
+                emote_size = 4
+                while emote_size > 0:
+                    url = emo["urls"].get(str(emote_size))
+                    if url:
+                        break
+                    emote_size -= 1
+                if url:
+                    await ctx.send(f"https:{url}")
+                else:
+                    await ctx.send("No suitable emoticon link found.")
 
     @commands.command()
     @commands.guild_only()
