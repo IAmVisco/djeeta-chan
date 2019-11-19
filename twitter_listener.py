@@ -13,14 +13,18 @@ logging.basicConfig(format="%(levelname)s:%(asctime)s:%(message)s", level=loggin
 class TweetsListener(StreamListener):
     def __init__(self, bot):
         self.bot = bot
+        self.owner_id = 185069144184455168
         super().__init__()
 
     def on_data(self, data):
-        resp = json.loads(data)
-        subbed_channels = list()
-        for ch in [460113527697309696, 396353984287342593]:  # TODO: make subbed channels list config dependant
-            subbed_channels.append(self.bot.get_channel(ch))
-        self.bot.loop.create_task(send_tweet(resp, subbed_channels))
+        try:
+            resp = json.loads(data)
+            # TODO: make subbed channels list config dependant
+            subbed_channels = [self.bot.get_channel(ch) for ch in [460113527697309696, 396353984287342593]]
+            self.bot.loop.create_task(send_tweet(resp, subbed_channels))
+        except Exception as e:
+            owner = self.bot.get_user(self.owner_id)
+            self.bot.loop.create_task(owner.send(f"Boom {e}"))
 
 
 async def send_tweet(resp, subbed_channels):
@@ -29,7 +33,7 @@ async def send_tweet(resp, subbed_channels):
             and not resp.get("quoted_status") \
             and not resp.get("in_reply_to_status_id") \
             and not resp.get("in_reply_to_user_id"):
-        print("Posted", resp)
+        print("Parsing", resp)
         twitter_url = "https://twitter.com/"
 
         if resp.get("truncated"):
