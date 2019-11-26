@@ -25,6 +25,7 @@ class Utility(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.process = psutil.Process()
+        self.emoji_url = "https://cdn.discordapp.com/emojis/"
 
     @commands.command()
     async def avatar(self, ctx, *, user: discord.Member = None):
@@ -40,7 +41,7 @@ class Utility(commands.Cog):
             try:
                 fields = emoji.split(":")
                 mim = ".gif" if fields.pop(0) == "<a" else ".png"
-                await ctx.send("https://discordapp.com/api/emojis/" + fields[-1][:-1] + mim)
+                await ctx.send(self.emoji_url + fields[-1][:-1] + mim)
             except:
                 await ctx.send("Sorry, I can't process that.")
         else:
