@@ -293,33 +293,62 @@ class Utility(commands.Cog):
                 else:
                     await ctx.send("Nothing found, please check your input and try again.")
 
-    @commands.group(invoke_without_command=True)
+    @commands.group(invoke_without_command=True, aliases=["gfl"])
     async def gf(self, ctx, nick=None):
         """Shows a list with Girls' Frontline Nicks and UIDs"""
         conn = await connect_to_db()
         if nick is None:
-            user_info = discord.Embed(title="Girls' Frontline Friend List",
+            user_info = discord.Embed(title="Girls' Frontline players list",
                                       color=random_color(),
                                       timestamp=datetime.utcnow())
-            res = await conn.fetch("SELECT * FROM test ORDER BY uid")
+            res = await conn.fetch("SELECT * FROM gfl ORDER BY uid")
             for record in res:
                 user_info.add_field(name=record[1], value=record[2])
             await ctx.send(embed=user_info)
         else:
-            user_info = discord.Embed(title="Girls' Frontline User Info",
+            user_info = discord.Embed(title="Girls' Frontline user info",
                                       color=random_color(),
                                       timestamp=datetime.utcnow())
-            record = await conn.fetchrow(f"SELECT * FROM test WHERE LOWER(name)=LOWER('{nick}')")
+            record = await conn.fetchrow(f"SELECT * FROM gfl WHERE LOWER(name)=LOWER('{nick}')")
             user_info.add_field(name=record[1], value=record[2])
             await ctx.send(embed=user_info)
         await conn.close()
 
     @gf.command(name="add", hidden=True)
     @commands.is_owner()
-    async def add_user_to_list(self, ctx, nick: str, uid: int):
+    async def add_gf_user_to_list(self, ctx, nick: str, uid: int):
         conn = await connect_to_db()
-        await conn.execute("INSERT INTO test (name, uid) VALUES ($1, $2)", nick, uid)
+        await conn.execute("INSERT INTO gfl (name, uid) VALUES ($1, $2)", nick, uid)
         await ctx.send(f"Nick {nick} successfully added to the list.")
+        await conn.close()
+
+    @commands.group(invoke_without_command=True)
+    async def ak(self, ctx, nick=None):
+        """Shows a list with Arknights game nicks"""
+        conn = await connect_to_db()
+        if nick is None:
+            user_info = discord.Embed(title="Arknights players list",
+                                      color=random_color(),
+                                      timestamp=datetime.utcnow())
+            res = await conn.fetch("SELECT * FROM arknights ORDER BY name")
+            for record in res:
+                user_info.add_field(name=record[1], value=record[2])
+            await ctx.send(embed=user_info)
+        else:
+            user_info = discord.Embed(title="Arknights user info",
+                                      color=random_color(),
+                                      timestamp=datetime.utcnow())
+            record = await conn.fetchrow(f"SELECT * FROM arknights WHERE LOWER(name)=LOWER('{nick}')")
+            user_info.add_field(name=record[1], value=record[2])
+            await ctx.send(embed=user_info)
+        await conn.close()
+
+    @ak.command(name="add", hidden=True)
+    @commands.is_owner()
+    async def add_ak_user_to_list(self, ctx, nick: str, ign: str):
+        conn = await connect_to_db()
+        await conn.execute("INSERT INTO arknights (name, ign) VALUES ($1, $2)", nick, ign)
+        await ctx.send(f"IGN {nick} successfully added to the list.")
         await conn.close()
 
     @commands.command(hidden=True)
