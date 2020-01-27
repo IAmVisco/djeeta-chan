@@ -4,7 +4,7 @@ import aiohttp
 import discord
 from datetime import datetime
 from discord.ext import commands
-from utils import random_color, get_json_data
+from utils import random_color, get_json_data, connect_to_db
 
 
 class Fun(commands.Cog):
@@ -75,11 +75,19 @@ class Fun(commands.Cog):
     @commands.guild_only()
     async def f(self, ctx, *, target=None):
         """Press F to pay respects."""
+        conn = await connect_to_db()
+        respects_amount = await conn.fetchval("""
+            UPDATE respects
+            SET total = total + 1
+            RETURNING total
+        """)
+        print(respects_amount)
         if target is None:
             msg = "**" + ctx.author.name + "** has paid their respects."
         else:
             msg = "**" + ctx.author.name + "** has paid their respects for **" + target + ".**"
         embed = discord.Embed(description=msg, color=random_color(), timestamp=datetime.utcnow())
+        embed.set_footer(text=f"Total: {respects_amount}")
         await ctx.send(embed=embed)
 
     @commands.command()
