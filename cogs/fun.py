@@ -2,6 +2,7 @@ import os
 import typing
 import aiohttp
 import discord
+from random import randint
 from datetime import datetime
 from discord.ext import commands
 from utils import random_color, get_json_data
@@ -128,6 +129,15 @@ class Fun(commands.Cog):
         url = "http://yesno.wtf/api"
         result = await get_json_data(url)
         await ctx.send(result.get("image"))
+
+    @commands.command()
+    async def peko(self, ctx, times=None):
+        """Sends a lot of pekos."""
+        if times and times.isdecimal():
+            out = 'PE :arrow_upper_right: KO :arrow_lower_right: ' * int(times)
+        else:
+            out = 'PE :arrow_upper_right: KO :arrow_lower_right: ' * randint(3, 10)
+        await ctx.send(out)
 
 
 def setup(bot):
