@@ -142,10 +142,36 @@ class Fun(commands.Cog):
     async def peko(self, ctx, times=None):
         """Sends a lot of pekos."""
         if times and times.isdecimal():
-            out = 'PE :arrow_upper_right: KO :arrow_lower_right: ' * int(times)
+            out = "PE :arrow_upper_right: KO :arrow_lower_right: " * int(times)
         else:
-            out = 'PE :arrow_upper_right: KO :arrow_lower_right: ' * randint(3, 10)
+            out = "PE :arrow_upper_right: KO :arrow_lower_right: " * randint(3, 10)
         await ctx.send(out)
+
+    @commands.command(aliases=["emoji"])
+    async def nitro(self, ctx, emoji_name, mode=""):
+        """Posts an emoji with provided name if it exists on any server the bot is on.
+
+        If optional 'mode' argument is equal to 'huge', will post a link with emoji instead.
+        """
+        def flatten(list_):
+            return list(sum(list_, ()))
+
+        if not emoji_name:
+            await ctx.send(":warning: | You have to provide emoji name!")
+            return
+
+        try:
+            guild_emojis = flatten(map(lambda guild: guild.emojis, self.bot.guilds))
+            emoji = next(emoji for emoji in guild_emojis if emoji.name.lower() == emoji_name.lower())
+        except StopIteration:
+            await ctx.send(":mag: | Didn't find anything with that name!")
+            return
+
+        if not emoji.available:
+            await ctx.send(":x: | Can't send that :(")
+            return
+
+        await ctx.send(emoji if not mode == "huge" else emoji.url)
 
 
 def setup(bot):
