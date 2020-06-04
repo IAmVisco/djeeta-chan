@@ -1,13 +1,15 @@
 import os
 import re
 import sys
+import traceback
+
 import discord
 import logging
 import random as r
 from discord.ext import commands
 from twitter_listener import setup_twitter
 
-__version__ = '3.0.8'
+__version__ = '3.1.0'
 logging.basicConfig(format="%(levelname)s:%(asctime)s:%(message)s", level=logging.INFO, stream=sys.stdout)
 bot = commands.Bot(command_prefix="~", description="Djeeta bot! Has some cool commands and a bunch of emotes.")
 
@@ -74,10 +76,25 @@ async def on_command_completion(ctx):
     logging.info(template.format(ctx))
 
 
-# @bot.event  # TODO: properly override this
-# async def on_command_error(ctx, error):
-#     if isinstance(error, commands.NoPrivateMessage):
-#         await ctx.send("You can't you this command in DMs!")
+@bot.event
+async def on_command_error(ctx, exception):
+    if hasattr(ctx.command, 'on_error'):
+        return
+
+    cog = ctx.cog
+    if cog and commands.Cog._get_overridden_method(cog.cog_command_error) is not None:
+        return
+
+    if isinstance(exception, commands.NoPrivateMessage):
+        await ctx.send(":warning: | You can't you this command in DMs!")
+        return
+
+    if isinstance(exception, commands.errors.MissingRequiredArgument):
+        await ctx.send(":warning: | Missing mandatory command arguments!")
+        return
+
+    print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
+    traceback.print_exception(type(exception), exception, exception.__traceback__, file=sys.stderr)
 
 
 for file in os.listdir("cogs"):
