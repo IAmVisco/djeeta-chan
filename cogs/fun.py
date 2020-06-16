@@ -144,7 +144,16 @@ class Fun(commands.Cog):
         if times and times.isdecimal():
             out = "PE :arrow_upper_right: KO :arrow_lower_right: " * int(times)
         else:
-            out = "PE :arrow_upper_right: KO :arrow_lower_right: " * randint(3, 10)
+            out = "PE :arrow_upper_right: KO :arrow_lower_right: " * randint(3, 7)
+        await ctx.send(out)
+
+    @commands.command()
+    async def pekolaugh(self, ctx, times=None):
+        """Sends peko laugh."""
+        if times and times.isdecimal():
+            out = "A :arrow_down: " + "HA :arrow_up: " * int(times)
+        else:
+            out = "A :arrow_down: " + "HA :arrow_up: " * randint(3, 7)
         await ctx.send(out)
 
     @commands.command(aliases=["emoji"])
