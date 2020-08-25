@@ -82,7 +82,6 @@ class Fun(commands.Cog):
             SET total = total + 1
             RETURNING total
         """)
-        print(respects_amount)
         if target is None:
             msg = "**" + ctx.author.name + "** has paid their respects."
         else:
@@ -113,7 +112,13 @@ class Fun(commands.Cog):
     @commands.guild_only()
     async def mai(self, ctx):
         """Equivalent to ~emo mai"""
-        await ctx.send(file=discord.File(self.res_path + "emotes/mai.png"))
+        await ctx.send(file=discord.File(self.res_path + "emotes/mai.png"))    \
+
+    @commands.command()
+    @commands.guild_only()
+    async def seiso(self, ctx):
+        """Equivalent to ~emo seiso"""
+        await ctx.send(file=discord.File(self.res_path + "emotes/seiso.png"))
 
     @commands.command()
     async def advice(self, ctx):
