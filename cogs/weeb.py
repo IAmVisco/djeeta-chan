@@ -175,5 +175,5 @@ class Weeb(commands.Cog):
         await self.send_weeb_info_reply(ctx, media)
 
 
-def setup(bot):
-    bot.add_cog(Weeb(bot))
+async def setup(bot):
+    await bot.add_cog(Weeb(bot))

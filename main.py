@@ -1,3 +1,4 @@
+import asyncio
 import os
 import re
 import sys
@@ -9,8 +10,12 @@ import random as r
 from discord.ext import commands
 
 __version__ = '3.1.1'
+intents = discord.Intents.all()
 logging.basicConfig(format="%(levelname)s:%(asctime)s:%(message)s", level=logging.INFO, stream=sys.stdout)
-bot = commands.Bot(command_prefix="~", description="Djeeta bot! Has some cool commands and a bunch of emotes.")
+bot = commands.Bot(command_prefix="~",
+                   description="Djeeta bot! Has some cool commands and a bunch of emotes.",
+                   intents=intents
+                   )
 
 
 @bot.event
@@ -55,7 +60,7 @@ async def on_message(message):
 
     out = process_message_replies(message) if not message.author.bot else None
 
-    logs = await message.channel.history(limit=3).flatten()
+    logs = [message async for message in message.channel.history(limit=3)]
     if logs[0].content == logs[1].content == logs[2].content and not any([msg.author.bot for msg in logs]):
         out = logs[0].content
 
@@ -95,9 +100,14 @@ async def on_command_error(ctx, exception):
     traceback.print_exception(type(exception), exception, exception.__traceback__, file=sys.stderr)
 
 
-for file in os.listdir("cogs"):
-    if file.endswith(".py"):
-        name = file[:-3]
-        bot.load_extension(f"cogs.{name}")
+async def main():
+    for file in os.listdir("cogs"):
+        if file.endswith(".py"):
+            name = file[:-3]
+            await bot.load_extension(f"cogs.{name}")
 
-bot.run(os.environ.get("BOT_TOKEN"))
+    async with bot:
+        await bot.start(os.environ.get("BOT_TOKEN"))
+
+asyncio.run(main())
+
