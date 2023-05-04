@@ -68,7 +68,7 @@ class Fun(commands.Cog):
                         break
                     emote_size -= 1
                 if url:
-                    await ctx.send(f"https:{url}")
+                    await ctx.send(url)
                 else:
                     await ctx.send("No suitable emoticon link found.")
 
