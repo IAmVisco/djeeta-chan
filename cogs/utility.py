@@ -9,7 +9,7 @@ from discord.ext import commands
 from collections import Counter
 from datetime import datetime
 
-from utils import random_color, get_utc_string
+from utils import random_color, get_utc_string, connect_to_db
 
 fancy_answers = (
     "Without a doubt it's",
@@ -78,7 +78,7 @@ class Utility(commands.Cog):
         """Shows info about user."""
         if user is None:
             user = ctx.author
-        user_info = discord.Embed(title=str(user), color=random_color(), timestamp=datetime.utcnow())
+        user_info = discord.Embed(title=str(user), color=random_color(), timestamp=datetime.now())
         user_info.set_thumbnail(url=user.avatar_url)
         user_info.add_field(name="Status", value=user.status)
         user_info.add_field(name="ID", value=user.id)
@@ -93,7 +93,7 @@ class Utility(commands.Cog):
         guild = ctx.guild
         server_info = discord.Embed(title="{0} (ID: {1})".format(guild.name, guild.id),
                                     color=random_color(),
-                                    timestamp=datetime.utcnow())
+                                    timestamp=datetime.now())
         server_info.set_thumbnail(url=guild.icon_url)
         server_info.add_field(name="Owner", value=guild.owner)
         server_info.add_field(name="Region", value=guild.region)
@@ -123,7 +123,7 @@ class Utility(commands.Cog):
         bot_info = discord.Embed(title="GitHub Repository",
                                  url="https://github.com/IAmVisco/djeeta-chan",
                                  color=random_color(),
-                                 timestamp=datetime.utcnow())
+                                 timestamp=datetime.now())
         bot_info.set_author(name=self.bot.user, icon_url=self.bot.user.avatar_url)
         bot_info.set_thumbnail(url=self.bot.user.avatar_url)
         bot_info.add_field(name="Servers connected", value=len(list(self.bot.guilds)))
@@ -293,34 +293,34 @@ class Utility(commands.Cog):
                 else:
                     await ctx.send("Nothing found, please check your input and try again.")
 
-    # @commands.group(invoke_without_command=True, aliases=["gfl"])
-    # async def gf(self, ctx, nick=None):
-    #     """Shows a list with Girls' Frontline Nicks and UIDs"""
-    #     conn = await connect_to_db()
-    #     if nick is None:
-    #         user_info = discord.Embed(title="Girls' Frontline players list",
-    #                                   color=random_color(),
-    #                                   timestamp=datetime.utcnow())
-    #         res = await conn.fetch("SELECT * FROM gfl ORDER BY uid")
-    #         for record in res:
-    #             user_info.add_field(name=record[1], value=record[2])
-    #         await ctx.send(embed=user_info)
-    #     else:
-    #         user_info = discord.Embed(title="Girls' Frontline user info",
-    #                                   color=random_color(),
-    #                                   timestamp=datetime.utcnow())
-    #         record = await conn.fetchrow(f"SELECT * FROM gfl WHERE LOWER(name)=LOWER('{nick}')")
-    #         user_info.add_field(name=record[1], value=record[2])
-    #         await ctx.send(embed=user_info)
-    #     await conn.close()
-    #
-    # @gf.command(name="add", hidden=True)
-    # @commands.is_owner()
-    # async def add_gf_user_to_list(self, ctx, nick: str, uid: int):
-    #     conn = await connect_to_db()
-    #     await conn.execute("INSERT INTO gfl (name, uid) VALUES ($1, $2)", nick, uid)
-    #     await ctx.send(f"Nick {nick} successfully added to the list.")
-    #     await conn.close()
+    @commands.group(invoke_without_command=True, aliases=["gfl"])
+    async def gf(self, ctx, nick=None):
+        """Shows a list with Girls' Frontline Nicks and UIDs"""
+        conn = await connect_to_db()
+        if nick is None:
+            user_info = discord.Embed(title="Girls' Frontline players list",
+                                      color=random_color(),
+                                      timestamp=datetime.now())
+            res = await conn.fetch("SELECT name, uid, server FROM gfl ORDER BY id")
+            for record in res:
+                user_info.add_field(name=f"{record[0]} ({record[2]})", value=record[1])
+            await ctx.send(embed=user_info)
+        else:
+            user_info = discord.Embed(title="Girls' Frontline user info",
+                                      color=random_color(),
+                                      timestamp=datetime.now())
+            record = await conn.fetchrow(f"SELECT name, uid, server FROM gfl WHERE LOWER(name)=LOWER('{nick}')")
+            user_info.add_field(name=f"{record[0]} ({record[2]})", value=record[1])
+            await ctx.send(embed=user_info)
+        await conn.close()
+
+    @gf.command(name="add", hidden=True)
+    @commands.is_owner()
+    async def add_gf_user_to_list(self, ctx, nick: str, uid: int, server: str):
+        conn = await connect_to_db()
+        await conn.execute("INSERT INTO gfl (name, uid, server) VALUES ($1, $2, $3)", nick, uid, server)
+        await ctx.send(f"Nick {nick} successfully added to the list.")
+        await conn.close()
     #
     # @commands.group(invoke_without_command=True)
     # async def ak(self, ctx, nick=None):
@@ -329,7 +329,7 @@ class Utility(commands.Cog):
     #     if nick is None:
     #         user_info = discord.Embed(title="Arknights players list",
     #                                   color=random_color(),
-    #                                   timestamp=datetime.utcnow())
+    #                                   timestamp=datetime.now())
     #         res = await conn.fetch("SELECT * FROM arknights ORDER BY name")
     #         for record in res:
     #             user_info.add_field(name=record[1], value=record[2])
@@ -337,7 +337,7 @@ class Utility(commands.Cog):
     #     else:
     #         user_info = discord.Embed(title="Arknights user info",
     #                                   color=random_color(),
-    #                                   timestamp=datetime.utcnow())
+    #                                   timestamp=datetime.now())
     #         record = await conn.fetchrow(f"SELECT * FROM arknights WHERE LOWER(name)=LOWER('{nick}')")
     #         user_info.add_field(name=record[1], value=record[2])
     #         await ctx.send(embed=user_info)
