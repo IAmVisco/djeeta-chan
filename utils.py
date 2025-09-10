@@ -62,7 +62,7 @@ async def handle_keyword_reaction(message: discord.Message) -> None:
 
     content = message.content
 
-    if "marvelous" in content.lower() and not message.author.bot:
+    if not message.author.bot and not "tenor.com" in content.lower() and "marvelous" in content.lower():
         await send_marvelous_image(message)
 
     keyword = None
