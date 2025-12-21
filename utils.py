@@ -9,7 +9,7 @@ import discord
 import datetime as dt
 
 
-sunday_image_url: str = "https://fixvx.com/notnoe_/status/1964794280469540951"
+sunday_image_url: str = "https://tenor.com/view/uma-musume-marvelous-sunday-sunday-have-a-good-day-have-a-nice-day-gif-2654402259896975555" # @notnoe_
 weekday_image_url: str = "https://tenor.com/view/uma-uma-musume-musume-marvelous-sunday-marvelous-gif-15092128582077845004"
 
 def random_color() -> int:
