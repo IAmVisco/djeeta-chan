@@ -81,5 +81,6 @@ async def main() -> None:
     async with bot:
         await bot.start(os.environ.get("BOT_TOKEN"))
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
 

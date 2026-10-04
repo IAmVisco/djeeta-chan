@@ -32,7 +32,7 @@ class Utility(commands.Cog):
         """Shows avatar of the user."""
         if user is None:
             user = ctx.author
-        await ctx.send(user.avatar_url)
+        await ctx.send(user.display_avatar.url)
 
     @commands.command()
     async def bigmoji(self, ctx, emoji=None):
@@ -79,7 +79,7 @@ class Utility(commands.Cog):
         if user is None:
             user = ctx.author
         user_info = discord.Embed(title=str(user), color=random_color(), timestamp=datetime.now())
-        user_info.set_thumbnail(url=user.avatar_url)
+        user_info.set_thumbnail(url=user.display_avatar.url)
         user_info.add_field(name="Status", value=user.status)
         user_info.add_field(name="ID", value=user.id)
         user_info.add_field(name="Account creation date", value=get_utc_string(user.created_at))
@@ -94,9 +94,9 @@ class Utility(commands.Cog):
         server_info = discord.Embed(title="{0} (ID: {1})".format(guild.name, guild.id),
                                     color=random_color(),
                                     timestamp=datetime.now())
-        server_info.set_thumbnail(url=guild.icon_url)
+        server_info.set_thumbnail(url=guild.icon.url if guild.icon else None)
         server_info.add_field(name="Owner", value=guild.owner)
-        server_info.add_field(name="Region", value=guild.region)
+        server_info.add_field(name="Locale", value=guild.preferred_locale)
         server_info.add_field(name="Members", value=guild.member_count)
         server_info.add_field(name="Roles", value=sum(1 for _ in guild.roles))
         server_info.add_field(name="Channels", value=sum(1 for _ in guild.channels))
@@ -124,8 +124,8 @@ class Utility(commands.Cog):
                                  url="https://github.com/IAmVisco/djeeta-chan",
                                  color=random_color(),
                                  timestamp=datetime.now())
-        bot_info.set_author(name=self.bot.user, icon_url=self.bot.user.avatar_url)
-        bot_info.set_thumbnail(url=self.bot.user.avatar_url)
+        bot_info.set_author(name=self.bot.user, icon_url=self.bot.user.display_avatar.url)
+        bot_info.set_thumbnail(url=self.bot.user.display_avatar.url)
         bot_info.add_field(name="Servers connected", value=len(list(self.bot.guilds)))
         bot_info.add_field(name="Users known", value=len(list(self.bot.get_all_members())))
         bot_info.add_field(name="Channels known", value=f"{text_channels} text/{voice_channels} voice")
@@ -277,8 +277,8 @@ class Utility(commands.Cog):
         after 1 second.
         """
         await ctx.message.delete()
-        await ctx.trigger_typing()
-        await asyncio.sleep(1)
+        async with ctx.typing():
+            await asyncio.sleep(1)
         await ctx.send(msg)
 
     @commands.command()
@@ -359,7 +359,7 @@ class Utility(commands.Cog):
         c = Counter()
         for ch in ctx.guild.text_channels:
             if ch.permissions_for(ctx.guild.me).read_message_history:
-                msges = await ch.history(limit=None).flatten()
+                msges = [msg async for msg in ch.history(limit=None)]
                 print(f'Received logs for #{ch}')
                 for msg in msges:
                     c[msg.author] += 1

@@ -4,7 +4,7 @@ import random
 import aiohttp
 import discord
 from discord.ext import commands
-from datetime import datetime
+from datetime import datetime, UTC
 
 from utils import random_color
 
@@ -124,7 +124,7 @@ class Weeb(commands.Cog):
         embed = discord.Embed(title=data.get("title").get("romaji"),
                               colour=random_color(), url=data.get("siteUrl"),
                               description=re.sub(r"<.*?>", "", data.get("description")),
-                              timestamp=datetime.utcnow())
+                              timestamp=datetime.now(UTC))
         embed.set_thumbnail(url=data.get("coverImage").get("large"))
         embed.set_author(name="AniList entry", url="https://anilist.co",
                          icon_url="https://i.imgur.com/TKvkZmo.png")

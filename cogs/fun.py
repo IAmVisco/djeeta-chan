@@ -3,7 +3,7 @@ import typing
 import aiohttp
 import discord
 from random import randint
-from datetime import datetime
+from datetime import datetime, UTC
 from discord.ext import commands
 from utils import random_color, get_json_data
 
@@ -86,7 +86,7 @@ class Fun(commands.Cog):
             msg = "**" + ctx.author.name + "** has paid their respects."
         else:
             msg = "**" + ctx.author.name + "** has paid their respects for **" + target + ".**"
-        embed = discord.Embed(description=msg, color=random_color(), timestamp=datetime.utcnow())
+        embed = discord.Embed(description=msg, color=random_color(), timestamp=datetime.now(UTC))
         # embed.set_footer(text=f"Total: {respects_amount}")
         await ctx.send(embed=embed)
 
